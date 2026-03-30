@@ -2,7 +2,7 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T11:45:17.959697+00:00",
+  "generatedAt": "2026-03-30T11:47:41.612244+00:00",
   "sourceModifiedAt": "2026-03-30T11:44:16+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
@@ -31,16 +31,22 @@
       "tone": "warn"
     },
     {
+      "label": "Urgent Orders",
+      "value": "9.0%",
+      "detail": "Week 11 reading",
+      "tone": "bad"
+    },
+    {
       "label": "Top SKU Picker",
       "value": "1,616",
       "detail": "Top picker: Endwell",
       "tone": "good"
     },
     {
-      "label": "2026 Points YTD",
-      "value": "-",
-      "detail": "2026 year-to-date points",
-      "tone": "info"
+      "label": "SKU 2026 YTD",
+      "value": "12,018",
+      "detail": "2026 YTD picked volume",
+      "tone": "good"
     }
   ],
   "datasets": [
@@ -173,7 +179,7 @@
             "name": "92M",
             "key": "score92m",
             "format": "percent",
-            "color": "#48d6b8",
+            "color": "#4ade80",
             "values": [
               0.77,
               0.74,
@@ -196,7 +202,7 @@
             "name": "12M",
             "key": "score12m",
             "format": "percent",
-            "color": "#ffb968",
+            "color": "#fb923c",
             "values": [
               0.57,
               0.0,
@@ -218,7 +224,7 @@
           {
             "name": "92M Target",
             "format": "percent",
-            "color": "#ffd54f",
+            "color": "#ff4fd8",
             "values": [
               0.75,
               0.75,
@@ -240,7 +246,7 @@
           {
             "name": "92M Trend",
             "format": "percent",
-            "color": "#f5efeb",
+            "color": "#f8fafc",
             "values": [
               0.7926923076923078,
               0.7758391608391609,
@@ -375,7 +381,7 @@
             "name": "Accuracy",
             "key": "accuracy",
             "format": "percent",
-            "color": "#4ee3b9",
+            "color": "#00cfff",
             "values": [
               1.0,
               0.9429,
@@ -390,7 +396,7 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ffd54f",
+            "color": "#ff4fd8",
             "values": [
               0.98,
               0.98,
@@ -405,7 +411,7 @@
           {
             "name": "Trend",
             "format": "percent",
-            "color": "#f5efeb",
+            "color": "#f8fafc",
             "values": [
               0.9774799999999999,
               0.9798699999999999,
@@ -532,7 +538,7 @@
             "name": "Accuracy",
             "key": "accuracy",
             "format": "percent",
-            "color": "#6fb6ff",
+            "color": "#3b82f6",
             "values": [
               0.938,
               0.9917,
@@ -546,7 +552,7 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ffd54f",
+            "color": "#ff4fd8",
             "values": [
               0.98,
               0.98,
@@ -560,7 +566,7 @@
           {
             "name": "Trend",
             "format": "percent",
-            "color": "#f5efeb",
+            "color": "#f8fafc",
             "values": [
               0.9524,
               0.97095,
@@ -693,7 +699,7 @@
             "name": "Urgent Rate",
             "key": "rate",
             "format": "percent",
-            "color": "#ff8a5b",
+            "color": "#ffb703",
             "values": [
               0.01,
               0.0,
@@ -714,7 +720,7 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ffd54f",
+            "color": "#ff4fd8",
             "values": [
               0.03,
               0.03,
@@ -735,7 +741,7 @@
           {
             "name": "Trend",
             "format": "percent",
-            "color": "#f5efeb",
+            "color": "#f8fafc",
             "values": [
               0.00045454545454545747,
               0.009636363636363639,
@@ -875,7 +881,7 @@
             "name": "Accuracy",
             "key": "accuracy",
             "format": "percent",
-            "color": "#19d3f3",
+            "color": "#ff5d73",
             "values": [
               1.0,
               1.0,
@@ -896,7 +902,7 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ffd54f",
+            "color": "#ff4fd8",
             "values": [
               0.995,
               0.995,
@@ -917,7 +923,7 @@
           {
             "name": "Trend",
             "format": "percent",
-            "color": "#f5efeb",
+            "color": "#f8fafc",
             "values": [
               0.9995909090909092,
               0.9989727272727273,
@@ -1193,7 +1199,7 @@
             "name": "2024",
             "key": "y2024",
             "format": "integer",
-            "color": "#7aa6c2",
+            "color": "#3b82f6",
             "values": [
               2289.0,
               4016.0,
@@ -1216,7 +1222,7 @@
             "name": "2025 Target",
             "key": "y2025",
             "format": "integer",
-            "color": "#ffd54f",
+            "color": "#ff4fd8",
             "values": [
               6124.0,
               4950.0,
@@ -1261,7 +1267,7 @@
           {
             "name": "2026 Trend",
             "format": "integer",
-            "color": "#f5efeb",
+            "color": "#f8fafc",
             "values": [
               3514.5,
               4006.0,
@@ -1276,165 +1282,6 @@
               8429.5,
               8921.0
             ],
-            "style": "dotted",
-            "showDots": false,
-            "strokeWidth": 2
-          }
-        ]
-      }
-    },
-    {
-      "key": "points-yoy",
-      "label": "Liseo Points YOY",
-      "category": "Year over Year",
-      "description": "Monthly points history across six years with a total-per-month column kept in the table view.",
-      "headlineValue": "-",
-      "headlineDetail": "2026 year-to-date points",
-      "tone": "good",
-      "note": "The line view exposes long-term seasonality and where 2026 is still building up.",
-      "facts": [
-        {
-          "label": "2026 YTD",
-          "value": "-"
-        },
-        {
-          "label": "2025 Total",
-          "value": "-"
-        },
-        {
-          "label": "Peak Month",
-          "value": "-"
-        },
-        {
-          "label": "Benchmark",
-          "value": "2025 line"
-        }
-      ],
-      "table": {
-        "columns": [
-          {
-            "key": "month",
-            "label": "Month",
-            "format": "text"
-          },
-          {
-            "key": "y2021",
-            "label": "2021",
-            "format": "decimal1"
-          },
-          {
-            "key": "y2022",
-            "label": "2022",
-            "format": "decimal1"
-          },
-          {
-            "key": "y2023",
-            "label": "2023",
-            "format": "decimal1"
-          },
-          {
-            "key": "y2024",
-            "label": "2024",
-            "format": "decimal1"
-          },
-          {
-            "key": "y2025",
-            "label": "2025",
-            "format": "decimal1"
-          },
-          {
-            "key": "y2026",
-            "label": "2026",
-            "format": "decimal1"
-          },
-          {
-            "key": "total",
-            "label": "Total",
-            "format": "decimal1"
-          }
-        ],
-        "rows": [
-          {
-            "month": "Total",
-            "y2021": null,
-            "y2022": null,
-            "y2023": null,
-            "y2024": null,
-            "y2025": null,
-            "y2026": null,
-            "total": null
-          }
-        ]
-      },
-      "chart": {
-        "kind": "line",
-        "labels": [],
-        "series": [
-          {
-            "name": "2021",
-            "key": "y2021",
-            "format": "decimal1",
-            "color": "#6c7385",
-            "values": [],
-            "style": "solid",
-            "showDots": false,
-            "strokeWidth": 1.5
-          },
-          {
-            "name": "2022",
-            "key": "y2022",
-            "format": "decimal1",
-            "color": "#ff8a5b",
-            "values": [],
-            "style": "solid",
-            "showDots": false,
-            "strokeWidth": 1.5
-          },
-          {
-            "name": "2023",
-            "key": "y2023",
-            "format": "decimal1",
-            "color": "#ffd54f",
-            "values": [],
-            "style": "solid",
-            "showDots": false,
-            "strokeWidth": 1.5
-          },
-          {
-            "name": "2024",
-            "key": "y2024",
-            "format": "decimal1",
-            "color": "#7ac7b1",
-            "values": [],
-            "style": "solid",
-            "showDots": false,
-            "strokeWidth": 1.5
-          },
-          {
-            "name": "2025 Target",
-            "key": "y2025",
-            "format": "decimal1",
-            "color": "#00cfff",
-            "values": [],
-            "style": "dashed",
-            "showDots": false,
-            "strokeWidth": 2
-          },
-          {
-            "name": "2026 Actual",
-            "key": "y2026",
-            "format": "decimal1",
-            "color": "#ff6b74",
-            "values": [],
-            "style": "solid",
-            "showDots": true,
-            "strokeWidth": 3.5
-          },
-          {
-            "name": "2026 Trend",
-            "format": "decimal1",
-            "color": "#f5efeb",
-            "values": [],
             "style": "dotted",
             "showDots": false,
             "strokeWidth": 2

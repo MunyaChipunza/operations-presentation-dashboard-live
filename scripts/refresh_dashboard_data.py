@@ -158,7 +158,7 @@ def add_target_line(
     value: float | None,
     label: str,
     format_type: str,
-    color: str = "#ffd54f",
+    color: str = "#ff4fd8",
 ) -> None:
     if value is None:
         return
@@ -181,7 +181,7 @@ def add_trendline(
     *,
     source_key: str,
     label: str,
-    color: str = "#f5efeb",
+    color: str = "#f8fafc",
 ) -> None:
     source = next((item for item in dataset["chart"]["series"] if item.get("key") == source_key), None)
     if not source:
@@ -443,8 +443,8 @@ def parse_housekeeping(ws) -> dict[str, Any]:
         label_title="Period",
         rows=rows,
         series=[
-            {"key": "score92m", "label": "92M", "format": "percent", "color": "#48d6b8"},
-            {"key": "score12m", "label": "12M", "format": "percent", "color": "#ffb968"},
+            {"key": "score92m", "label": "92M", "format": "percent", "color": "#4ade80"},
+            {"key": "score12m", "label": "12M", "format": "percent", "color": "#fb923c"},
         ],
         facts=[
             {"label": "Current 92M", "value": format_percent(latest["score92m"], 0) if latest else "-"},
@@ -623,10 +623,10 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
             "kind": "line",
             "labels": [row["month"] for row in rows],
             "series": [
-                {"name": "2024", "key": "y2024", "format": "integer", "color": "#7aa6c2", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
-                {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#ffd54f", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
+                {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
+                {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#ff4fd8", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
                 {"name": "2026 Actual", "key": "y2026", "format": "integer", "color": "#00cfff", "values": [row["y2026"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 4},
-                {"name": "2026 Trend", "format": "integer", "color": "#f5efeb", "values": build_trendline([row["y2026"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2},
+                {"name": "2026 Trend", "format": "integer", "color": "#f8fafc", "values": build_trendline([row["y2026"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2},
             ],
         },
     }
@@ -739,7 +739,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_key="accuracy",
         series_label="Accuracy",
         series_format="percent",
-        color="#4ee3b9",
+        color="#00cfff",
         good_threshold=0.98,
         warn_threshold=0.95,
         note="Higher is better. Missing loads are left blank so the chart stays honest.",
@@ -760,7 +760,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_key="accuracy",
         series_label="Accuracy",
         series_format="percent",
-        color="#6fb6ff",
+        color="#3b82f6",
         good_threshold=0.98,
         warn_threshold=0.95,
         note="A shorter series today, but the same live refresh loop will grow it automatically.",
@@ -781,7 +781,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_key="rate",
         series_label="Urgent Rate",
         series_format="percent",
-        color="#ff8a5b",
+        color="#ffb703",
         good_threshold=0.03,
         warn_threshold=0.07,
         higher_is_better=False,
@@ -803,15 +803,13 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_key="accuracy",
         series_label="Accuracy",
         series_format="percent",
-        color="#19d3f3",
+        color="#ff5d73",
         good_threshold=0.995,
         warn_threshold=0.985,
         note="A near-perfect trend, so the chart leans on fine-grained percentage labels.",
     )
     sku_share = parse_sku_share(ws)
     monthly_sku = parse_monthly_sku(ws)
-    points_yoy = parse_points_yoy(ws)
-
     return {
         "title": "Operations Live Dashboard",
         "subtitle": "PPT Presentation Source",
@@ -845,16 +843,22 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
                 "tone": dispatch["tone"],
             },
             {
+                "label": "Urgent Orders",
+                "value": urgent["headlineValue"],
+                "detail": urgent["headlineDetail"],
+                "tone": urgent["tone"],
+            },
+            {
                 "label": "Top SKU Picker",
                 "value": sku_share["headlineValue"],
                 "detail": sku_share["headlineDetail"],
                 "tone": "good",
             },
             {
-                "label": "2026 Points YTD",
-                "value": points_yoy["headlineValue"],
-                "detail": points_yoy["headlineDetail"],
-                "tone": "info",
+                "label": "SKU 2026 YTD",
+                "value": monthly_sku["headlineValue"],
+                "detail": monthly_sku["headlineDetail"],
+                "tone": monthly_sku["tone"],
             },
         ],
         "datasets": [
@@ -865,7 +869,6 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             dispatch,
             sku_share,
             monthly_sku,
-            points_yoy,
         ],
     }
 
