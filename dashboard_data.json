@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T13:13:18.029029+00:00",
-  "sourceModifiedAt": "2026-03-30T12:59:17+00:00",
+  "generatedAt": "2026-03-30T13:14:18.627201+00:00",
+  "sourceModifiedAt": "2026-03-30T13:14:12.382583+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -44,7 +44,7 @@
     },
     {
       "label": "SKU 2026 YTD",
-      "value": "12,018",
+      "value": "12,417",
       "detail": "2026 YTD picked volume",
       "tone": "warn"
     },
@@ -1064,18 +1064,18 @@
       "label": "SKU Picked by Month",
       "category": "Volume",
       "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
-      "headlineValue": "12,018",
+      "headlineValue": "12,417",
       "headlineDetail": "2026 YTD picked volume",
       "tone": "warn",
       "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
       "facts": [
         {
           "label": "2026 YTD",
-          "value": "12,018"
+          "value": "12,417"
         },
         {
           "label": "Latest 2026 Month",
-          "value": "Mar - 4,225"
+          "value": "Mar - 4,624"
         },
         {
           "label": "Best 2025 Month",
@@ -1126,7 +1126,7 @@
             "month": "Mar",
             "y2024": 2233.0,
             "y2025": 6414.0,
-            "y2026": 4225.0
+            "y2026": 4624.0
           },
           {
             "month": "Apr",
@@ -1255,7 +1255,7 @@
             "values": [
               3242.0,
               4551.0,
-              4225.0,
+              4624.0,
               null,
               null,
               null,
@@ -1275,18 +1275,18 @@
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              3514.5,
-              4006.0,
-              4497.5,
-              4989.0,
-              5480.5,
-              5972.0,
-              6463.5,
-              6955.0,
-              7446.5,
-              7938.0,
-              8429.5,
-              8921.0
+              3448.0,
+              4139.0,
+              4830.0,
+              5521.0,
+              6212.0,
+              6903.0,
+              7594.0,
+              8285.0,
+              8976.0,
+              9667.0,
+              10358.0,
+              11049.0
             ],
             "style": "dotted",
             "showDots": false,
