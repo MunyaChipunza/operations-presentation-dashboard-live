@@ -2,7 +2,7 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T11:59:17.996988+00:00",
+  "generatedAt": "2026-03-30T12:01:57.838920+00:00",
   "sourceModifiedAt": "2026-03-30T11:44:16+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
@@ -28,13 +28,13 @@
       "label": "Dispatch Accuracy",
       "value": "99.3%",
       "detail": "Week 11 reading",
-      "tone": "warn"
+      "tone": "good"
     },
     {
       "label": "Urgent Orders",
       "value": "9.0%",
       "detail": "Week 11 reading",
-      "tone": "bad"
+      "tone": "warn"
     },
     {
       "label": "Top SKU Picker",
@@ -46,7 +46,7 @@
       "label": "SKU 2026 YTD",
       "value": "12,018",
       "detail": "2026 YTD picked volume",
-      "tone": "good"
+      "tone": "warn"
     }
   ],
   "datasets": [
@@ -58,19 +58,19 @@
       "headlineValue": "49%",
       "headlineDetail": "Week 11 92M reading",
       "tone": "bad",
-      "note": "Shows weekly housekeeping performance against the 2025 average benchmark.",
+      "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
         {
-          "label": "Current 92M",
+          "label": "Latest",
           "value": "49%"
         },
         {
-          "label": "2025 Avg 92M",
-          "value": "77%"
+          "label": "Target",
+          "value": "80%"
         },
         {
-          "label": "2025 Avg 12M",
-          "value": "57%"
+          "label": "Average",
+          "value": "77%"
         },
         {
           "label": "Best Week",
@@ -179,7 +179,7 @@
             "name": "92M",
             "key": "score92m",
             "format": "percent",
-            "color": "#4ade80",
+            "color": "#00cfff",
             "values": [
               0.77,
               0.74,
@@ -202,7 +202,7 @@
             "name": "12M",
             "key": "score12m",
             "format": "percent",
-            "color": "#fb923c",
+            "color": "#ffb703",
             "values": [
               0.57,
               0.0,
@@ -224,20 +224,20 @@
           {
             "name": "92M Target",
             "format": "percent",
-            "color": "#ff4fd8",
+            "color": "#39ff88",
             "values": [
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75,
-              0.75
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8,
+              0.8
             ],
             "style": "dashed",
             "showDots": false,
@@ -284,7 +284,7 @@
         },
         {
           "label": "Target",
-          "value": "98.0%"
+          "value": "99.0%"
         },
         {
           "label": "Average",
@@ -396,13 +396,13 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ff4fd8",
+            "color": "#39ff88",
             "values": [
-              0.98,
-              0.98,
-              0.98,
-              0.98,
-              0.98
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99
             ],
             "style": "dashed",
             "showDots": false,
@@ -442,7 +442,7 @@
         },
         {
           "label": "Target",
-          "value": "98.0%"
+          "value": "99.0%"
         },
         {
           "label": "Average",
@@ -552,12 +552,12 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ff4fd8",
+            "color": "#39ff88",
             "values": [
-              0.98,
-              0.98,
-              0.98,
-              0.98
+              0.99,
+              0.99,
+              0.99,
+              0.99
             ],
             "style": "dashed",
             "showDots": false,
@@ -587,7 +587,7 @@
       "description": "Weekly urgent-order rate. Lower is healthier here.",
       "headlineValue": "9.0%",
       "headlineDetail": "Week 11 reading",
-      "tone": "bad",
+      "tone": "warn",
       "note": "This one flips the interpretation: the closer to zero, the better.",
       "facts": [
         {
@@ -596,7 +596,7 @@
         },
         {
           "label": "Target",
-          "value": "3.0%"
+          "value": "5.0%"
         },
         {
           "label": "Average",
@@ -720,19 +720,19 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ff4fd8",
+            "color": "#39ff88",
             "values": [
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03,
-              0.03
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05,
+              0.05
             ],
             "style": "dashed",
             "showDots": false,
@@ -769,7 +769,7 @@
       "description": "Weekly dispatch accuracy performance.",
       "headlineValue": "99.3%",
       "headlineDetail": "Week 11 reading",
-      "tone": "warn",
+      "tone": "good",
       "note": "A near-perfect trend, so the chart leans on fine-grained percentage labels.",
       "facts": [
         {
@@ -778,7 +778,7 @@
         },
         {
           "label": "Target",
-          "value": "99.5%"
+          "value": "99.0%"
         },
         {
           "label": "Average",
@@ -902,19 +902,19 @@
           {
             "name": "Target",
             "format": "percent",
-            "color": "#ff4fd8",
+            "color": "#39ff88",
             "values": [
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995,
-              0.995
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99,
+              0.99
             ],
             "style": "dashed",
             "showDots": false,
@@ -1060,7 +1060,7 @@
       "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
       "headlineValue": "12,018",
       "headlineDetail": "2026 YTD picked volume",
-      "tone": "good",
+      "tone": "warn",
       "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
       "facts": [
         {
@@ -1076,8 +1076,8 @@
           "value": "Jun - 13,634"
         },
         {
-          "label": "2026 Target",
-          "value": "Track against 2025"
+          "label": "YTD Rank",
+          "value": "2 of 3"
         }
       ],
       "table": {
@@ -1222,7 +1222,7 @@
             "name": "2025 Target",
             "key": "y2025",
             "format": "integer",
-            "color": "#ff4fd8",
+            "color": "#39ff88",
             "values": [
               6124.0,
               4950.0,

@@ -13,7 +13,7 @@ import urllib.parse
 import urllib.request
 import zipfile
 from pathlib import Path
-from typing import Any
+from typing import Any, Callable
 
 from openpyxl import load_workbook
 
@@ -110,6 +110,46 @@ def tone_from_percent(value: float | None, *, good: float, warn: float, higher_i
     return "bad"
 
 
+def tone_housekeeping(value: float | None) -> str:
+    if value is None:
+        return "quiet"
+    if value < 0.50:
+        return "bad"
+    if value < 0.80:
+        return "warn"
+    return "good"
+
+
+def tone_accuracy(value: float | None) -> str:
+    if value is None:
+        return "quiet"
+    if value <= 0.97:
+        return "bad"
+    if value < 0.99:
+        return "warn"
+    return "good"
+
+
+def tone_urgent_orders(value: float | None) -> str:
+    if value is None:
+        return "quiet"
+    if value <= 0.05:
+        return "good"
+    if value <= 0.10:
+        return "warn"
+    return "bad"
+
+
+def tone_from_rank(rank: int | None) -> str:
+    if rank is None:
+        return "quiet"
+    if rank == 1:
+        return "good"
+    if rank == 2:
+        return "warn"
+    return "bad"
+
+
 def latest_non_null(rows: list[dict[str, Any]], key: str) -> dict[str, Any] | None:
     for row in reversed(rows):
         if row.get(key) is not None:
@@ -158,7 +198,7 @@ def add_target_line(
     value: float | None,
     label: str,
     format_type: str,
-    color: str = "#ff4fd8",
+    color: str = "#39ff88",
 ) -> None:
     if value is None:
         return
@@ -443,21 +483,21 @@ def parse_housekeeping(ws) -> dict[str, Any]:
         label_title="Period",
         rows=rows,
         series=[
-            {"key": "score92m", "label": "92M", "format": "percent", "color": "#4ade80"},
-            {"key": "score12m", "label": "12M", "format": "percent", "color": "#fb923c"},
+            {"key": "score92m", "label": "92M", "format": "percent", "color": "#00cfff"},
+            {"key": "score12m", "label": "12M", "format": "percent", "color": "#ffb703"},
         ],
         facts=[
-            {"label": "Current 92M", "value": format_percent(latest["score92m"], 0) if latest else "-"},
-            {"label": "2025 Avg 92M", "value": format_percent(average_92m, 0)},
-            {"label": "2025 Avg 12M", "value": format_percent(average_12m, 0)},
+            {"label": "Latest", "value": format_percent(latest["score92m"], 0) if latest else "-"},
+            {"label": "Target", "value": format_percent(0.80, 0)},
+            {"label": "Average", "value": format_percent(average_92m, 0)},
             {"label": "Best Week", "value": f"{best['period']} - {format_percent(best['score92m'], 0)}" if best else "-"},
         ],
         headline_value=format_percent(latest["score92m"], 0) if latest else "-",
         headline_detail=f"{latest['period']} 92M reading" if latest else "No reading yet",
-        tone=tone_from_percent(latest["score92m"] if latest else None, good=0.75, warn=0.6),
-        note="Shows weekly housekeeping performance against the 2025 average benchmark.",
+        tone=tone_housekeeping(latest["score92m"] if latest else None),
+        note="Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
     )
-    add_target_line(dataset, value=0.75, label="92M Target", format_type="percent")
+    add_target_line(dataset, value=0.80, label="92M Target", format_type="percent")
     add_trendline(dataset, source_key="score92m", label="92M Trend")
     return dataset
 
@@ -480,8 +520,8 @@ def parse_single_series_block(
     series_label: str,
     series_format: str,
     color: str,
-    good_threshold: float,
-    warn_threshold: float,
+    target_value: float,
+    tone_resolver: Callable[[float | None], str],
     higher_is_better: bool = True,
     note: str = "",
 ) -> dict[str, Any]:
@@ -508,22 +548,17 @@ def parse_single_series_block(
         series=[{"key": series_key, "label": series_label, "format": series_format, "color": color}],
         facts=[
             {"label": "Latest", "value": format_percent(latest[series_key], 1) if latest else "-"},
-            {"label": "Target", "value": format_percent(good_threshold, 1)},
+            {"label": "Target", "value": format_percent(target_value, 1)},
             {"label": "Average", "value": format_percent(average_value, 1)},
             {"label": "Best", "value": f"{best[label_key]} - {format_percent(best[series_key], 1)}" if best else "-"},
             {"label": "Readings", "value": str(len(values))},
         ],
         headline_value=format_percent(latest[series_key], 1) if latest else "-",
         headline_detail=f"{latest[label_key]} reading" if latest else "No reading yet",
-        tone=tone_from_percent(
-            latest[series_key] if latest else None,
-            good=good_threshold,
-            warn=warn_threshold,
-            higher_is_better=higher_is_better,
-        ),
+        tone=tone_resolver(latest[series_key] if latest else None),
         note=note,
     )
-    add_target_line(dataset, value=good_threshold, label="Target", format_type=series_format)
+    add_target_line(dataset, value=target_value, label="Target", format_type=series_format)
     add_trendline(dataset, source_key=series_key, label="Trend")
     return dataset
 
@@ -593,6 +628,11 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         )
 
     ytd_2026 = sum(row["y2026"] for row in rows if row.get("y2026") is not None)
+    live_rows = [row for row in rows if row.get("y2026") is not None]
+    ytd_2024 = sum(row["y2024"] for row in live_rows if row.get("y2024") is not None)
+    ytd_2025 = sum(row["y2025"] for row in live_rows if row.get("y2025") is not None)
+    ytd_values = sorted([ytd_2024, ytd_2025, ytd_2026], reverse=True)
+    ytd_rank = ytd_values.index(ytd_2026) + 1 if ytd_values else None
     best_2025 = max_row(rows, "y2025")
     latest_2026 = latest_non_null(rows, "y2026")
     return {
@@ -602,13 +642,13 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
         "headlineValue": format_number(ytd_2026, 0),
         "headlineDetail": "2026 YTD picked volume",
-        "tone": "good",
+        "tone": tone_from_rank(ytd_rank),
         "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
         "facts": [
             {"label": "2026 YTD", "value": format_number(ytd_2026, 0)},
             {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026['y2026'], 0)}" if latest_2026 else "-"},
             {"label": "Best 2025 Month", "value": f"{best_2025['month']} - {format_number(best_2025['y2025'], 0)}" if best_2025 else "-"},
-            {"label": "2026 Target", "value": "Track against 2025"},
+            {"label": "YTD Rank", "value": f"{ytd_rank} of 3" if ytd_rank else "-"},
         ],
         "table": {
             "columns": [
@@ -624,7 +664,7 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
             "labels": [row["month"] for row in rows],
             "series": [
                 {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
-                {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#ff4fd8", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
+                {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#39ff88", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
                 {"name": "2026 Actual", "key": "y2026", "format": "integer", "color": "#00cfff", "values": [row["y2026"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 4},
                 {"name": "2026 Trend", "format": "integer", "color": "#f8fafc", "values": build_trendline([row["y2026"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2},
             ],
@@ -740,8 +780,8 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_label="Accuracy",
         series_format="percent",
         color="#00cfff",
-        good_threshold=0.98,
-        warn_threshold=0.95,
+        target_value=0.99,
+        tone_resolver=tone_accuracy,
         note="Higher is better. Missing loads are left blank so the chart stays honest.",
     )
     george = parse_single_series_block(
@@ -761,8 +801,8 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_label="Accuracy",
         series_format="percent",
         color="#3b82f6",
-        good_threshold=0.98,
-        warn_threshold=0.95,
+        target_value=0.99,
+        tone_resolver=tone_accuracy,
         note="A shorter series today, but the same live refresh loop will grow it automatically.",
     )
     urgent = parse_single_series_block(
@@ -782,8 +822,8 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_label="Urgent Rate",
         series_format="percent",
         color="#ffb703",
-        good_threshold=0.03,
-        warn_threshold=0.07,
+        target_value=0.05,
+        tone_resolver=tone_urgent_orders,
         higher_is_better=False,
         note="This one flips the interpretation: the closer to zero, the better.",
     )
@@ -804,8 +844,8 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         series_label="Accuracy",
         series_format="percent",
         color="#ff5d73",
-        good_threshold=0.995,
-        warn_threshold=0.985,
+        target_value=0.99,
+        tone_resolver=tone_accuracy,
         note="A near-perfect trend, so the chart leans on fine-grained percentage labels.",
     )
     sku_share = parse_sku_share(ws)
@@ -852,7 +892,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
                 "label": "Top SKU Picker",
                 "value": sku_share["headlineValue"],
                 "detail": sku_share["headlineDetail"],
-                "tone": "good",
+                "tone": sku_share["tone"],
             },
             {
                 "label": "SKU 2026 YTD",

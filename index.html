@@ -37,10 +37,9 @@ button{border:none;cursor:pointer}
 .count{font:11px 'DM Mono',monospace;color:#d0e2e8}
 .grid{display:grid;gap:18px;margin-top:22px}
 .summary{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
-.view-shell{margin-top:22px;padding:20px 22px;display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
-.board-title{font:38px/1 'Bebas Neue',sans-serif;letter-spacing:1.6px}
-.mode-copy{margin-top:8px;color:#d2e1e7;max-width:760px}
-.board-surface{margin-top:18px;padding:0;background:transparent;border:none;box-shadow:none}
+.selector-shell{margin-top:22px;padding:18px 22px}
+.selector-top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
+.mode-copy{margin-top:4px;color:#d2e1e7;max-width:760px}
 .sections-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
 .sections-grid.chart-mode{grid-template-columns:repeat(auto-fit,minmax(520px,1fr))}
 .section-card{padding:18px;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(22,22,26,.98),rgba(12,12,15,.98));border:1px solid rgba(255,255,255,.08);border-radius:22px;box-shadow:var(--shadow)}
@@ -108,9 +107,8 @@ tr:nth-child(even) td:first-child{background:#17191f}
 .sw{width:10px;height:10px;border-radius:999px}
 .empty{padding:28px 20px;text-align:center;color:var(--muted);font:12px 'DM Mono',monospace}
 .mono{font-family:'DM Mono',monospace}
-.dataset-grid,.workspace{display:none}
-@media (max-width:980px){.workspace{grid-template-columns:1fr}.head-side{align-items:flex-start}.meta{text-align:left}.refresh-row{justify-content:flex-start}.view-shell{align-items:flex-start}.section-stat{width:100%}}
-@media (max-width:720px){.shell{padding:18px 14px 34px}header,.surface,.view-shell{padding:18px}.title{font-size:36px}.detail-title{font-size:30px}.board-title{font-size:30px}.section-name{font-size:24px}table{min-width:620px}.sections-grid,.sections-grid.chart-mode{grid-template-columns:1fr}}
+@media (max-width:980px){.workspace{grid-template-columns:1fr}.head-side{align-items:flex-start}.meta{text-align:left}.refresh-row{justify-content:flex-start}.selector-top{align-items:flex-start}.section-stat{width:100%}}
+@media (max-width:720px){.shell{padding:18px 14px 34px}header,.surface,.selector-shell{padding:18px}.title{font-size:36px}.detail-title{font-size:30px}.section-name{font-size:24px}table{min-width:620px}.sections-grid,.sections-grid.chart-mode{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -119,7 +117,7 @@ tr:nth-child(even) td:first-child{background:#17191f}
     <div>
       <div class="eyebrow">Operations - Live workbook view</div>
       <div class="title">Executive <span>Board</span></div>
-      <p class="subtitle">One live page for the presentation source workbook, with the KPI strip at the top and one global switch between seven executive tables and seven charts.</p>
+      <p class="subtitle">One live page for the presentation source workbook, with the KPI strip at the top and click-through table and chart views for each KPI block.</p>
     </div>
     <div class="head-side">
       <div class="status" id="statusBadge"><span class="dot"></span><span id="statusText">Loading</span></div>
@@ -136,23 +134,24 @@ tr:nth-child(even) td:first-child{background:#17191f}
   </header>
 
   <section class="grid summary" id="summaryGrid"></section>
-  <section class="panel view-shell">
-    <div>
-      <div class="eyebrow">Executive View</div>
-      <div class="board-title" id="contentTitle">Executive Table View</div>
-      <p class="mode-copy" id="contentCopy">All seven live workbook blocks presented as polished tables.</p>
-    </div>
-    <div class="refresh-row">
-      <div class="toggle">
-        <button class="btn active" id="tableBtn" onclick="setView('table')">Table</button>
-        <button class="btn" id="chartBtn" onclick="setView('chart')">Chart</button>
+  <section class="panel selector-shell">
+    <div class="selector-top">
+      <div>
+        <div class="eyebrow">Choose KPI</div>
+        <p class="mode-copy">Pick one of the seven KPI blocks, then switch that section between table and chart.</p>
       </div>
-      <span class="count" id="sectionCount">7 live sections</span>
+      <div class="refresh-row">
+        <div class="toggle">
+          <button class="btn active" id="tableBtn" onclick="setView('table')">Table</button>
+          <button class="btn" id="chartBtn" onclick="setView('chart')">Chart</button>
+        </div>
+        <span class="count" id="sectionCount">7 live sections</span>
+      </div>
     </div>
+    <section class="grid dataset-grid" id="datasetGrid"></section>
   </section>
 
-  <section class="grid dataset-grid" id="datasetGrid" hidden></section>
-  <section class="grid workspace" hidden>
+  <section class="grid workspace">
     <div class="surface">
       <div class="section-label" id="datasetCategory">Dataset</div>
       <div class="detail-title" id="datasetTitle">Loading...</div>
@@ -162,7 +161,10 @@ tr:nth-child(even) td:first-child{background:#17191f}
     <div class="grid fact-grid" id="factGrid"></div>
   </section>
 
-  <section class="surface board-surface">
+  <section class="surface" style="margin-top:18px">
+    <div class="content-head">
+      <div class="content-title" id="contentTitle">Table View</div>
+    </div>
     <div id="contentBody"></div>
   </section>
 </div>
@@ -252,10 +254,6 @@ function setView(mode) {
   viewMode = mode;
   document.getElementById('tableBtn').classList.toggle('active', mode === 'table');
   document.getElementById('chartBtn').classList.toggle('active', mode === 'chart');
-  document.getElementById('contentTitle').textContent = mode === 'table' ? 'Executive Table View' : 'Executive Chart View';
-  document.getElementById('contentCopy').textContent = mode === 'table'
-    ? 'All seven live workbook blocks presented as polished tables.'
-    : 'All seven live workbook blocks translated into a clear chart view with distinct line identities.';
   renderContent();
 }
 
@@ -484,35 +482,14 @@ function renderChart(dataset) {
 }
 
 function renderContent() {
-  const datasets = dashboard?.datasets || [];
-  document.getElementById('sectionCount').textContent = `${datasets.length} live sections`;
-  if (!datasets.length) {
-    document.getElementById('contentBody').innerHTML = '<div class="empty">No live sections are available yet.</div>';
+  const dataset = getDataset();
+  if (!dataset) {
+    document.getElementById('contentTitle').textContent = viewMode === 'table' ? 'Table View' : 'Chart View';
+    document.getElementById('contentBody').innerHTML = '<div class="empty">No live section is available yet.</div>';
     return;
   }
-  document.getElementById('contentBody').innerHTML = `
-    <div class="sections-grid ${viewMode === 'chart' ? 'chart-mode' : 'table-mode'}">
-      ${datasets.map(dataset => `
-        <article class="section-card ${viewMode === 'chart' && dataset.chart?.kind === 'donut' ? 'compact' : ''}" style="--section-accent:${sectionAccent(dataset)}">
-          <div class="section-head">
-            <div>
-              <div class="section-kicker">${esc(dataset.category || 'Dataset')}</div>
-              <div class="section-name">${esc(dataset.label || '')}</div>
-              <p class="section-description">${esc(dataset.description || '')}</p>
-            </div>
-            <div class="section-stat ${datasetTone(dataset.tone)}">
-              <div class="section-stat-label">Current</div>
-              <div class="section-stat-value">${esc(dataset.headlineValue || '-')}</div>
-              <div class="section-stat-detail">${esc(dataset.headlineDetail || '')}</div>
-            </div>
-          </div>
-          <div class="fact-strip">${renderFactStrip(dataset)}</div>
-          <p class="section-note">${esc(dataset.note || '')}</p>
-          <div class="section-body">${viewMode === 'table' ? renderTable(dataset) : renderChart(dataset)}</div>
-        </article>
-      `).join('')}
-    </div>
-  `;
+  document.getElementById('contentTitle').textContent = `${dataset.label} ${viewMode === 'table' ? 'Table' : 'Chart'}`;
+  document.getElementById('contentBody').innerHTML = viewMode === 'table' ? renderTable(dataset) : renderChart(dataset);
 }
 
 async function refreshData(isManual) {
@@ -525,10 +502,16 @@ async function refreshData(isManual) {
     document.getElementById('sourceName').textContent = dashboard.sourceName || 'Unknown';
     document.getElementById('generatedAt').textContent = fmtDate(dashboard.generatedAt);
     document.getElementById('sourceUpdated').textContent = fmtDate(dashboard.sourceModifiedAt);
+    if (!selectedKey || !dashboard.datasets.some(item => item.key === selectedKey)) {
+      selectedKey = dashboard.datasets?.[0]?.key || '';
+    }
     const ageMs = Date.now() - new Date(dashboard.generatedAt).getTime();
     if (ageMs > 15 * 60 * 1000) setStatus('warn', 'Stale');
     else setStatus('', 'Live');
     renderSummary();
+    document.getElementById('sectionCount').textContent = `${dashboard.datasets?.length || 0} live sections`;
+    renderDatasets();
+    renderDetail();
     setView(viewMode);
     restartAutoRefresh();
   } catch (error) {
