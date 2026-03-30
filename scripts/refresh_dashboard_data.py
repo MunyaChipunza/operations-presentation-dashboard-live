@@ -8,7 +8,9 @@ import json
 import os
 import re
 import statistics
+import subprocess
 import tempfile
+import time
 import urllib.parse
 import urllib.request
 import zipfile
@@ -21,6 +23,7 @@ from openpyxl import load_workbook
 WORKBOOK_NAME_HINT = "PPT presentation source data"
 TIMEZONE_NAME = "Africa/Johannesburg"
 DEFAULT_OUTPUT = "dashboard_data.json"
+CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
 def parse_args() -> argparse.Namespace:
@@ -272,6 +275,67 @@ def write_temp_workbook(payload: bytes, suffix: str) -> Path:
     path = Path(temp_path)
     path.write_bytes(payload)
     return path
+
+
+def create_excel_snapshot(workbook_path: Path) -> Path:
+    helper_script = Path(__file__).with_name("save_excel_snapshot.ps1")
+    if not helper_script.exists():
+        raise FileNotFoundError(f"Snapshot helper not found: {helper_script}")
+
+    fd, temp_path = tempfile.mkstemp(suffix=workbook_path.suffix or ".xlsx")
+    os.close(fd)
+    snapshot_path = Path(temp_path)
+
+    startupinfo = None
+    if os.name == "nt":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo.wShowWindow = 0
+
+    command = [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(helper_script),
+        "-SourcePath",
+        str(workbook_path),
+        "-TargetPath",
+        str(snapshot_path),
+    ]
+    result = subprocess.run(
+        command,
+        check=False,
+        text=True,
+        capture_output=True,
+        creationflags=CREATE_NO_WINDOW,
+        startupinfo=startupinfo,
+    )
+    if result.returncode != 0:
+        snapshot_path.unlink(missing_ok=True)
+        message = result.stderr.strip() or result.stdout.strip() or "Excel could not create a readable snapshot."
+        raise RuntimeError(message)
+    return snapshot_path
+
+
+def load_dashboard_workbook(workbook_path: Path) -> tuple[Any, Path | None]:
+    try:
+        return load_workbook(workbook_path, data_only=True), None
+    except PermissionError:
+        snapshot_path = create_excel_snapshot(workbook_path)
+        return load_workbook(snapshot_path, data_only=True), snapshot_path
+
+
+def cleanup_temp_file(path: Path | None) -> None:
+    if path is None:
+        return
+    for _ in range(6):
+        try:
+            path.unlink(missing_ok=True)
+            return
+        except PermissionError:
+            time.sleep(0.5)
 
 
 def find_download_url(payload: Any) -> str | None:
@@ -836,168 +900,176 @@ def parse_points_yoy(ws) -> dict[str, Any]:
 
 
 def build_dashboard(workbook_path: Path) -> dict[str, Any]:
-    workbook = load_workbook(workbook_path, data_only=True)
-    ws = workbook["DATA"]
-    source_mtime = dt.datetime.fromtimestamp(workbook_path.stat().st_mtime, dt.timezone.utc)
-    generated_at = dt.datetime.now(dt.timezone.utc)
+    workbook = None
+    snapshot_path: Path | None = None
+    try:
+        workbook, snapshot_path = load_dashboard_workbook(workbook_path)
+        ws = workbook["DATA"]
+        source_mtime = dt.datetime.fromtimestamp(workbook_path.stat().st_mtime, dt.timezone.utc)
+        generated_at = dt.datetime.now(dt.timezone.utc)
 
-    housekeeping = parse_housekeeping(ws)
-    jhb = parse_single_series_block(
-        ws,
-        key="container-jhb",
-        label="Container Accuracy JHB",
-        category="Accuracy",
-        description="Load-by-load accuracy readings for the Johannesburg container stream.",
-        label_key="load",
-        label_title="Load",
-        label_prefix="Load",
-        label_col="F",
-        value_col="G",
-        start_row=3,
-        end_row=15,
-        series_key="accuracy",
-        series_label="Accuracy",
-        series_format="percent",
-        color="#00cfff",
-        target_value=0.99,
-        tone_resolver=tone_accuracy,
-        note="Higher is better. Missing loads are left blank so the chart stays honest.",
-    )
-    george = parse_single_series_block(
-        ws,
-        key="container-george",
-        label="Container Accuracy George",
-        category="Accuracy",
-        description="Load-by-load accuracy readings for the George container stream.",
-        label_key="load",
-        label_title="Load",
-        label_prefix="Load",
-        label_col="I",
-        value_col="J",
-        start_row=3,
-        end_row=15,
-        series_key="accuracy",
-        series_label="Accuracy",
-        series_format="percent",
-        color="#3b82f6",
-        target_value=0.99,
-        tone_resolver=tone_accuracy,
-        note="A shorter series today, but the same live refresh loop will grow it automatically.",
-    )
-    urgent = parse_single_series_block(
-        ws,
-        key="urgent-orders",
-        label="Wholesaler Urgent Orders",
-        category="Exceptions",
-        description="Weekly urgent-order rate. Lower is healthier here.",
-        label_key="week",
-        label_title="Week",
-        label_prefix="Week",
-        label_col="M",
-        value_col="N",
-        start_row=3,
-        end_row=15,
-        series_key="rate",
-        series_label="Urgent Rate",
-        series_format="percent",
-        color="#ffb703",
-        target_value=0.05,
-        tone_resolver=tone_urgent_orders,
-        higher_is_better=False,
-        note="This one flips the interpretation: the closer to zero, the better.",
-    )
-    dispatch = parse_single_series_block(
-        ws,
-        key="dispatch-accuracy",
-        label="Dispatch Accuracy",
-        category="Accuracy",
-        description="Weekly dispatch accuracy performance.",
-        label_key="week",
-        label_title="Week",
-        label_prefix="Week",
-        label_col="Q",
-        value_col="R",
-        start_row=3,
-        end_row=15,
-        series_key="accuracy",
-        series_label="Accuracy",
-        series_format="percent",
-        color="#ff5d73",
-        target_value=0.99,
-        tone_resolver=tone_accuracy,
-        note="A near-perfect trend, so the chart leans on fine-grained percentage labels.",
-    )
-    sku_share = parse_sku_share(ws)
-    monthly_sku = parse_monthly_sku(ws)
-    assemblies = parse_assembly_backorders(ws)
-    return {
-        "title": "Operations Live Dashboard",
-        "subtitle": "PPT Presentation Source",
-        "sourceName": workbook_path.name,
-        "generatedAt": generated_at.isoformat(),
-        "sourceModifiedAt": source_mtime.isoformat(),
-        "refreshSeconds": 60,
-        "summaryCards": [
-            {
-                "label": "Housekeeping",
-                "value": housekeeping["headlineValue"],
-                "detail": housekeeping["headlineDetail"],
-                "tone": housekeeping["tone"],
-            },
-            {
-                "label": "JHB Accuracy",
-                "value": jhb["headlineValue"],
-                "detail": jhb["headlineDetail"],
-                "tone": jhb["tone"],
-            },
-            {
-                "label": "George Accuracy",
-                "value": george["headlineValue"],
-                "detail": george["headlineDetail"],
-                "tone": george["tone"],
-            },
-            {
-                "label": "Dispatch Accuracy",
-                "value": dispatch["headlineValue"],
-                "detail": dispatch["headlineDetail"],
-                "tone": dispatch["tone"],
-            },
-            {
-                "label": "Urgent Orders",
-                "value": urgent["headlineValue"],
-                "detail": urgent["headlineDetail"],
-                "tone": urgent["tone"],
-            },
-            {
-                "label": "Top SKU Picker",
-                "value": sku_share["headlineValue"],
-                "detail": sku_share["headlineDetail"],
-                "tone": sku_share["tone"],
-            },
-            {
-                "label": "SKU 2026 YTD",
-                "value": monthly_sku["headlineValue"],
-                "detail": monthly_sku["headlineDetail"],
-                "tone": monthly_sku["tone"],
-            },
-            {
-                "label": "Assembly vs BO",
-                "value": assemblies["headlineValue"],
-                "detail": assemblies["headlineDetail"],
-                "tone": assemblies["tone"],
-            },
-        ],
-        "datasets": [
-            housekeeping,
-            jhb,
-            george,
-            urgent,
-            dispatch,
-            sku_share,
-            monthly_sku,
-            assemblies,
-        ],
-    }
+        housekeeping = parse_housekeeping(ws)
+        jhb = parse_single_series_block(
+            ws,
+            key="container-jhb",
+            label="Container Accuracy JHB",
+            category="Accuracy",
+            description="Load-by-load accuracy readings for the Johannesburg container stream.",
+            label_key="load",
+            label_title="Load",
+            label_prefix="Load",
+            label_col="F",
+            value_col="G",
+            start_row=3,
+            end_row=15,
+            series_key="accuracy",
+            series_label="Accuracy",
+            series_format="percent",
+            color="#00cfff",
+            target_value=0.99,
+            tone_resolver=tone_accuracy,
+            note="Higher is better. Missing loads are left blank so the chart stays honest.",
+        )
+        george = parse_single_series_block(
+            ws,
+            key="container-george",
+            label="Container Accuracy George",
+            category="Accuracy",
+            description="Load-by-load accuracy readings for the George container stream.",
+            label_key="load",
+            label_title="Load",
+            label_prefix="Load",
+            label_col="I",
+            value_col="J",
+            start_row=3,
+            end_row=15,
+            series_key="accuracy",
+            series_label="Accuracy",
+            series_format="percent",
+            color="#3b82f6",
+            target_value=0.99,
+            tone_resolver=tone_accuracy,
+            note="A shorter series today, but the same live refresh loop will grow it automatically.",
+        )
+        urgent = parse_single_series_block(
+            ws,
+            key="urgent-orders",
+            label="Wholesaler Urgent Orders",
+            category="Exceptions",
+            description="Weekly urgent-order rate. Lower is healthier here.",
+            label_key="week",
+            label_title="Week",
+            label_prefix="Week",
+            label_col="M",
+            value_col="N",
+            start_row=3,
+            end_row=15,
+            series_key="rate",
+            series_label="Urgent Rate",
+            series_format="percent",
+            color="#ffb703",
+            target_value=0.05,
+            tone_resolver=tone_urgent_orders,
+            higher_is_better=False,
+            note="This one flips the interpretation: the closer to zero, the better.",
+        )
+        dispatch = parse_single_series_block(
+            ws,
+            key="dispatch-accuracy",
+            label="Dispatch Accuracy",
+            category="Accuracy",
+            description="Weekly dispatch accuracy performance.",
+            label_key="week",
+            label_title="Week",
+            label_prefix="Week",
+            label_col="Q",
+            value_col="R",
+            start_row=3,
+            end_row=15,
+            series_key="accuracy",
+            series_label="Accuracy",
+            series_format="percent",
+            color="#ff5d73",
+            target_value=0.99,
+            tone_resolver=tone_accuracy,
+            note="A near-perfect trend, so the chart leans on fine-grained percentage labels.",
+        )
+        sku_share = parse_sku_share(ws)
+        monthly_sku = parse_monthly_sku(ws)
+        assemblies = parse_assembly_backorders(ws)
+        return {
+            "title": "Operations Live Dashboard",
+            "subtitle": "PPT Presentation Source",
+            "sourceName": workbook_path.name,
+            "generatedAt": generated_at.isoformat(),
+            "sourceModifiedAt": source_mtime.isoformat(),
+            "refreshSeconds": 60,
+            "summaryCards": [
+                {
+                    "label": "Housekeeping",
+                    "value": housekeeping["headlineValue"],
+                    "detail": housekeeping["headlineDetail"],
+                    "tone": housekeeping["tone"],
+                },
+                {
+                    "label": "JHB Accuracy",
+                    "value": jhb["headlineValue"],
+                    "detail": jhb["headlineDetail"],
+                    "tone": jhb["tone"],
+                },
+                {
+                    "label": "George Accuracy",
+                    "value": george["headlineValue"],
+                    "detail": george["headlineDetail"],
+                    "tone": george["tone"],
+                },
+                {
+                    "label": "Dispatch Accuracy",
+                    "value": dispatch["headlineValue"],
+                    "detail": dispatch["headlineDetail"],
+                    "tone": dispatch["tone"],
+                },
+                {
+                    "label": "Urgent Orders",
+                    "value": urgent["headlineValue"],
+                    "detail": urgent["headlineDetail"],
+                    "tone": urgent["tone"],
+                },
+                {
+                    "label": "Top SKU Picker",
+                    "value": sku_share["headlineValue"],
+                    "detail": sku_share["headlineDetail"],
+                    "tone": sku_share["tone"],
+                },
+                {
+                    "label": "SKU 2026 YTD",
+                    "value": monthly_sku["headlineValue"],
+                    "detail": monthly_sku["headlineDetail"],
+                    "tone": monthly_sku["tone"],
+                },
+                {
+                    "label": "Assembly vs BO",
+                    "value": assemblies["headlineValue"],
+                    "detail": assemblies["headlineDetail"],
+                    "tone": assemblies["tone"],
+                },
+            ],
+            "datasets": [
+                housekeeping,
+                jhb,
+                george,
+                urgent,
+                dispatch,
+                sku_share,
+                monthly_sku,
+                assemblies,
+            ],
+        }
+    finally:
+        if workbook is not None:
+            workbook.close()
+        if snapshot_path is not None:
+            cleanup_temp_file(snapshot_path)
 
 
 def resolve_workbook(args: argparse.Namespace, bundle_dir: Path) -> tuple[Path, str]:
