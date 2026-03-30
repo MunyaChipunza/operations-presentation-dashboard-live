@@ -15,12 +15,12 @@ BUNDLE_DIR = SCRIPT_DIR.parent
 LOG_PATH = SCRIPT_DIR / "local_autopublish.log"
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from publish_dashboard_data import push_dashboard  # noqa: E402
+from publish_dashboard_data import find_default_workbook, push_dashboard  # noqa: E402
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Run the local dashboard auto-publish without opening a console window.")
-    parser.add_argument("--workbook", required=True, help="Absolute path to the local workbook.")
+    parser.add_argument("--workbook", help="Absolute path to the local workbook.")
     return parser.parse_args()
 
 
@@ -30,11 +30,22 @@ def log(message: str) -> None:
         handle.write(message.rstrip() + "\n")
 
 
+def resolve_workbook_path(candidate: str | None) -> Path:
+    if candidate:
+        preferred = Path(candidate).expanduser().resolve()
+        if preferred.exists():
+            return preferred
+        log(f"Preferred workbook was missing, falling back to auto-detect: {preferred}")
+
+    fallback = find_default_workbook(BUNDLE_DIR)
+    if fallback and fallback.exists():
+        return fallback.resolve()
+    raise FileNotFoundError("No local workbook could be found for auto-publish.")
+
+
 def main() -> int:
     args = parse_args()
-    workbook_path = Path(args.workbook).expanduser().resolve()
-    if not workbook_path.exists():
-        raise FileNotFoundError(f"Workbook not found: {workbook_path}")
+    workbook_path = resolve_workbook_path(args.workbook)
 
     push_dashboard(
         workbook_path=workbook_path,
