@@ -69,6 +69,10 @@ th,td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);text-align
 th{position:sticky;top:0;background:#14161c;color:#d0e0e7;font:11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px}
 td{color:#edf7fb}
 tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+th:first-child,td:first-child{position:sticky;left:0;z-index:1}
+th:first-child{background:#14161c;z-index:3}
+td:first-child{background:#111217}
+tr:nth-child(even) td:first-child{background:#17191f}
 .chart-box{border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01))}
 .chart-svg{width:100%;height:auto;display:block}
 .axis{stroke:rgba(255,255,255,.10);stroke-width:1}
@@ -291,10 +295,15 @@ function renderLineChart(chart) {
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
   const values = series.flatMap(item => item.values.filter(value => value !== null && value !== undefined));
-  const maxValue = Math.max(...values, 1);
+  const rawMax = Math.max(...values, 1);
+  const rawMin = Math.min(...values, 0);
+  const useTightPercentScale = (series[0]?.format === 'percent') && rawMin >= 0.5;
+  const minValue = useTightPercentScale ? Math.max(0, Math.floor((rawMin * 100) - 2) / 100) : 0;
+  const maxValue = useTightPercentScale ? Math.ceil((rawMax * 100) + 2) / 100 : rawMax;
   const xPos = index => margin.left + (labels.length === 1 ? plotWidth / 2 : (plotWidth * index) / Math.max(labels.length - 1, 1));
-  const yPos = value => margin.top + plotHeight - (plotHeight * value / maxValue);
-  const ticks = axisTicks(maxValue, 4);
+  const valueRange = Math.max(maxValue - minValue, 0.0001);
+  const yPos = value => margin.top + plotHeight - (plotHeight * ((value - minValue) / valueRange));
+  const ticks = Array.from({ length: 5 }, (_, index) => minValue + (valueRange * index / 4));
   const grid = ticks.map(tick => {
     const y = yPos(tick);
     return `<line class="axis" x1="${margin.left}" y1="${y}" x2="${width - margin.right}" y2="${y}"></line>
@@ -302,19 +311,28 @@ function renderLineChart(chart) {
   }).join('');
   const xLabels = labels.map((label, index) => `<text class="axis-text" x="${xPos(index)}" y="${height - 26}" text-anchor="middle">${esc(label)}</text>`).join('');
   const lines = series.map(item => {
-    let path = '';
+    const segments = [];
+    let current = [];
     item.values.forEach((value, index) => {
       if (value === null || value === undefined) {
+        if (current.length) segments.push(current);
+        current = [];
         return;
       }
-      const command = path ? 'L' : 'M';
-      path += `${command}${xPos(index)},${yPos(value)} `;
+      current.push([xPos(index), yPos(value)]);
     });
-    const dots = item.values.map((value, index) => {
-      if (value === null || value === undefined) return '';
-      return `<circle cx="${xPos(index)}" cy="${yPos(value)}" r="4.5" fill="${item.color}"></circle>`;
+    if (current.length) segments.push(current);
+    const dash = item.style === 'dashed' ? '10 8' : item.style === 'dotted' ? '3 7' : '';
+    const opacity = item.style === 'solid' ? 1 : 0.85;
+    const paths = segments.map(points => {
+      const d = points.map((point, index) => `${index ? 'L' : 'M'}${point[0]},${point[1]}`).join(' ');
+      return `<path d="${d}" fill="none" stroke="${item.color}" stroke-width="${item.strokeWidth || 3}" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="${dash}" stroke-opacity="${opacity}"></path>`;
     }).join('');
-    return `<path d="${path.trim()}" fill="none" stroke="${item.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>${dots}`;
+    const dots = item.showDots === false ? '' : item.values.map((value, index) => {
+      if (value === null || value === undefined) return '';
+      return `<circle cx="${xPos(index)}" cy="${yPos(value)}" r="4.2" fill="${item.color}"></circle>`;
+    }).join('');
+    return `${paths}${dots}`;
   }).join('');
   const legend = series.map(item => `<div class="legend-item"><span class="sw" style="background:${item.color}"></span>${esc(item.name)}</div>`).join('');
   return `<div class="chart-box"><svg class="chart-svg" viewBox="0 0 ${width} ${height}">
@@ -402,7 +420,7 @@ function renderDonutChart(chart) {
     ${paths}
     <circle cx="${cx}" cy="${cy}" r="76" fill="#102432"></circle>
     <text x="${cx}" y="${cy - 8}" text-anchor="middle" fill="#dbeaf0" font-family="IBM Plex Mono" font-size="11">TOTAL PICKED</text>
-    <text x="${cx}" y="${cy + 26}" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="34">${fmt(total, 'integer')}</text>
+    <text x="${cx}" y="${cy + 26}" text-anchor="middle" fill="#fff" font-family="Bebas Neue" font-size="34">${fmt(total, 'integer')}</text>
   </svg><div class="legend">${legend}</div></div>`;
 }
 

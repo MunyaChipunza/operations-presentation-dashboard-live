@@ -2,7 +2,7 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T10:48:17.924028+00:00",
+  "generatedAt": "2026-03-30T10:49:39.092042+00:00",
   "sourceModifiedAt": "2026-03-30T05:50:52+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
@@ -187,7 +187,10 @@
               0.7,
               0.67,
               0.49
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
           },
           {
             "name": "12M",
@@ -207,7 +210,54 @@
               0.55,
               0.73,
               null
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "92M Target",
+            "format": "percent",
+            "color": "#ffd54f",
+            "values": [
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75,
+              0.75
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
+          },
+          {
+            "name": "92M Trend",
+            "format": "percent",
+            "color": "#f5efeb",
+            "values": [
+              0.7926923076923078,
+              0.7758391608391609,
+              0.7589860139860141,
+              0.7421328671328673,
+              0.7252797202797204,
+              0.7084265734265736,
+              0.6915734265734267,
+              0.6747202797202798,
+              0.6578671328671329,
+              0.6410139860139861,
+              0.6241608391608393,
+              0.6073076923076924
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }
@@ -225,6 +275,10 @@
         {
           "label": "Latest",
           "value": "99.8%"
+        },
+        {
+          "label": "Target",
+          "value": "98.0%"
         },
         {
           "label": "Average",
@@ -328,7 +382,40 @@
               1.0,
               0.97,
               0.9984
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "Target",
+            "format": "percent",
+            "color": "#ffd54f",
+            "values": [
+              0.98,
+              0.98,
+              0.98,
+              0.98,
+              0.98
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
+          },
+          {
+            "name": "Trend",
+            "format": "percent",
+            "color": "#f5efeb",
+            "values": [
+              0.9774799999999999,
+              0.9798699999999999,
+              0.9822599999999999,
+              0.9846499999999999,
+              0.9870399999999999
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }
@@ -346,6 +433,10 @@
         {
           "label": "Latest",
           "value": "100.0%"
+        },
+        {
+          "label": "Target",
+          "value": "98.0%"
         },
         {
           "label": "Average",
@@ -447,7 +538,38 @@
               0.9917,
               0.9912,
               1.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "Target",
+            "format": "percent",
+            "color": "#ffd54f",
+            "values": [
+              0.98,
+              0.98,
+              0.98,
+              0.98
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
+          },
+          {
+            "name": "Trend",
+            "format": "percent",
+            "color": "#f5efeb",
+            "values": [
+              0.9524,
+              0.97095,
+              0.9895,
+              1.0080500000000001
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }
@@ -465,6 +587,10 @@
         {
           "label": "Latest",
           "value": "9.0%"
+        },
+        {
+          "label": "Target",
+          "value": "3.0%"
         },
         {
           "label": "Average",
@@ -580,7 +706,52 @@
               0.03,
               0.11,
               0.09
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "Target",
+            "format": "percent",
+            "color": "#ffd54f",
+            "values": [
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03,
+              0.03
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
+          },
+          {
+            "name": "Trend",
+            "format": "percent",
+            "color": "#f5efeb",
+            "values": [
+              0.00045454545454545747,
+              0.009636363636363639,
+              0.01881818181818182,
+              0.028000000000000004,
+              0.037181818181818184,
+              0.046363636363636364,
+              0.05554545454545455,
+              0.06472727272727273,
+              0.07390909090909091,
+              0.08309090909090909,
+              0.09227272727272727
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }
@@ -598,6 +769,10 @@
         {
           "label": "Latest",
           "value": "99.3%"
+        },
+        {
+          "label": "Target",
+          "value": "99.5%"
         },
         {
           "label": "Average",
@@ -713,7 +888,52 @@
               0.996,
               0.9932,
               0.9929
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "Target",
+            "format": "percent",
+            "color": "#ffd54f",
+            "values": [
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995,
+              0.995
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
+          },
+          {
+            "name": "Trend",
+            "format": "percent",
+            "color": "#f5efeb",
+            "values": [
+              0.9995909090909092,
+              0.9989727272727273,
+              0.9983545454545456,
+              0.9977363636363638,
+              0.9971181818181819,
+              0.9965,
+              0.9958818181818183,
+              0.9952636363636365,
+              0.9946454545454546,
+              0.9940272727272729,
+              0.993409090909091
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }
@@ -835,7 +1055,7 @@
       "headlineValue": "12,007",
       "headlineDetail": "2026 YTD picked volume",
       "tone": "good",
-      "note": "Grouped bars keep the three yearly curves easy to compare month by month.",
+      "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
       "facts": [
         {
           "label": "2026 YTD",
@@ -850,8 +1070,8 @@
           "value": "Jun - 13,634"
         },
         {
-          "label": "Months Tracked",
-          "value": "12"
+          "label": "2026 Target",
+          "value": "Track against 2025"
         }
       ],
       "table": {
@@ -953,7 +1173,7 @@
         ]
       },
       "chart": {
-        "kind": "bar",
+        "kind": "line",
         "labels": [
           "Jan",
           "Feb",
@@ -971,8 +1191,9 @@
         "series": [
           {
             "name": "2024",
+            "key": "y2024",
             "format": "integer",
-            "color": "#4fb0ff",
+            "color": "#7aa6c2",
             "values": [
               2289.0,
               4016.0,
@@ -986,12 +1207,16 @@
               3941.0,
               2973.0,
               1199.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 2
           },
           {
-            "name": "2025",
+            "name": "2025 Target",
+            "key": "y2025",
             "format": "integer",
-            "color": "#ffb85c",
+            "color": "#ffd54f",
             "values": [
               6124.0,
               4950.0,
@@ -1005,12 +1230,16 @@
               5293.0,
               4152.0,
               2067.0
-            ]
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
           },
           {
-            "name": "2026",
+            "name": "2026 Actual",
+            "key": "y2026",
             "format": "integer",
-            "color": "#4ee3b9",
+            "color": "#00cfff",
             "values": [
               3242.0,
               4551.0,
@@ -1024,7 +1253,32 @@
               null,
               null,
               null
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 4
+          },
+          {
+            "name": "2026 Trend",
+            "format": "integer",
+            "color": "#f5efeb",
+            "values": [
+              3516.3333333333335,
+              4002.3333333333335,
+              4488.333333333334,
+              4974.333333333334,
+              5460.333333333334,
+              5946.333333333334,
+              6432.333333333334,
+              6918.333333333334,
+              7404.333333333334,
+              7890.333333333334,
+              8376.333333333334,
+              8862.333333333334
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }
@@ -1052,8 +1306,8 @@
           "value": "May 2023 - 72.0"
         },
         {
-          "label": "Tracked Years",
-          "value": "2021-2026"
+          "label": "Benchmark",
+          "value": "2025 line"
         }
       ],
       "table": {
@@ -1251,8 +1505,9 @@
         "series": [
           {
             "name": "2021",
+            "key": "y2021",
             "format": "decimal1",
-            "color": "#4fb0ff",
+            "color": "#6c7385",
             "values": [
               0.0,
               0.0,
@@ -1266,12 +1521,16 @@
               7.0,
               19.0,
               3.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": false,
+            "strokeWidth": 1.5
           },
           {
             "name": "2022",
+            "key": "y2022",
             "format": "decimal1",
-            "color": "#ffc857",
+            "color": "#ff8a5b",
             "values": [
               11.0,
               14.0,
@@ -1285,12 +1544,16 @@
               21.0,
               3.0,
               0.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": false,
+            "strokeWidth": 1.5
           },
           {
             "name": "2023",
+            "key": "y2023",
             "format": "decimal1",
-            "color": "#ff8a5b",
+            "color": "#ffd54f",
             "values": [
               0.0,
               8.0,
@@ -1304,12 +1567,16 @@
               14.0,
               14.0,
               5.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": false,
+            "strokeWidth": 1.5
           },
           {
             "name": "2024",
+            "key": "y2024",
             "format": "decimal1",
-            "color": "#9c8cff",
+            "color": "#7ac7b1",
             "values": [
               6.0,
               24.0,
@@ -1323,12 +1590,16 @@
               20.0,
               10.0,
               13.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": false,
+            "strokeWidth": 1.5
           },
           {
-            "name": "2025",
+            "name": "2025 Target",
+            "key": "y2025",
             "format": "decimal1",
-            "color": "#66e3a6",
+            "color": "#00cfff",
             "values": [
               17.0,
               26.0,
@@ -1342,12 +1613,16 @@
               21.0,
               6.0,
               0.0
-            ]
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
           },
           {
-            "name": "2026",
+            "name": "2026 Actual",
+            "key": "y2026",
             "format": "decimal1",
-            "color": "#19d3f3",
+            "color": "#ff6b74",
             "values": [
               14.0,
               12.0,
@@ -1361,7 +1636,32 @@
               0.0,
               0.0,
               0.0
-            ]
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3.5
+          },
+          {
+            "name": "2026 Trend",
+            "format": "decimal1",
+            "color": "#f5efeb",
+            "values": [
+              14.288461538461538,
+              12.576923076923077,
+              10.865384615384615,
+              9.153846153846153,
+              7.4423076923076925,
+              5.730769230769232,
+              4.01923076923077,
+              2.3076923076923084,
+              0.5961538461538467,
+              -1.115384615384615,
+              -2.826923076923075,
+              -4.538461538461538
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
           }
         ]
       }

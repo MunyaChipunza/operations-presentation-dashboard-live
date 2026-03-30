@@ -131,6 +131,74 @@ def min_row(rows: list[dict[str, Any]], key: str) -> dict[str, Any] | None:
     return min(with_values, key=lambda row: row[key])
 
 
+def build_trendline(values: list[float | None]) -> list[float | None]:
+    points = [(index, value) for index, value in enumerate(values) if value is not None]
+    if len(points) < 2:
+        return [None for _ in values]
+
+    x_values = [point[0] for point in points]
+    y_values = [point[1] for point in points]
+    x_mean = statistics.fmean(x_values)
+    y_mean = statistics.fmean(y_values)
+    denominator = sum((x - x_mean) ** 2 for x in x_values)
+    slope = 0 if denominator == 0 else sum((x - x_mean) * (y - y_mean) for x, y in points) / denominator
+    intercept = y_mean - slope * x_mean
+    return [intercept + slope * index for index in range(len(values))]
+
+
+def constant_series(length: int, value: float | None) -> list[float | None]:
+    if value is None:
+        return [None for _ in range(length)]
+    return [value for _ in range(length)]
+
+
+def add_target_line(
+    dataset: dict[str, Any],
+    *,
+    value: float | None,
+    label: str,
+    format_type: str,
+    color: str = "#ffd54f",
+) -> None:
+    if value is None:
+        return
+    labels = dataset["chart"].get("labels", [])
+    dataset["chart"]["series"].append(
+        {
+            "name": label,
+            "format": format_type,
+            "color": color,
+            "values": constant_series(len(labels), value),
+            "style": "dashed",
+            "showDots": False,
+            "strokeWidth": 2,
+        }
+    )
+
+
+def add_trendline(
+    dataset: dict[str, Any],
+    *,
+    source_key: str,
+    label: str,
+    color: str = "#f5efeb",
+) -> None:
+    source = next((item for item in dataset["chart"]["series"] if item.get("key") == source_key), None)
+    if not source:
+        return
+    dataset["chart"]["series"].append(
+        {
+            "name": label,
+            "format": source["format"],
+            "color": color,
+            "values": build_trendline(source["values"]),
+            "style": "dotted",
+            "showDots": False,
+            "strokeWidth": 2,
+        }
+    )
+
+
 def share_token(url: str) -> str:
     raw = base64.b64encode(url.encode("utf-8")).decode("ascii").rstrip("=")
     return "u!" + raw.replace("/", "_").replace("+", "-")
@@ -340,6 +408,9 @@ def series_dataset(
                     "format": item["format"],
                     "color": item["color"],
                     "values": [row.get(item["key"]) for row in chart_rows],
+                    "style": item.get("style", "solid"),
+                    "showDots": item.get("showDots", True),
+                    "strokeWidth": item.get("strokeWidth", 3),
                 }
                 for item in series
             ],
@@ -363,7 +434,7 @@ def parse_housekeeping(ws) -> dict[str, Any]:
     weekly_rows = [row for row in rows if row["period"].startswith("Week")]
     latest = latest_non_null(weekly_rows, "score92m")
     best = max_row(weekly_rows, "score92m")
-    return series_dataset(
+    dataset = series_dataset(
         key="housekeeping",
         label="Housekeeping",
         category="Quality",
@@ -386,6 +457,9 @@ def parse_housekeeping(ws) -> dict[str, Any]:
         tone=tone_from_percent(latest["score92m"] if latest else None, good=0.75, warn=0.6),
         note="Shows weekly housekeeping performance against the 2025 average benchmark.",
     )
+    add_target_line(dataset, value=0.75, label="92M Target", format_type="percent")
+    add_trendline(dataset, source_key="score92m", label="92M Trend")
+    return dataset
 
 
 def parse_single_series_block(
@@ -423,7 +497,7 @@ def parse_single_series_block(
     best = max_row(rows, series_key) if higher_is_better else min_row(rows, series_key)
     values = [row[series_key] for row in rows if row.get(series_key) is not None]
     average_value = mean(values)
-    return series_dataset(
+    dataset = series_dataset(
         key=key,
         label=label,
         category=category,
@@ -434,6 +508,7 @@ def parse_single_series_block(
         series=[{"key": series_key, "label": series_label, "format": series_format, "color": color}],
         facts=[
             {"label": "Latest", "value": format_percent(latest[series_key], 1) if latest else "-"},
+            {"label": "Target", "value": format_percent(good_threshold, 1)},
             {"label": "Average", "value": format_percent(average_value, 1)},
             {"label": "Best", "value": f"{best[label_key]} - {format_percent(best[series_key], 1)}" if best else "-"},
             {"label": "Readings", "value": str(len(values))},
@@ -448,6 +523,9 @@ def parse_single_series_block(
         ),
         note=note,
     )
+    add_target_line(dataset, value=good_threshold, label="Target", format_type=series_format)
+    add_trendline(dataset, source_key=series_key, label="Trend")
+    return dataset
 
 
 def parse_sku_share(ws) -> dict[str, Any]:
@@ -525,12 +603,12 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         "headlineValue": format_number(ytd_2026, 0),
         "headlineDetail": "2026 YTD picked volume",
         "tone": "good",
-        "note": "Grouped bars keep the three yearly curves easy to compare month by month.",
+        "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
         "facts": [
             {"label": "2026 YTD", "value": format_number(ytd_2026, 0)},
             {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026['y2026'], 0)}" if latest_2026 else "-"},
             {"label": "Best 2025 Month", "value": f"{best_2025['month']} - {format_number(best_2025['y2025'], 0)}" if best_2025 else "-"},
-            {"label": "Months Tracked", "value": str(len(rows))},
+            {"label": "2026 Target", "value": "Track against 2025"},
         ],
         "table": {
             "columns": [
@@ -542,12 +620,13 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
             "rows": rows,
         },
         "chart": {
-            "kind": "bar",
+            "kind": "line",
             "labels": [row["month"] for row in rows],
             "series": [
-                {"name": "2024", "format": "integer", "color": "#4fb0ff", "values": [row["y2024"] for row in rows]},
-                {"name": "2025", "format": "integer", "color": "#ffb85c", "values": [row["y2025"] for row in rows]},
-                {"name": "2026", "format": "integer", "color": "#4ee3b9", "values": [row["y2026"] for row in rows]},
+                {"name": "2024", "key": "y2024", "format": "integer", "color": "#7aa6c2", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
+                {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#ffd54f", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
+                {"name": "2026 Actual", "key": "y2026", "format": "integer", "color": "#00cfff", "values": [row["y2026"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 4},
+                {"name": "2026 Trend", "format": "integer", "color": "#f5efeb", "values": build_trendline([row["y2026"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2},
             ],
         },
     }
@@ -595,7 +674,7 @@ def parse_points_yoy(ws) -> dict[str, Any]:
             {"label": "2026 YTD", "value": format_number(total_2026, 1)},
             {"label": "2025 Total", "value": format_number(total_2025, 0)},
             {"label": "Peak Month", "value": f"{peak_month['month']} {peak_month['year']} - {format_number(peak_month['value'], 1)}" if peak_month else "-"},
-            {"label": "Tracked Years", "value": "2021-2026"},
+            {"label": "Benchmark", "value": "2025 line"},
         ],
         "table": {
             "columns": [
@@ -625,12 +704,13 @@ def parse_points_yoy(ws) -> dict[str, Any]:
             "kind": "line",
             "labels": [row["month"] for row in rows],
             "series": [
-                {"name": "2021", "format": "decimal1", "color": "#4fb0ff", "values": [row["y2021"] for row in rows]},
-                {"name": "2022", "format": "decimal1", "color": "#ffc857", "values": [row["y2022"] for row in rows]},
-                {"name": "2023", "format": "decimal1", "color": "#ff8a5b", "values": [row["y2023"] for row in rows]},
-                {"name": "2024", "format": "decimal1", "color": "#9c8cff", "values": [row["y2024"] for row in rows]},
-                {"name": "2025", "format": "decimal1", "color": "#66e3a6", "values": [row["y2025"] for row in rows]},
-                {"name": "2026", "format": "decimal1", "color": "#19d3f3", "values": [row["y2026"] for row in rows]},
+                {"name": "2021", "key": "y2021", "format": "decimal1", "color": "#6c7385", "values": [row["y2021"] for row in rows], "style": "solid", "showDots": False, "strokeWidth": 1.5},
+                {"name": "2022", "key": "y2022", "format": "decimal1", "color": "#ff8a5b", "values": [row["y2022"] for row in rows], "style": "solid", "showDots": False, "strokeWidth": 1.5},
+                {"name": "2023", "key": "y2023", "format": "decimal1", "color": "#ffd54f", "values": [row["y2023"] for row in rows], "style": "solid", "showDots": False, "strokeWidth": 1.5},
+                {"name": "2024", "key": "y2024", "format": "decimal1", "color": "#7ac7b1", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": False, "strokeWidth": 1.5},
+                {"name": "2025 Target", "key": "y2025", "format": "decimal1", "color": "#00cfff", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
+                {"name": "2026 Actual", "key": "y2026", "format": "decimal1", "color": "#ff6b74", "values": [row["y2026"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 3.5},
+                {"name": "2026 Trend", "format": "decimal1", "color": "#f5efeb", "values": build_trendline([row["y2026"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2},
             ],
         },
     }
