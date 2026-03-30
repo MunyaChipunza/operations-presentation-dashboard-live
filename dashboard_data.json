@@ -2,7 +2,7 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T12:34:17.413387+00:00",
+  "generatedAt": "2026-03-30T12:35:19.491591+00:00",
   "sourceModifiedAt": "2026-03-30T12:22:05.942674+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
@@ -52,7 +52,7 @@
       "label": "Assembly vs BO",
       "value": "81.2%",
       "detail": "Feb fill rate",
-      "tone": "good"
+      "tone": "warn"
     }
   ],
   "datasets": [
@@ -1302,8 +1302,8 @@
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
       "headlineValue": "81.2%",
       "headlineDetail": "Feb fill rate",
-      "tone": "good",
-      "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line.",
+      "tone": "warn",
+      "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
@@ -1311,7 +1311,7 @@
         },
         {
           "label": "Target",
-          "value": "80%"
+          "value": "85%"
         },
         {
           "label": "Average",
@@ -1445,8 +1445,8 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
-              0.8,
-              0.8
+              0.85,
+              0.85
             ],
             "style": "dashed",
             "showDots": false,

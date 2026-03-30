@@ -150,6 +150,16 @@ def tone_from_rank(rank: int | None) -> str:
     return "bad"
 
 
+def tone_assembly_fill_rate(value: float | None) -> str:
+    if value is None:
+        return "quiet"
+    if value < 0.70:
+        return "bad"
+    if value < 0.85:
+        return "warn"
+    return "good"
+
+
 def latest_non_null(rows: list[dict[str, Any]], key: str) -> dict[str, Any] | None:
     for row in reversed(rows):
         if row.get(key) is not None:
@@ -702,11 +712,11 @@ def parse_assembly_backorders(ws) -> dict[str, Any]:
         "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
         "headlineValue": format_percent(latest["fillRate"], 1) if latest else "-",
         "headlineDetail": f"{latest['month']} fill rate" if latest else "No reading yet",
-        "tone": tone_housekeeping(latest["fillRate"] if latest else None),
-        "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line.",
+        "tone": tone_assembly_fill_rate(latest["fillRate"] if latest else None),
+        "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
         "facts": [
             {"label": "Latest", "value": format_percent(latest["fillRate"], 1) if latest else "-"},
-            {"label": "Target", "value": format_percent(0.80, 0)},
+            {"label": "Target", "value": format_percent(0.85, 0)},
             {"label": "Average", "value": format_percent(average_value, 1)},
             {"label": "Best", "value": f"{best['month']} - {format_percent(best['fillRate'], 1)}" if best else "-"},
         ],
@@ -736,7 +746,7 @@ def parse_assembly_backorders(ws) -> dict[str, Any]:
             ],
         },
     }
-    add_target_line(dataset, value=0.80, label="Target", format_type="percent")
+    add_target_line(dataset, value=0.85, label="Target", format_type="percent")
     add_trendline(dataset, source_key="fillRate", label="Trend")
     return dataset
 

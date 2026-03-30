@@ -62,9 +62,11 @@ button{border:none;cursor:pointer}
 .section-note{margin-top:14px;color:#c1b7ae;font:12px/1.6 'DM Mono',monospace}
 .section-body{margin-top:16px}
 .stat{padding:18px}
+.stat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.stat-pill{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);font:10px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:#d9e7ed;white-space:nowrap}
 .k{font:11px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
 .v{font-size:32px;font-weight:700;line-height:1}
-.d{margin-top:8px;color:#d9e8ed}
+.d{display:none}
 .good .v{color:var(--teal)} .warn .v{color:var(--amber)} .bad .v{color:var(--coral)} .info .v{color:var(--cyan)}
 .dataset-grid{display:flex;gap:8px;flex-wrap:wrap;margin-top:0}
 .dataset-card{padding:10px 14px;cursor:pointer;transition:.15s;position:relative;overflow:hidden;border-radius:12px}
@@ -259,7 +261,10 @@ function setDataset(key) {
 function renderSummary() {
   const html = (dashboard.summaryCards || []).map(card => `
     <article class="stat ${datasetTone(card.tone)}">
-      <div class="k">${esc(card.label)}</div>
+      <div class="stat-head">
+        <div class="k">${esc(card.label)}</div>
+        <div class="stat-pill">Latest Reading</div>
+      </div>
       <div class="v">${esc(card.value)}</div>
       <div class="d">${esc(card.detail)}</div>
     </article>
