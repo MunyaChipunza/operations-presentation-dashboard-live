@@ -205,7 +205,11 @@ def style_workbook(path: Path, output_path: Path) -> None:
 def main() -> None:
     args = parse_args()
     workbook_path = Path(args.workbook).expanduser().resolve()
-    output_path = Path(args.output).expanduser().resolve() if args.output else workbook_path
+    if not args.output:
+        raise SystemExit("Please pass --output and write to a separate copy. In-place workbook styling is disabled for safety.")
+    output_path = Path(args.output).expanduser().resolve()
+    if output_path == workbook_path:
+        raise SystemExit("Please choose a different --output path. In-place workbook styling is disabled for safety.")
     style_workbook(workbook_path, output_path)
 
 
