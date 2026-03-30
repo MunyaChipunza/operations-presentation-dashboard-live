@@ -672,6 +672,75 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
     }
 
 
+def parse_assembly_backorders(ws) -> dict[str, Any]:
+    rows = []
+    for row_num in range(3, 15):
+        month = format_month_label(ws[f"AC{row_num}"].value)
+        if not month:
+            continue
+        assembled = to_float(ws[f"AD{row_num}"].value)
+        backorders = to_float(ws[f"AE{row_num}"].value)
+        fill_rate = to_float(ws[f"AF{row_num}"].value)
+        if fill_rate is None and assembled not in (None, 0) and backorders is not None:
+            fill_rate = 1 - (backorders / assembled)
+        rows.append(
+            {
+                "month": month,
+                "assembled": assembled,
+                "backorders": backorders,
+                "fillRate": fill_rate,
+            }
+        )
+
+    latest = latest_non_null(rows, "fillRate")
+    best = max_row(rows, "fillRate")
+    average_value = mean([row["fillRate"] for row in rows if row.get("fillRate") is not None])
+    dataset = {
+        "key": "assembly-backorders",
+        "label": "Assembly vs Backorders",
+        "category": "Production",
+        "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
+        "headlineValue": format_percent(latest["fillRate"], 1) if latest else "-",
+        "headlineDetail": f"{latest['month']} fill rate" if latest else "No reading yet",
+        "tone": tone_housekeeping(latest["fillRate"] if latest else None),
+        "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line.",
+        "facts": [
+            {"label": "Latest", "value": format_percent(latest["fillRate"], 1) if latest else "-"},
+            {"label": "Target", "value": format_percent(0.80, 0)},
+            {"label": "Average", "value": format_percent(average_value, 1)},
+            {"label": "Best", "value": f"{best['month']} - {format_percent(best['fillRate'], 1)}" if best else "-"},
+        ],
+        "table": {
+            "columns": [
+                {"key": "month", "label": "Month", "format": "text"},
+                {"key": "assembled", "label": "Assembled", "format": "integer"},
+                {"key": "backorders", "label": "Backorders", "format": "integer"},
+                {"key": "fillRate", "label": "Fill Rate", "format": "percent"},
+            ],
+            "rows": rows,
+        },
+        "chart": {
+            "kind": "line",
+            "labels": [row["month"] for row in rows if row.get("fillRate") is not None],
+            "series": [
+                {
+                    "name": "Fill Rate",
+                    "key": "fillRate",
+                    "format": "percent",
+                    "color": "#8b5cf6",
+                    "values": [row["fillRate"] for row in rows if row.get("fillRate") is not None],
+                    "style": "solid",
+                    "showDots": True,
+                    "strokeWidth": 3,
+                }
+            ],
+        },
+    }
+    add_target_line(dataset, value=0.80, label="Target", format_type="percent")
+    add_trendline(dataset, source_key="fillRate", label="Trend")
+    return dataset
+
+
 def parse_points_yoy(ws) -> dict[str, Any]:
     rows = []
     for row_num in range(19, 31):
@@ -850,6 +919,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
     )
     sku_share = parse_sku_share(ws)
     monthly_sku = parse_monthly_sku(ws)
+    assemblies = parse_assembly_backorders(ws)
     return {
         "title": "Operations Live Dashboard",
         "subtitle": "PPT Presentation Source",
@@ -900,6 +970,12 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
                 "detail": monthly_sku["headlineDetail"],
                 "tone": monthly_sku["tone"],
             },
+            {
+                "label": "Assembly vs BO",
+                "value": assemblies["headlineValue"],
+                "detail": assemblies["headlineDetail"],
+                "tone": assemblies["tone"],
+            },
         ],
         "datasets": [
             housekeeping,
@@ -909,6 +985,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             dispatch,
             sku_share,
             monthly_sku,
+            assemblies,
         ],
     }
 

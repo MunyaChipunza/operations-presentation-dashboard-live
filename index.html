@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Operations Live Dashboard</title>
+<title>Engineering &amp; Operations Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
@@ -36,10 +36,9 @@ button{border:none;cursor:pointer}
 .btn[disabled]{opacity:.65;cursor:wait;transform:none}
 .count{font:11px 'DM Mono',monospace;color:#d0e2e8}
 .grid{display:grid;gap:18px;margin-top:22px}
-.summary{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
-.selector-shell{margin-top:22px;padding:18px 22px}
-.selector-top{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}
-.mode-copy{margin-top:4px;color:#d2e1e7;max-width:760px}
+.summary{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}
+.selector-shell{margin-top:22px;padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.selector-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
 .sections-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fit,minmax(430px,1fr))}
 .sections-grid.chart-mode{grid-template-columns:repeat(auto-fit,minmax(520px,1fr))}
 .section-card{padding:18px;position:relative;overflow:hidden;background:linear-gradient(180deg,rgba(22,22,26,.98),rgba(12,12,15,.98));border:1px solid rgba(255,255,255,.08);border-radius:22px;box-shadow:var(--shadow)}
@@ -67,16 +66,15 @@ button{border:none;cursor:pointer}
 .v{font-size:32px;font-weight:700;line-height:1}
 .d{margin-top:8px;color:#d9e8ed}
 .good .v{color:var(--teal)} .warn .v{color:var(--amber)} .bad .v{color:var(--coral)} .info .v{color:var(--cyan)}
-.dataset-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
-.dataset-card{padding:17px 18px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
-.dataset-card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:transparent;transition:.15s}
-.dataset-card:hover,.dataset-card.active{transform:translateY(-2px);border-color:rgba(255,255,255,.14)}
-.dataset-card.active:after{background:linear-gradient(90deg,var(--amber),var(--teal))}
-.dataset-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
-.dataset-cat{font:10px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
-.dataset-name{font-size:17px;font-weight:600;line-height:1.2;margin-top:3px}
-.dataset-main{margin:15px 0 7px;font-size:28px;font-weight:700}
-.dataset-detail{color:#d3e4ea}
+.dataset-grid{display:flex;gap:8px;flex-wrap:wrap;margin-top:0}
+.dataset-card{padding:10px 14px;cursor:pointer;transition:.15s;position:relative;overflow:hidden;border-radius:12px}
+.dataset-card:after{display:none}
+.dataset-card:hover,.dataset-card.active{transform:translateY(-1px);border-color:rgba(255,255,255,.16)}
+.dataset-card.active{background:linear-gradient(135deg,var(--amber),#ffd891);color:#14202a;border-color:#ffd891}
+.dataset-top{display:block}
+.dataset-cat,.dataset-main,.dataset-detail{display:none}
+.dataset-name{font:600 12px 'DM Mono',monospace;letter-spacing:.8px;text-transform:uppercase;line-height:1.2;margin:0}
+.dataset-card.active .dataset-name{color:#14202a}
 .workspace{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:18px}
 .surface{padding:22px}
 .section-label{font:11px 'DM Mono',monospace;letter-spacing:1.4px;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
@@ -107,7 +105,7 @@ tr:nth-child(even) td:first-child{background:#17191f}
 .sw{width:10px;height:10px;border-radius:999px}
 .empty{padding:28px 20px;text-align:center;color:var(--muted);font:12px 'DM Mono',monospace}
 .mono{font-family:'DM Mono',monospace}
-@media (max-width:980px){.workspace{grid-template-columns:1fr}.head-side{align-items:flex-start}.meta{text-align:left}.refresh-row{justify-content:flex-start}.selector-top{align-items:flex-start}.section-stat{width:100%}}
+@media (max-width:980px){.workspace{grid-template-columns:1fr}.head-side{align-items:flex-start}.meta{text-align:left}.refresh-row{justify-content:flex-start}.selector-actions{align-items:flex-start}.section-stat{width:100%}}
 @media (max-width:720px){.shell{padding:18px 14px 34px}header,.surface,.selector-shell{padding:18px}.title{font-size:36px}.detail-title{font-size:30px}.section-name{font-size:24px}table{min-width:620px}.sections-grid,.sections-grid.chart-mode{grid-template-columns:1fr}}
 </style>
 </head>
@@ -116,7 +114,7 @@ tr:nth-child(even) td:first-child{background:#17191f}
   <header class="panel">
     <div>
       <div class="eyebrow">Operations - Live workbook view</div>
-      <div class="title">Executive <span>Board</span></div>
+      <div class="title">Engineering &amp; Operations <span>Board</span></div>
       <p class="subtitle">One live page for the presentation source workbook, with the KPI strip at the top and click-through table and chart views for each KPI block.</p>
     </div>
     <div class="head-side">
@@ -135,20 +133,14 @@ tr:nth-child(even) td:first-child{background:#17191f}
 
   <section class="grid summary" id="summaryGrid"></section>
   <section class="panel selector-shell">
-    <div class="selector-top">
-      <div>
-        <div class="eyebrow">Choose KPI</div>
-        <p class="mode-copy">Pick one of the seven KPI blocks, then switch that section between table and chart.</p>
-      </div>
-      <div class="refresh-row">
-        <div class="toggle">
-          <button class="btn active" id="tableBtn" onclick="setView('table')">Table</button>
-          <button class="btn" id="chartBtn" onclick="setView('chart')">Chart</button>
-        </div>
-        <span class="count" id="sectionCount">7 live sections</span>
-      </div>
-    </div>
     <section class="grid dataset-grid" id="datasetGrid"></section>
+    <div class="selector-actions">
+      <div class="toggle">
+        <button class="btn active" id="tableBtn" onclick="setView('table')">Table</button>
+        <button class="btn" id="chartBtn" onclick="setView('chart')">Chart</button>
+      </div>
+      <span class="count" id="sectionCount">8 KPIs</span>
+    </div>
   </section>
 
   <section class="grid workspace">
@@ -279,13 +271,8 @@ function renderDatasets() {
   const html = (dashboard.datasets || []).map(item => `
     <article class="dataset-card ${item.key === selectedKey ? 'active' : ''}" onclick="setDataset('${esc(item.key)}')">
       <div class="dataset-top">
-        <div>
-          <div class="dataset-cat">${esc(item.category)}</div>
-          <div class="dataset-name">${esc(item.label)}</div>
-        </div>
+        <div class="dataset-name">${esc(selectorLabel(item))}</div>
       </div>
-      <div class="dataset-main">${esc(item.headlineValue || '-')}</div>
-      <div class="dataset-detail">${esc(item.headlineDetail || '')}</div>
     </article>
   `).join('');
   document.getElementById('datasetGrid').innerHTML = html;
@@ -306,19 +293,18 @@ function renderDetail() {
   `).join('');
 }
 
-function sectionAccent(dataset) {
-  const chart = dataset.chart || {};
-  const first = (chart.series || [])[0];
-  return first?.color || '#00cfff';
-}
-
-function renderFactStrip(dataset) {
-  return (dataset.facts || []).slice(0, 4).map(item => `
-    <article class="fact-chip">
-      <div class="fact-chip-label">${esc(item.label)}</div>
-      <div class="fact-chip-value">${esc(item.value)}</div>
-    </article>
-  `).join('');
+function selectorLabel(item) {
+  const labels = {
+    'housekeeping': 'Housekeeping',
+    'container-jhb': 'Container JHB',
+    'container-george': 'Container George',
+    'urgent-orders': 'Wholesale Orders',
+    'dispatch-accuracy': 'Dispatch Accuracy',
+    'sku-share': 'SKU Picker',
+    'sku-monthly': 'SKU YTD',
+    'assembly-backorders': 'Assembly vs BO'
+  };
+  return labels[item.key] || item.label || item.key;
 }
 
 function renderTable(dataset) {
@@ -509,7 +495,7 @@ async function refreshData(isManual) {
     if (ageMs > 15 * 60 * 1000) setStatus('warn', 'Stale');
     else setStatus('', 'Live');
     renderSummary();
-    document.getElementById('sectionCount').textContent = `${dashboard.datasets?.length || 0} live sections`;
+    document.getElementById('sectionCount').textContent = `${dashboard.datasets?.length || 0} KPIs`;
     renderDatasets();
     renderDetail();
     setView(viewMode);

@@ -226,13 +226,14 @@ try {
         "L" = 17; "M" = 10; "N" = 12; "O" = 3;
         "P" = 8;  "Q" = 10; "R" = 12; "S" = 3;
         "T" = 15; "U" = 11; "V" = 11; "W" = 3;
-        "X" = 10; "Y" = 12; "Z" = 12; "AA" = 12
+        "X" = 10; "Y" = 12; "Z" = 12; "AA" = 12; "AB" = 3;
+        "AC" = 12; "AD" = 12; "AE" = 12; "AF" = 12
     }
     foreach ($column in $widths.Keys) {
         $sheet.Columns.Item($column).ColumnWidth = $widths[$column]
     }
 
-    foreach ($spacer in "D:E", "H:H", "K:K", "O:O", "S:S", "W:W") {
+    foreach ($spacer in "D:E", "H:H", "K:K", "O:O", "S:S", "W:W", "AB:AB") {
         $spacerRange = $sheet.Range($spacer)
         $spacerRange.Interior.Color = (Get-ExcelColor 255 255 255)
         $spacerRange.Borders.LineStyle = 0
@@ -245,9 +246,10 @@ try {
     Format-TitleRange -Range $sheet.Range("P1:R1") -FillColor $accentRed -BorderColor $borderDark
     Format-TitleRange -Range $sheet.Range("T1:V1") -FillColor $accentCoral -BorderColor $borderDark
     Format-TitleRange -Range $sheet.Range("X1:AA1") -FillColor $accentRose -BorderColor $borderDark
+    Format-TitleRange -Range $sheet.Range("AC1:AF1") -FillColor $accentGreen -BorderColor $borderDark
     Format-TitleRange -Range $sheet.Range("A17:H17") -FillColor $darkHeader -BorderColor $borderDark
 
-    foreach ($headerRange in "A2:C2", "F2:G2", "I2:J2", "L2:N2", "P2:R2", "T2:V2", "X2:AA2", "A18:H18") {
+    foreach ($headerRange in "A2:C2", "F2:G2", "I2:J2", "L2:N2", "P2:R2", "T2:V2", "X2:AA2", "AC2:AF2", "A18:H18") {
         Format-HeaderRange -Range $sheet.Range($headerRange) -FillColor $darkHeader -BorderColor $borderDark
     }
 
@@ -258,6 +260,7 @@ try {
     Apply-StripeBlock -Sheet $sheet -Address "Q3:R15" -RowLabelRange "Q3:Q15" -PercentRanges @("R3:R15")
     Apply-StripeBlock -Sheet $sheet -Address "T3:V7" -RowLabelRange "T3:T7" -IntegerRanges @("U3:U7") -PercentRanges @("V3:V7")
     Apply-StripeBlock -Sheet $sheet -Address "X3:AA14" -RowLabelRange "X3:X14" -IntegerRanges @("Y3:AA14")
+    Apply-StripeBlock -Sheet $sheet -Address "AC3:AF14" -RowLabelRange "AC3:AC14" -IntegerRanges @("AD3:AE14") -PercentRanges @("AF3:AF14")
     Apply-StripeBlock -Sheet $sheet -Address "A19:H31" -RowLabelRange "A19:A31" -DecimalRanges @("B19:H31") -HighlightRows @(31)
 
     Format-CellRange -Range $sheet.Range("A3") -FillColor $darkHeader -BorderColor $borderDark -Alignment "left" -Bold $true -FontColor (Get-ExcelColor 255 255 255)

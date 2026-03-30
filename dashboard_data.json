@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T12:18:18.383976+00:00",
-  "sourceModifiedAt": "2026-03-30T12:14:30+00:00",
+  "generatedAt": "2026-03-30T12:22:26.172109+00:00",
+  "sourceModifiedAt": "2026-03-30T12:22:05.942674+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -47,6 +47,12 @@
       "value": "12,018",
       "detail": "2026 YTD picked volume",
       "tone": "warn"
+    },
+    {
+      "label": "Assembly vs BO",
+      "value": "81.2%",
+      "detail": "Feb fill rate",
+      "tone": "good"
     }
   ],
   "datasets": [
@@ -1281,6 +1287,178 @@
               7938.0,
               8429.5,
               8921.0
+            ],
+            "style": "dotted",
+            "showDots": false,
+            "strokeWidth": 2
+          }
+        ]
+      }
+    },
+    {
+      "key": "assembly-backorders",
+      "label": "Assembly vs Backorders",
+      "category": "Production",
+      "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
+      "headlineValue": "81.2%",
+      "headlineDetail": "Feb fill rate",
+      "tone": "good",
+      "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line.",
+      "facts": [
+        {
+          "label": "Latest",
+          "value": "81.2%"
+        },
+        {
+          "label": "Target",
+          "value": "80%"
+        },
+        {
+          "label": "Average",
+          "value": "81.0%"
+        },
+        {
+          "label": "Best",
+          "value": "Feb - 81.2%"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "month",
+            "label": "Month",
+            "format": "text"
+          },
+          {
+            "key": "assembled",
+            "label": "Assembled",
+            "format": "integer"
+          },
+          {
+            "key": "backorders",
+            "label": "Backorders",
+            "format": "integer"
+          },
+          {
+            "key": "fillRate",
+            "label": "Fill Rate",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "month": "Jan",
+            "assembled": 26.0,
+            "backorders": 5.0,
+            "fillRate": 0.8076923076923077
+          },
+          {
+            "month": "Feb",
+            "assembled": 16.0,
+            "backorders": 3.0,
+            "fillRate": 0.8125
+          },
+          {
+            "month": "Mar",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Apr",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "May",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Jun",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Jul",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Aug",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Sep",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Oct",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Nov",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Dec",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "Jan",
+          "Feb"
+        ],
+        "series": [
+          {
+            "name": "Fill Rate",
+            "key": "fillRate",
+            "format": "percent",
+            "color": "#8b5cf6",
+            "values": [
+              0.8076923076923077,
+              0.8125
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "Target",
+            "format": "percent",
+            "color": "#39ff88",
+            "values": [
+              0.8,
+              0.8
+            ],
+            "style": "dashed",
+            "showDots": false,
+            "strokeWidth": 2
+          },
+          {
+            "name": "Trend",
+            "format": "percent",
+            "color": "#f8fafc",
+            "values": [
+              0.8076923076923077,
+              0.8125
             ],
             "style": "dotted",
             "showDots": false,
