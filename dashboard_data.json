@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T11:37:17.868738+00:00",
-  "sourceModifiedAt": "2026-03-30T11:34:32.336081+00:00",
+  "generatedAt": "2026-03-30T11:45:17.959697+00:00",
+  "sourceModifiedAt": "2026-03-30T11:44:16+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -38,7 +38,7 @@
     },
     {
       "label": "2026 Points YTD",
-      "value": "37.0",
+      "value": "-",
       "detail": "2026 year-to-date points",
       "tone": "info"
     }
@@ -1052,18 +1052,18 @@
       "label": "SKU Picked by Month",
       "category": "Volume",
       "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
-      "headlineValue": "12,007",
+      "headlineValue": "12,018",
       "headlineDetail": "2026 YTD picked volume",
       "tone": "good",
       "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
       "facts": [
         {
           "label": "2026 YTD",
-          "value": "12,007"
+          "value": "12,018"
         },
         {
           "label": "Latest 2026 Month",
-          "value": "Mar - 4,214"
+          "value": "Mar - 4,225"
         },
         {
           "label": "Best 2025 Month",
@@ -1114,7 +1114,7 @@
             "month": "Mar",
             "y2024": 2233.0,
             "y2025": 6414.0,
-            "y2026": 4214.0
+            "y2026": 4225.0
           },
           {
             "month": "Apr",
@@ -1243,7 +1243,7 @@
             "values": [
               3242.0,
               4551.0,
-              4214.0,
+              4225.0,
               null,
               null,
               null,
@@ -1263,18 +1263,18 @@
             "format": "integer",
             "color": "#f5efeb",
             "values": [
-              3516.3333333333335,
-              4002.3333333333335,
-              4488.333333333334,
-              4974.333333333334,
-              5460.333333333334,
-              5946.333333333334,
-              6432.333333333334,
-              6918.333333333334,
-              7404.333333333334,
-              7890.333333333334,
-              8376.333333333334,
-              8862.333333333334
+              3514.5,
+              4006.0,
+              4497.5,
+              4989.0,
+              5480.5,
+              5972.0,
+              6463.5,
+              6955.0,
+              7446.5,
+              7938.0,
+              8429.5,
+              8921.0
             ],
             "style": "dotted",
             "showDots": false,
@@ -1288,22 +1288,22 @@
       "label": "Liseo Points YOY",
       "category": "Year over Year",
       "description": "Monthly points history across six years with a total-per-month column kept in the table view.",
-      "headlineValue": "37.0",
+      "headlineValue": "-",
       "headlineDetail": "2026 year-to-date points",
       "tone": "good",
       "note": "The line view exposes long-term seasonality and where 2026 is still building up.",
       "facts": [
         {
           "label": "2026 YTD",
-          "value": "37.0"
+          "value": "-"
         },
         {
           "label": "2025 Total",
-          "value": "322"
+          "value": "-"
         },
         {
           "label": "Peak Month",
-          "value": "May 2023 - 72.0"
+          "value": "-"
         },
         {
           "label": "Benchmark",
@@ -1355,173 +1355,27 @@
         ],
         "rows": [
           {
-            "month": "Jan",
-            "y2021": 0.0,
-            "y2022": 11.0,
-            "y2023": 0.0,
-            "y2024": 6.0,
-            "y2025": 17.0,
-            "y2026": 14.0,
-            "total": 48.0
-          },
-          {
-            "month": "Feb",
-            "y2021": 0.0,
-            "y2022": 14.0,
-            "y2023": 8.0,
-            "y2024": 24.0,
-            "y2025": 26.0,
-            "y2026": 12.0,
-            "total": 84.0
-          },
-          {
-            "month": "Mar",
-            "y2021": 0.0,
-            "y2022": 41.0,
-            "y2023": 34.0,
-            "y2024": 29.0,
-            "y2025": 33.0,
-            "y2026": 32.5,
-            "total": 148.0
-          },
-          {
-            "month": "Apr",
-            "y2021": 9.0,
-            "y2022": 46.0,
-            "y2023": 21.0,
-            "y2024": 27.0,
-            "y2025": 16.0,
-            "y2026": 0.0,
-            "total": 119.0
-          },
-          {
-            "month": "May",
-            "y2021": 37.0,
-            "y2022": 42.0,
-            "y2023": 72.0,
-            "y2024": 23.0,
-            "y2025": 55.0,
-            "y2026": 0.0,
-            "total": 229.0
-          },
-          {
-            "month": "Jun",
-            "y2021": 35.0,
-            "y2022": 34.0,
-            "y2023": 55.0,
-            "y2024": 59.0,
-            "y2025": 38.0,
-            "y2026": 0.0,
-            "total": 221.0
-          },
-          {
-            "month": "Jul",
-            "y2021": 57.0,
-            "y2022": 27.0,
-            "y2023": 46.0,
-            "y2024": 53.0,
-            "y2025": 41.0,
-            "y2026": 0.0,
-            "total": 224.0
-          },
-          {
-            "month": "Aug",
-            "y2021": 46.0,
-            "y2022": 33.0,
-            "y2023": 26.0,
-            "y2024": 18.0,
-            "y2025": 22.0,
-            "y2026": 0.0,
-            "total": 145.0
-          },
-          {
-            "month": "Sep",
-            "y2021": 26.0,
-            "y2022": 26.0,
-            "y2023": 28.0,
-            "y2024": 27.0,
-            "y2025": 47.0,
-            "y2026": 0.0,
-            "total": 154.0
-          },
-          {
-            "month": "Oct",
-            "y2021": 7.0,
-            "y2022": 21.0,
-            "y2023": 14.0,
-            "y2024": 20.0,
-            "y2025": 21.0,
-            "y2026": 0.0,
-            "total": 83.0
-          },
-          {
-            "month": "Nov",
-            "y2021": 19.0,
-            "y2022": 3.0,
-            "y2023": 14.0,
-            "y2024": 10.0,
-            "y2025": 6.0,
-            "y2026": 0.0,
-            "total": 52.0
-          },
-          {
-            "month": "Dec",
-            "y2021": 3.0,
-            "y2022": 0.0,
-            "y2023": 5.0,
-            "y2024": 13.0,
-            "y2025": 0.0,
-            "y2026": 0.0,
-            "total": 21.0
-          },
-          {
             "month": "Total",
-            "y2021": 239.0,
-            "y2022": 298.0,
-            "y2023": 323.0,
-            "y2024": 309.0,
-            "y2025": 322.0,
-            "y2026": 37.0,
-            "total": 1528.0
+            "y2021": null,
+            "y2022": null,
+            "y2023": null,
+            "y2024": null,
+            "y2025": null,
+            "y2026": null,
+            "total": null
           }
         ]
       },
       "chart": {
         "kind": "line",
-        "labels": [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun",
-          "Jul",
-          "Aug",
-          "Sep",
-          "Oct",
-          "Nov",
-          "Dec"
-        ],
+        "labels": [],
         "series": [
           {
             "name": "2021",
             "key": "y2021",
             "format": "decimal1",
             "color": "#6c7385",
-            "values": [
-              0.0,
-              0.0,
-              0.0,
-              9.0,
-              37.0,
-              35.0,
-              57.0,
-              46.0,
-              26.0,
-              7.0,
-              19.0,
-              3.0
-            ],
+            "values": [],
             "style": "solid",
             "showDots": false,
             "strokeWidth": 1.5
@@ -1531,20 +1385,7 @@
             "key": "y2022",
             "format": "decimal1",
             "color": "#ff8a5b",
-            "values": [
-              11.0,
-              14.0,
-              41.0,
-              46.0,
-              42.0,
-              34.0,
-              27.0,
-              33.0,
-              26.0,
-              21.0,
-              3.0,
-              0.0
-            ],
+            "values": [],
             "style": "solid",
             "showDots": false,
             "strokeWidth": 1.5
@@ -1554,20 +1395,7 @@
             "key": "y2023",
             "format": "decimal1",
             "color": "#ffd54f",
-            "values": [
-              0.0,
-              8.0,
-              34.0,
-              21.0,
-              72.0,
-              55.0,
-              46.0,
-              26.0,
-              28.0,
-              14.0,
-              14.0,
-              5.0
-            ],
+            "values": [],
             "style": "solid",
             "showDots": false,
             "strokeWidth": 1.5
@@ -1577,20 +1405,7 @@
             "key": "y2024",
             "format": "decimal1",
             "color": "#7ac7b1",
-            "values": [
-              6.0,
-              24.0,
-              29.0,
-              27.0,
-              23.0,
-              59.0,
-              53.0,
-              18.0,
-              27.0,
-              20.0,
-              10.0,
-              13.0
-            ],
+            "values": [],
             "style": "solid",
             "showDots": false,
             "strokeWidth": 1.5
@@ -1600,20 +1415,7 @@
             "key": "y2025",
             "format": "decimal1",
             "color": "#00cfff",
-            "values": [
-              17.0,
-              26.0,
-              33.0,
-              16.0,
-              55.0,
-              38.0,
-              41.0,
-              22.0,
-              47.0,
-              21.0,
-              6.0,
-              0.0
-            ],
+            "values": [],
             "style": "dashed",
             "showDots": false,
             "strokeWidth": 2
@@ -1623,20 +1425,7 @@
             "key": "y2026",
             "format": "decimal1",
             "color": "#ff6b74",
-            "values": [
-              14.0,
-              12.0,
-              32.5,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.0
-            ],
+            "values": [],
             "style": "solid",
             "showDots": true,
             "strokeWidth": 3.5
@@ -1645,20 +1434,7 @@
             "name": "2026 Trend",
             "format": "decimal1",
             "color": "#f5efeb",
-            "values": [
-              14.288461538461538,
-              12.576923076923077,
-              10.865384615384615,
-              9.153846153846153,
-              7.4423076923076925,
-              5.730769230769232,
-              4.01923076923077,
-              2.3076923076923084,
-              0.5961538461538467,
-              -1.115384615384615,
-              -2.826923076923075,
-              -4.538461538461538
-            ],
+            "values": [],
             "style": "dotted",
             "showDots": false,
             "strokeWidth": 2
