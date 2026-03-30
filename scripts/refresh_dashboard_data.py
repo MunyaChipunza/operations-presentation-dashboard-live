@@ -23,6 +23,7 @@ from openpyxl import load_workbook
 WORKBOOK_NAME_HINT = "PPT presentation source data"
 TIMEZONE_NAME = "Africa/Johannesburg"
 DEFAULT_OUTPUT = "dashboard_data.json"
+LIVE_DATA_MAX_ROW = 100
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 
 
@@ -537,7 +538,7 @@ def parse_housekeeping(ws) -> dict[str, Any]:
     average_92m = to_float(ws["B3"].value)
     average_12m = to_float(ws["C3"].value)
     rows.append({"period": "2025 Avg", "score92m": average_92m, "score12m": average_12m})
-    for row_num in range(4, 15):
+    for row_num in range(4, LIVE_DATA_MAX_ROW + 1):
         week = to_int(ws[f"A{row_num}"].value)
         score_92m = to_float(ws[f"B{row_num}"].value)
         score_12m = to_float(ws[f"C{row_num}"].value)
@@ -639,7 +640,7 @@ def parse_single_series_block(
 
 def parse_sku_share(ws) -> dict[str, Any]:
     rows = []
-    for row_num in range(3, 8):
+    for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
         picker = clean_text(ws[f"T{row_num}"].value)
         count = to_float(ws[f"U{row_num}"].value)
         share = to_float(ws[f"V{row_num}"].value)
@@ -688,7 +689,7 @@ def parse_sku_share(ws) -> dict[str, Any]:
 
 def parse_monthly_sku(ws) -> dict[str, Any]:
     rows = []
-    for row_num in range(3, 15):
+    for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
         month = format_month_label(ws[f"X{row_num}"].value)
         if not month:
             continue
@@ -748,7 +749,7 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
 
 def parse_assembly_backorders(ws) -> dict[str, Any]:
     rows = []
-    for row_num in range(3, 15):
+    for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
         month = format_month_label(ws[f"AC{row_num}"].value)
         if not month:
             continue
@@ -921,7 +922,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             label_col="F",
             value_col="G",
             start_row=3,
-            end_row=15,
+            end_row=LIVE_DATA_MAX_ROW,
             series_key="accuracy",
             series_label="Accuracy",
             series_format="percent",
@@ -942,7 +943,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             label_col="I",
             value_col="J",
             start_row=3,
-            end_row=15,
+            end_row=LIVE_DATA_MAX_ROW,
             series_key="accuracy",
             series_label="Accuracy",
             series_format="percent",
@@ -963,7 +964,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             label_col="M",
             value_col="N",
             start_row=3,
-            end_row=15,
+            end_row=LIVE_DATA_MAX_ROW,
             series_key="rate",
             series_label="Urgent Rate",
             series_format="percent",
@@ -985,7 +986,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             label_col="Q",
             value_col="R",
             start_row=3,
-            end_row=15,
+            end_row=LIVE_DATA_MAX_ROW,
             series_key="accuracy",
             series_label="Accuracy",
             series_format="percent",

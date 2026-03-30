@@ -2,15 +2,15 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-03-30T13:47:38.213919+00:00",
-  "sourceModifiedAt": "2026-03-30T13:34:06+00:00",
+  "generatedAt": "2026-03-30T13:49:33.065557+00:00",
+  "sourceModifiedAt": "2026-03-30T13:49:16.417876+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
       "label": "Housekeeping",
-      "value": "49%",
-      "detail": "Week 11 92M reading",
-      "tone": "bad"
+      "value": "76%",
+      "detail": "Week 12 92M reading",
+      "tone": "warn"
     },
     {
       "label": "JHB Accuracy",
@@ -61,14 +61,14 @@
       "label": "Housekeeping",
       "category": "Quality",
       "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
-      "headlineValue": "49%",
-      "headlineDetail": "Week 11 92M reading",
-      "tone": "bad",
+      "headlineValue": "76%",
+      "headlineDetail": "Week 12 92M reading",
+      "tone": "warn",
       "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
         {
           "label": "Latest",
-          "value": "49%"
+          "value": "76%"
         },
         {
           "label": "Target",
@@ -161,6 +161,11 @@
             "period": "Week 11",
             "score92m": 0.49,
             "score12m": 0.73
+          },
+          {
+            "period": "Week 12",
+            "score92m": 0.76,
+            "score12m": null
           }
         ]
       },
@@ -178,7 +183,8 @@
           "Week 8",
           "Week 9",
           "Week 10",
-          "Week 11"
+          "Week 11",
+          "Week 12"
         ],
         "series": [
           {
@@ -198,7 +204,8 @@
               0.69,
               0.7,
               0.67,
-              0.49
+              0.49,
+              0.76
             ],
             "style": "solid",
             "showDots": true,
@@ -221,7 +228,8 @@
               0.83,
               0.55,
               0.77,
-              0.73
+              0.73,
+              null
             ],
             "style": "solid",
             "showDots": true,
@@ -232,6 +240,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.8,
               0.8,
               0.8,
               0.8,
@@ -254,18 +263,19 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7926923076923078,
-              0.7758391608391609,
-              0.7589860139860141,
-              0.7421328671328673,
-              0.7252797202797204,
-              0.7084265734265736,
-              0.6915734265734267,
-              0.6747202797202798,
-              0.6578671328671329,
-              0.6410139860139861,
-              0.6241608391608393,
-              0.6073076923076924
+              0.7721978021978022,
+              0.760934065934066,
+              0.7496703296703296,
+              0.7384065934065934,
+              0.7271428571428571,
+              0.7158791208791209,
+              0.7046153846153846,
+              0.6933516483516483,
+              0.6820879120879121,
+              0.6708241758241759,
+              0.6595604395604395,
+              0.6482967032967033,
+              0.6370329670329671
             ],
             "style": "dotted",
             "showDots": false,
