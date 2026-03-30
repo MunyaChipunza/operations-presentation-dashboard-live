@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-03-30T14:18:37.494761+00:00",
-  "sourceModifiedAt": "2026-03-30T13:49:16.417876+00:00",
+  "generatedAt": "2026-03-30T14:20:42.003270+00:00",
+  "sourceModifiedAt": "2026-03-30T14:20:38.838327+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,9 +50,9 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "72.4%",
+      "value": "38.5%",
       "detail": "Feb fill rate",
-      "tone": "warn"
+      "tone": "bad"
     }
   ],
   "datasets": [
@@ -1318,14 +1318,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "72.4%",
+      "headlineValue": "38.5%",
       "headlineDetail": "Feb fill rate",
-      "tone": "warn",
+      "tone": "bad",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "72.4%"
+          "value": "38.5%"
         },
         {
           "label": "Target",
@@ -1333,11 +1333,11 @@
         },
         {
           "label": "Average",
-          "value": "76.6%"
+          "value": "50.0%"
         },
         {
           "label": "Best",
-          "value": "Jan - 80.8%"
+          "value": "Jan - 61.5%"
         }
       ],
       "table": {
@@ -1366,19 +1366,19 @@
         "rows": [
           {
             "month": "Jan",
-            "assembled": 26.0,
+            "assembled": 13.0,
             "backorders": 5.0,
-            "fillRate": 0.8076923076923077
+            "fillRate": 0.6153846153846154
           },
           {
             "month": "Feb",
-            "assembled": 29.0,
+            "assembled": 13.0,
             "backorders": 8.0,
-            "fillRate": 0.7241379310344828
+            "fillRate": 0.3846153846153846
           },
           {
             "month": "Mar",
-            "assembled": null,
+            "assembled": 29.0,
             "backorders": null,
             "fillRate": null
           },
@@ -1451,8 +1451,8 @@
             "format": "percent",
             "color": "#8b5cf6",
             "values": [
-              0.8076923076923077,
-              0.7241379310344828
+              0.6153846153846154,
+              0.3846153846153846
             ],
             "style": "solid",
             "showDots": true,
@@ -1475,8 +1475,8 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.8076923076923077,
-              0.7241379310344828
+              0.6153846153846154,
+              0.3846153846153846
             ],
             "style": "dotted",
             "showDots": false,
