@@ -11,33 +11,16 @@ $ErrorActionPreference = "Stop"
 
 $excel = $null
 $workbook = $null
-$openedHere = $false
-$createdInstance = $false
 
 try {
-    try {
-        $excel = [Runtime.InteropServices.Marshal]::GetActiveObject("Excel.Application")
-    }
-    catch {
-        $excel = New-Object -ComObject Excel.Application
-        $createdInstance = $true
-    }
-
+    $excel = New-Object -ComObject Excel.Application
     $excel.DisplayAlerts = $false
     $excel.Visible = $false
+    $excel.ScreenUpdating = $false
+    $excel.EnableEvents = $false
 
-    foreach ($candidate in @($excel.Workbooks)) {
-        if ([string]::Equals($candidate.FullName, $SourcePath, [System.StringComparison]::OrdinalIgnoreCase)) {
-            $workbook = $candidate
-            break
-        }
-    }
-
-    if ($null -eq $workbook) {
-        Start-Sleep -Milliseconds 250
-        $workbook = $excel.Workbooks.Open($SourcePath)
-        $openedHere = $true
-    }
+    Start-Sleep -Milliseconds 250
+    $workbook = $excel.Workbooks.Open($SourcePath)
 
     $targetDir = Split-Path -Parent $TargetPath
     if ($targetDir -and -not (Test-Path -LiteralPath $targetDir)) {
@@ -47,7 +30,7 @@ try {
     $workbook.SaveCopyAs($TargetPath)
 }
 finally {
-    if ($openedHere -and $workbook -ne $null) {
+    if ($workbook -ne $null) {
         $workbook.Close($false) | Out-Null
     }
 
@@ -56,9 +39,7 @@ finally {
     }
 
     if ($excel -ne $null) {
-        if ($createdInstance) {
-            $excel.Quit() | Out-Null
-        }
+        $excel.Quit() | Out-Null
         [void][Runtime.InteropServices.Marshal]::ReleaseComObject($excel)
     }
 

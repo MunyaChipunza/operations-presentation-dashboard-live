@@ -305,19 +305,26 @@ def create_excel_snapshot(workbook_path: Path) -> Path:
         "-TargetPath",
         str(snapshot_path),
     ]
-    result = subprocess.run(
-        command,
-        check=False,
-        text=True,
-        capture_output=True,
-        creationflags=CREATE_NO_WINDOW,
-        startupinfo=startupinfo,
-    )
-    if result.returncode != 0:
+    last_message = "Excel could not create a readable snapshot."
+    for attempt in range(4):
+        result = subprocess.run(
+            command,
+            check=False,
+            text=True,
+            capture_output=True,
+            creationflags=CREATE_NO_WINDOW,
+            startupinfo=startupinfo,
+        )
+        if result.returncode == 0:
+            return snapshot_path
+
+        last_message = result.stderr.strip() or result.stdout.strip() or last_message
         snapshot_path.unlink(missing_ok=True)
-        message = result.stderr.strip() or result.stdout.strip() or "Excel could not create a readable snapshot."
-        raise RuntimeError(message)
-    return snapshot_path
+        if "0x800AC472" not in last_message or attempt == 3:
+            break
+        time.sleep(1.5)
+
+    raise RuntimeError(last_message)
 
 
 def load_dashboard_workbook(workbook_path: Path) -> tuple[Any, Path | None]:
