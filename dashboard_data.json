@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "PPT presentation source data.xlsx",
-  "generatedAt": "2026-03-30T12:57:17.518353+00:00",
-  "sourceModifiedAt": "2026-03-30T12:22:05.942674+00:00",
+  "generatedAt": "2026-03-30T13:00:17.702527+00:00",
+  "sourceModifiedAt": "2026-03-30T12:59:17+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "81.2%",
+      "value": "72.4%",
       "detail": "Feb fill rate",
       "tone": "warn"
     }
@@ -1300,14 +1300,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "81.2%",
+      "headlineValue": "72.4%",
       "headlineDetail": "Feb fill rate",
       "tone": "warn",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "81.2%"
+          "value": "72.4%"
         },
         {
           "label": "Target",
@@ -1315,11 +1315,11 @@
         },
         {
           "label": "Average",
-          "value": "81.0%"
+          "value": "76.6%"
         },
         {
           "label": "Best",
-          "value": "Feb - 81.2%"
+          "value": "Jan - 80.8%"
         }
       ],
       "table": {
@@ -1354,9 +1354,9 @@
           },
           {
             "month": "Feb",
-            "assembled": 16.0,
-            "backorders": 3.0,
-            "fillRate": 0.8125
+            "assembled": 29.0,
+            "backorders": 8.0,
+            "fillRate": 0.7241379310344828
           },
           {
             "month": "Mar",
@@ -1434,7 +1434,7 @@
             "color": "#8b5cf6",
             "values": [
               0.8076923076923077,
-              0.8125
+              0.7241379310344828
             ],
             "style": "solid",
             "showDots": true,
@@ -1458,7 +1458,7 @@
             "color": "#f8fafc",
             "values": [
               0.8076923076923077,
-              0.8125
+              0.7241379310344828
             ],
             "style": "dotted",
             "showDots": false,
