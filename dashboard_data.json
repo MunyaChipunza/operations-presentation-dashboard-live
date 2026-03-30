@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-03-30T14:21:37.718737+00:00",
-  "sourceModifiedAt": "2026-03-30T14:20:38.838327+00:00",
+  "generatedAt": "2026-03-30T14:22:41.617256+00:00",
+  "sourceModifiedAt": "2026-03-30T14:22:38.866976+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "38.5%",
+      "value": "61.5%",
       "detail": "Feb fill rate",
       "tone": "bad"
     }
@@ -1318,14 +1318,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "38.5%",
+      "headlineValue": "61.5%",
       "headlineDetail": "Feb fill rate",
       "tone": "bad",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "38.5%"
+          "value": "61.5%"
         },
         {
           "label": "Target",
@@ -1333,11 +1333,11 @@
         },
         {
           "label": "Average",
-          "value": "50.0%"
+          "value": "76.9%"
         },
         {
           "label": "Best",
-          "value": "Jan - 61.5%"
+          "value": "Jan - 92.3%"
         }
       ],
       "table": {
@@ -1367,14 +1367,14 @@
           {
             "month": "Jan",
             "assembled": 13.0,
-            "backorders": 5.0,
-            "fillRate": 0.6153846153846154
+            "backorders": 1.0,
+            "fillRate": 0.9230769230769231
           },
           {
             "month": "Feb",
             "assembled": 13.0,
-            "backorders": 8.0,
-            "fillRate": 0.3846153846153846
+            "backorders": 5.0,
+            "fillRate": 0.6153846153846154
           },
           {
             "month": "Mar",
@@ -1451,8 +1451,8 @@
             "format": "percent",
             "color": "#8b5cf6",
             "values": [
-              0.6153846153846154,
-              0.3846153846153846
+              0.9230769230769231,
+              0.6153846153846154
             ],
             "style": "solid",
             "showDots": true,
@@ -1475,8 +1475,8 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.6153846153846154,
-              0.3846153846153846
+              0.9230769230769231,
+              0.6153846153846154
             ],
             "style": "dotted",
             "showDots": false,
