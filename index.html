@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Operations Live Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#06131a;--bg2:#0c2230;--card:#0f202b;--card2:#122838;--line:#284555;--text:#eef7fb;--muted:#97aeb9;--teal:#47dcc0;--cyan:#4fb0ff;--amber:#ffbd59;--coral:#ff8a5b;--violet:#9c8cff;--lime:#8ddf6e;--shadow:0 20px 50px rgba(0,0,0,.28)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{min-height:100vh;background:radial-gradient(circle at top left,rgba(71,220,192,.12),transparent 28%),radial-gradient(circle at 85% 10%,rgba(255,189,89,.10),transparent 24%),linear-gradient(180deg,#041017,#0c1620 50%,#08141c);color:var(--text);font:14px/1.5 'Space Grotesk',sans-serif}
+.shell{max-width:1480px;margin:0 auto;padding:26px 22px 40px}
+.panel,.stat,.dataset-card,.fact,.surface{background:linear-gradient(180deg,rgba(18,40,56,.96),rgba(9,22,30,.98));border:1px solid rgba(255,255,255,.08);border-radius:20px;box-shadow:var(--shadow)}
+header{padding:24px 26px;background:linear-gradient(135deg,rgba(9,25,33,.98),rgba(15,52,63,.96) 58%,rgba(37,83,92,.88));display:flex;justify-content:space-between;gap:18px;align-items:flex-end;flex-wrap:wrap;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;right:-80px;top:-70px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,189,89,.18),transparent 70%);pointer-events:none}
+.eyebrow{font:11px 'IBM Plex Mono',monospace;letter-spacing:2px;text-transform:uppercase;color:#c9dbdf;margin-bottom:8px}
+.title{font:600 42px/1 'Fraunces',serif;letter-spacing:.4px}
+.title span{color:var(--amber)}
+.subtitle{margin-top:8px;color:#d2e5eb;max-width:620px}
+.head-side{display:flex;flex-direction:column;align-items:flex-end;gap:12px;position:relative;z-index:1}
+.status{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;border:1px solid rgba(71,220,192,.5);background:rgba(71,220,192,.12);font:600 11px 'IBM Plex Mono',monospace;letter-spacing:1px;text-transform:uppercase}
+.status.warn{border-color:rgba(255,189,89,.6);background:rgba(255,189,89,.12);color:var(--amber)}
+.status.bad{border-color:rgba(255,138,91,.6);background:rgba(255,138,91,.12);color:var(--coral)}
+.dot{width:9px;height:9px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 rgba(255,255,255,.16);animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.5}100%{transform:scale(1);opacity:1}}
+.meta{font:11px/1.8 'IBM Plex Mono',monospace;color:#d6e3ea;text-align:right}
+.meta em{font-style:normal;color:var(--amber)}
+.refresh-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.btns,.toggle{display:flex;gap:8px;flex-wrap:wrap}
+button{border:none;cursor:pointer}
+.btn{padding:10px 14px;border-radius:12px;background:linear-gradient(135deg,rgba(79,176,255,.22),rgba(71,220,192,.14));border:1px solid rgba(79,176,255,.36);color:#fff;font:600 12px 'IBM Plex Mono',monospace;transition:.15s}
+.btn:hover{transform:translateY(-1px);border-color:rgba(255,189,89,.5)}
+.btn.active{background:linear-gradient(135deg,var(--amber),#ffd891);color:#14202a;border-color:#ffd891}
+.btn[disabled]{opacity:.65;cursor:wait;transform:none}
+.count{font:11px 'IBM Plex Mono',monospace;color:#d0e2e8}
+.grid{display:grid;gap:18px;margin-top:22px}
+.summary{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.stat{padding:18px}
+.k{font:11px 'IBM Plex Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
+.v{font-size:32px;font-weight:700;line-height:1}
+.d{margin-top:8px;color:#d9e8ed}
+.good .v{color:var(--teal)} .warn .v{color:var(--amber)} .bad .v{color:var(--coral)} .info .v{color:var(--cyan)}
+.dataset-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
+.dataset-card{padding:17px 18px;cursor:pointer;transition:.15s;position:relative;overflow:hidden}
+.dataset-card:after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:transparent;transition:.15s}
+.dataset-card:hover,.dataset-card.active{transform:translateY(-2px);border-color:rgba(255,255,255,.14)}
+.dataset-card.active:after{background:linear-gradient(90deg,var(--amber),var(--teal))}
+.dataset-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.dataset-cat{font:10px 'IBM Plex Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:var(--muted)}
+.dataset-name{font-size:17px;font-weight:600;line-height:1.2;margin-top:3px}
+.dataset-main{margin:15px 0 7px;font-size:28px;font-weight:700}
+.dataset-detail{color:#d3e4ea}
+.workspace{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:18px}
+.surface{padding:22px}
+.section-label{font:11px 'IBM Plex Mono',monospace;letter-spacing:1.4px;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+.detail-title{font:600 32px/1.1 'Fraunces',serif}
+.detail-copy{color:#d5e4ea;margin-top:9px;max-width:850px}
+.note{margin-top:10px;color:var(--muted);font:12px/1.6 'IBM Plex Mono',monospace}
+.fact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px}
+.fact{padding:16px}
+.fact .v{font-size:24px}
+.content-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.content-title{font-size:22px;font-weight:700}
+.table-wrap{overflow:auto;border:1px solid rgba(255,255,255,.08);border-radius:18px}
+table{width:100%;border-collapse:collapse;min-width:720px}
+th,td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
+th{position:sticky;top:0;background:#102432;color:#d0e0e7;font:11px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+td{color:#edf7fb}
+tr:nth-child(even) td{background:rgba(255,255,255,.015)}
+.chart-box{border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01))}
+.chart-svg{width:100%;height:auto;display:block}
+.axis{stroke:rgba(255,255,255,.10);stroke-width:1}
+.axis-text{fill:var(--muted);font:11px 'IBM Plex Mono',monospace}
+.legend{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+.legend-item{display:inline-flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid rgba(255,255,255,.07);border-radius:999px;background:rgba(255,255,255,.02);font:11px 'IBM Plex Mono',monospace;color:#d7e5eb}
+.sw{width:10px;height:10px;border-radius:999px}
+.empty{padding:28px 20px;text-align:center;color:var(--muted);font:12px 'IBM Plex Mono',monospace}
+.mono{font-family:'IBM Plex Mono',monospace}
+@media (max-width:980px){.workspace{grid-template-columns:1fr}.head-side{align-items:flex-start}.meta{text-align:left}.refresh-row{justify-content:flex-start}}
+@media (max-width:720px){.shell{padding:18px 14px 34px}header,.surface{padding:18px}.title{font-size:34px}.detail-title{font-size:27px}table{min-width:620px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="panel">
+    <div>
+      <div class="eyebrow">Operations - Live workbook view</div>
+      <div class="title">Pulse <span>Board</span></div>
+      <p class="subtitle">One live page for the presentation source workbook, with switchable table and chart views for every metric block.</p>
+    </div>
+    <div class="head-side">
+      <div class="status" id="statusBadge"><span class="dot"></span><span id="statusText">Loading</span></div>
+      <div class="meta">
+        <div>Source: <em id="sourceName">Loading...</em></div>
+        <div>Last build (SAST): <em id="generatedAt">Loading...</em></div>
+        <div>Workbook updated: <em id="sourceUpdated">Loading...</em></div>
+      </div>
+      <div class="refresh-row">
+        <button class="btn" id="refreshBtn" onclick="manualRefresh()">Refresh Now</button>
+        <span class="count" id="countdown">Next check in 60s</span>
+      </div>
+    </div>
+  </header>
+
+  <section class="grid summary" id="summaryGrid"></section>
+  <section class="grid dataset-grid" id="datasetGrid"></section>
+
+  <section class="grid workspace">
+    <div class="surface">
+      <div class="section-label" id="datasetCategory">Dataset</div>
+      <div class="detail-title" id="datasetTitle">Loading...</div>
+      <p class="detail-copy" id="datasetDescription"></p>
+      <p class="note" id="datasetNote"></p>
+    </div>
+    <div class="grid fact-grid" id="factGrid"></div>
+  </section>
+
+  <section class="surface" style="margin-top:18px">
+    <div class="content-head">
+      <div class="content-title" id="contentTitle">Table View</div>
+      <div class="toggle">
+        <button class="btn active" id="tableBtn" onclick="setView('table')">Table</button>
+        <button class="btn" id="chartBtn" onclick="setView('chart')">Chart</button>
+      </div>
+    </div>
+    <div id="contentBody"></div>
+  </section>
+</div>
+
+<script>
+let dashboard;
+let selectedKey = '';
+let viewMode = 'table';
+let refreshBusy = false;
+let refreshTimer = null;
+let countdownTimer = null;
+let countdownValue = 60;
+
+function esc(value) {
+  return String(value ?? '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function fmt(value, format) {
+  if (value === null || value === undefined || value === '') return '-';
+  if (format === 'percent') return `${(Number(value) * 100).toFixed(Math.abs(Number(value)) < 0.1 ? 1 : 0)}%`;
+  if (format === 'integer') return Number(value).toLocaleString('en-ZA', { maximumFractionDigits: 0 });
+  if (format === 'decimal1') return Number(value).toLocaleString('en-ZA', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+  return esc(value);
+}
+
+function fmtDate(value) {
+  try {
+    return new Intl.DateTimeFormat('en-ZA', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZone: 'Africa/Johannesburg'
+    }).format(new Date(value));
+  } catch (error) {
+    return value || 'Unknown';
+  }
+}
+
+function datasetTone(tone) {
+  return ['good', 'warn', 'bad', 'info'].includes(tone) ? tone : 'info';
+}
+
+function getDataset() {
+  return dashboard && dashboard.datasets.find(item => item.key === selectedKey);
+}
+
+function setStatus(kind, label) {
+  const badge = document.getElementById('statusBadge');
+  badge.className = `status${kind ? ` ${kind}` : ''}`;
+  document.getElementById('statusText').textContent = label;
+}
+
+function updateCountdown() {
+  document.getElementById('countdown').textContent = refreshBusy ? 'Checking now...' : `Next check in ${countdownValue}s`;
+}
+
+function restartAutoRefresh() {
+  countdownValue = Number(dashboard?.refreshSeconds || 60);
+  updateCountdown();
+  if (countdownTimer) clearInterval(countdownTimer);
+  if (refreshTimer) clearInterval(refreshTimer);
+  countdownTimer = setInterval(() => {
+    countdownValue = Math.max(0, countdownValue - 1);
+    updateCountdown();
+  }, 1000);
+  refreshTimer = setInterval(() => refreshData(false), (dashboard?.refreshSeconds || 60) * 1000);
+}
+
+function setRefreshBusy(isBusy) {
+  refreshBusy = isBusy;
+  const btn = document.getElementById('refreshBtn');
+  btn.disabled = isBusy;
+  btn.textContent = isBusy ? 'Refreshing...' : 'Refresh Now';
+  updateCountdown();
+}
+
+function setView(mode) {
+  viewMode = mode;
+  document.getElementById('tableBtn').classList.toggle('active', mode === 'table');
+  document.getElementById('chartBtn').classList.toggle('active', mode === 'chart');
+  document.getElementById('contentTitle').textContent = mode === 'table' ? 'Table View' : 'Chart View';
+  renderContent();
+}
+
+function setDataset(key) {
+  selectedKey = key;
+  renderDatasets();
+  renderDetail();
+  renderContent();
+}
+
+function renderSummary() {
+  const html = (dashboard.summaryCards || []).map(card => `
+    <article class="stat ${datasetTone(card.tone)}">
+      <div class="k">${esc(card.label)}</div>
+      <div class="v">${esc(card.value)}</div>
+      <div class="d">${esc(card.detail)}</div>
+    </article>
+  `).join('');
+  document.getElementById('summaryGrid').innerHTML = html;
+}
+
+function renderDatasets() {
+  const html = (dashboard.datasets || []).map(item => `
+    <article class="dataset-card ${item.key === selectedKey ? 'active' : ''}" onclick="setDataset('${esc(item.key)}')">
+      <div class="dataset-top">
+        <div>
+          <div class="dataset-cat">${esc(item.category)}</div>
+          <div class="dataset-name">${esc(item.label)}</div>
+        </div>
+      </div>
+      <div class="dataset-main">${esc(item.headlineValue || '-')}</div>
+      <div class="dataset-detail">${esc(item.headlineDetail || '')}</div>
+    </article>
+  `).join('');
+  document.getElementById('datasetGrid').innerHTML = html;
+}
+
+function renderDetail() {
+  const dataset = getDataset();
+  if (!dataset) return;
+  document.getElementById('datasetCategory').textContent = dataset.category || 'Dataset';
+  document.getElementById('datasetTitle').textContent = dataset.label || '';
+  document.getElementById('datasetDescription').textContent = dataset.description || '';
+  document.getElementById('datasetNote').textContent = dataset.note || '';
+  document.getElementById('factGrid').innerHTML = (dataset.facts || []).map(item => `
+    <article class="fact">
+      <div class="k">${esc(item.label)}</div>
+      <div class="v">${esc(item.value)}</div>
+    </article>
+  `).join('');
+}
+
+function renderTable(dataset) {
+  const cols = dataset.table?.columns || [];
+  const rows = dataset.table?.rows || [];
+  if (!cols.length || !rows.length) return '<div class="empty">No table data available yet.</div>';
+  const head = cols.map(col => `<th>${esc(col.label)}</th>`).join('');
+  const body = rows.map(row => `<tr>${cols.map(col => `<td>${fmt(row[col.key], col.format)}</td>`).join('')}</tr>`).join('');
+  return `<div class="table-wrap"><table><thead><tr>${head}</tr></thead><tbody>${body}</tbody></table></div>`;
+}
+
+function axisTicks(maxValue, count) {
+  const safeMax = maxValue > 0 ? maxValue : 1;
+  return Array.from({ length: count + 1 }, (_, index) => safeMax * index / count);
+}
+
+function renderLineChart(chart) {
+  const labels = chart.labels || [];
+  const series = chart.series || [];
+  if (!labels.length || !series.length) return '<div class="empty">No chart data available yet.</div>';
+  const width = 1100;
+  const height = 420;
+  const margin = { top: 28, right: 22, bottom: 72, left: 64 };
+  const plotWidth = width - margin.left - margin.right;
+  const plotHeight = height - margin.top - margin.bottom;
+  const values = series.flatMap(item => item.values.filter(value => value !== null && value !== undefined));
+  const maxValue = Math.max(...values, 1);
+  const xPos = index => margin.left + (labels.length === 1 ? plotWidth / 2 : (plotWidth * index) / Math.max(labels.length - 1, 1));
+  const yPos = value => margin.top + plotHeight - (plotHeight * value / maxValue);
+  const ticks = axisTicks(maxValue, 4);
+  const grid = ticks.map(tick => {
+    const y = yPos(tick);
+    return `<line class="axis" x1="${margin.left}" y1="${y}" x2="${width - margin.right}" y2="${y}"></line>
+      <text class="axis-text" x="${margin.left - 12}" y="${y + 4}" text-anchor="end">${fmt(tick, series[0].format)}</text>`;
+  }).join('');
+  const xLabels = labels.map((label, index) => `<text class="axis-text" x="${xPos(index)}" y="${height - 26}" text-anchor="middle">${esc(label)}</text>`).join('');
+  const lines = series.map(item => {
+    let path = '';
+    item.values.forEach((value, index) => {
+      if (value === null || value === undefined) {
+        return;
+      }
+      const command = path ? 'L' : 'M';
+      path += `${command}${xPos(index)},${yPos(value)} `;
+    });
+    const dots = item.values.map((value, index) => {
+      if (value === null || value === undefined) return '';
+      return `<circle cx="${xPos(index)}" cy="${yPos(value)}" r="4.5" fill="${item.color}"></circle>`;
+    }).join('');
+    return `<path d="${path.trim()}" fill="none" stroke="${item.color}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"></path>${dots}`;
+  }).join('');
+  const legend = series.map(item => `<div class="legend-item"><span class="sw" style="background:${item.color}"></span>${esc(item.name)}</div>`).join('');
+  return `<div class="chart-box"><svg class="chart-svg" viewBox="0 0 ${width} ${height}">
+    ${grid}
+    <line class="axis" x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}"></line>
+    ${lines}
+    ${xLabels}
+  </svg><div class="legend">${legend}</div></div>`;
+}
+
+function renderBarChart(chart) {
+  const labels = chart.labels || [];
+  const series = chart.series || [];
+  if (!labels.length || !series.length) return '<div class="empty">No chart data available yet.</div>';
+  const width = 1100;
+  const height = 430;
+  const margin = { top: 24, right: 18, bottom: 74, left: 64 };
+  const plotWidth = width - margin.left - margin.right;
+  const plotHeight = height - margin.top - margin.bottom;
+  const values = series.flatMap(item => item.values.filter(value => value !== null && value !== undefined));
+  const maxValue = Math.max(...values, 1);
+  const groupWidth = plotWidth / Math.max(labels.length, 1);
+  const barWidth = Math.min(26, (groupWidth - 18) / Math.max(series.length, 1));
+  const ticks = axisTicks(maxValue, 4);
+  const grid = ticks.map(tick => {
+    const y = margin.top + plotHeight - (plotHeight * tick / maxValue);
+    return `<line class="axis" x1="${margin.left}" y1="${y}" x2="${width - margin.right}" y2="${y}"></line>
+      <text class="axis-text" x="${margin.left - 12}" y="${y + 4}" text-anchor="end">${fmt(tick, series[0].format)}</text>`;
+  }).join('');
+  const bars = labels.map((label, groupIndex) => {
+    const xStart = margin.left + groupIndex * groupWidth + 10;
+    const rects = series.map((item, seriesIndex) => {
+      const value = item.values[groupIndex];
+      if (value === null || value === undefined) return '';
+      const barHeight = plotHeight * value / maxValue;
+      const x = xStart + seriesIndex * (barWidth + 6);
+      const y = margin.top + plotHeight - barHeight;
+      return `<rect x="${x}" y="${y}" width="${barWidth}" height="${barHeight}" rx="6" fill="${item.color}"></rect>`;
+    }).join('');
+    const lx = xStart + ((series.length * (barWidth + 6) - 6) / 2);
+    return `${rects}<text class="axis-text" x="${lx}" y="${height - 26}" text-anchor="middle">${esc(label)}</text>`;
+  }).join('');
+  const legend = series.map(item => `<div class="legend-item"><span class="sw" style="background:${item.color}"></span>${esc(item.name)}</div>`).join('');
+  return `<div class="chart-box"><svg class="chart-svg" viewBox="0 0 ${width} ${height}">
+    ${grid}
+    <line class="axis" x1="${margin.left}" y1="${height - margin.bottom}" x2="${width - margin.right}" y2="${height - margin.bottom}"></line>
+    ${bars}
+  </svg><div class="legend">${legend}</div></div>`;
+}
+
+function polar(cx, cy, radius, angle) {
+  const rad = (angle - 90) * Math.PI / 180;
+  return { x: cx + radius * Math.cos(rad), y: cy + radius * Math.sin(rad) };
+}
+
+function arcPath(cx, cy, radius, startAngle, endAngle) {
+  const start = polar(cx, cy, radius, endAngle);
+  const end = polar(cx, cy, radius, startAngle);
+  const largeArc = endAngle - startAngle <= 180 ? 0 : 1;
+  return `M ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 0 ${end.x} ${end.y}`;
+}
+
+function renderDonutChart(chart) {
+  const series = chart.series || [];
+  if (!series.length) return '<div class="empty">No chart data available yet.</div>';
+  const total = series.reduce((sum, item) => sum + (Number(item.value) || 0), 0) || 1;
+  let angle = 0;
+  const cx = 240;
+  const cy = 210;
+  const radius = 118;
+  const paths = series.map(item => {
+    const slice = (Number(item.value) || 0) / total * 360;
+    const path = `<path d="${arcPath(cx, cy, radius, angle, angle + slice)}" fill="none" stroke="${item.color}" stroke-width="42" stroke-linecap="butt"></path>`;
+    angle += slice;
+    return path;
+  }).join('');
+  const legend = series.map(item => `
+    <div class="legend-item">
+      <span class="sw" style="background:${item.color}"></span>
+      <span>${esc(item.name)} <strong class="mono">${fmt(item.value, 'integer')}</strong> <span class="mono">(${fmt(item.share, 'percent')})</span></span>
+    </div>
+  `).join('');
+  return `<div class="chart-box"><svg class="chart-svg" viewBox="0 0 480 420">
+    <circle cx="${cx}" cy="${cy}" r="${radius}" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="42"></circle>
+    ${paths}
+    <circle cx="${cx}" cy="${cy}" r="76" fill="#102432"></circle>
+    <text x="${cx}" y="${cy - 8}" text-anchor="middle" fill="#dbeaf0" font-family="IBM Plex Mono" font-size="11">TOTAL PICKED</text>
+    <text x="${cx}" y="${cy + 26}" text-anchor="middle" fill="#fff" font-family="Fraunces" font-size="34">${fmt(total, 'integer')}</text>
+  </svg><div class="legend">${legend}</div></div>`;
+}
+
+function renderChart(dataset) {
+  const chart = dataset.chart || {};
+  if (chart.kind === 'bar') return renderBarChart(chart);
+  if (chart.kind === 'donut') return renderDonutChart(chart);
+  return renderLineChart(chart);
+}
+
+function renderContent() {
+  const dataset = getDataset();
+  if (!dataset) return;
+  document.getElementById('contentBody').innerHTML = viewMode === 'table' ? renderTable(dataset) : renderChart(dataset);
+}
+
+async function refreshData(isManual) {
+  setRefreshBusy(true);
+  if (isManual) setStatus('', 'Refreshing');
+  try {
+    const response = await fetch(`dashboard_data.json?ts=${Date.now()}`, { cache: 'no-store' });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    dashboard = await response.json();
+    document.getElementById('sourceName').textContent = dashboard.sourceName || 'Unknown';
+    document.getElementById('generatedAt').textContent = fmtDate(dashboard.generatedAt);
+    document.getElementById('sourceUpdated').textContent = fmtDate(dashboard.sourceModifiedAt);
+    if (!selectedKey || !dashboard.datasets.some(item => item.key === selectedKey)) {
+      selectedKey = dashboard.datasets?.[0]?.key || '';
+    }
+    const ageMs = Date.now() - new Date(dashboard.generatedAt).getTime();
+    if (ageMs > 15 * 60 * 1000) setStatus('warn', 'Stale');
+    else setStatus('', 'Live');
+    renderSummary();
+    renderDatasets();
+    renderDetail();
+    renderContent();
+    restartAutoRefresh();
+  } catch (error) {
+    console.error(error);
+    setStatus('bad', 'Unavailable');
+    document.getElementById('contentBody').innerHTML = `<div class="empty">Could not load dashboard data. ${esc(error.message || error)}</div>`;
+  } finally {
+    setRefreshBusy(false);
+  }
+}
+
+function manualRefresh() {
+  refreshData(true);
+}
+
+refreshData(false);
+</script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+name: Update Operations Dashboard Data
+
+on:
+  workflow_dispatch:
+
+jobs:
+  refresh-dashboard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install --upgrade pip openpyxl
+
+      - name: Refresh dashboard JSON
+        env:
+          WORKBOOK_URL: ${{ secrets.WORKBOOK_URL }}
+        run: python scripts/refresh_dashboard_data.py --output dashboard_data.json
+
+      - name: Commit refreshed data
+        run: |
+          if git diff --quiet -- dashboard_data.json; then
+            echo "No dashboard data changes to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dashboard_data.json
+          git commit -m "Refresh operations dashboard data"
+          git push

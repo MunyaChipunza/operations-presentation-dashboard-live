@@ -1,0 +1,1370 @@
+{
+  "title": "Operations Live Dashboard",
+  "subtitle": "PPT Presentation Source",
+  "sourceName": "PPT presentation source data.xlsx",
+  "generatedAt": "2026-03-30T07:07:46.990184+00:00",
+  "sourceModifiedAt": "2026-03-30T07:07:06.804722+00:00",
+  "refreshSeconds": 60,
+  "summaryCards": [
+    {
+      "label": "Housekeeping",
+      "value": "49%",
+      "detail": "Week 11 92M reading",
+      "tone": "bad"
+    },
+    {
+      "label": "JHB Accuracy",
+      "value": "99.8%",
+      "detail": "Load 5 reading",
+      "tone": "good"
+    },
+    {
+      "label": "George Accuracy",
+      "value": "100.0%",
+      "detail": "Load 4 reading",
+      "tone": "good"
+    },
+    {
+      "label": "Dispatch Accuracy",
+      "value": "99.3%",
+      "detail": "Week 11 reading",
+      "tone": "warn"
+    },
+    {
+      "label": "Top SKU Picker",
+      "value": "1,616",
+      "detail": "Top picker: Endwell",
+      "tone": "good"
+    },
+    {
+      "label": "2026 Points YTD",
+      "value": "37.0",
+      "detail": "2026 year-to-date points",
+      "tone": "info"
+    }
+  ],
+  "datasets": [
+    {
+      "key": "housekeeping",
+      "label": "Housekeeping",
+      "category": "Quality",
+      "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
+      "headlineValue": "49%",
+      "headlineDetail": "Week 11 92M reading",
+      "tone": "bad",
+      "note": "Shows weekly housekeeping performance against the 2025 average benchmark.",
+      "facts": [
+        {
+          "label": "Current 92M",
+          "value": "49%"
+        },
+        {
+          "label": "2025 Avg 92M",
+          "value": "77%"
+        },
+        {
+          "label": "2025 Avg 12M",
+          "value": "57%"
+        },
+        {
+          "label": "Best Week",
+          "value": "Week 3 - 77%"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "period",
+            "label": "Period",
+            "format": "text"
+          },
+          {
+            "key": "score92m",
+            "label": "92M",
+            "format": "percent"
+          },
+          {
+            "key": "score12m",
+            "label": "12M",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "period": "2025 Avg",
+            "score92m": 0.77,
+            "score12m": 0.57
+          },
+          {
+            "period": "Week 1",
+            "score92m": 0.74,
+            "score12m": 0.0
+          },
+          {
+            "period": "Week 2",
+            "score92m": 0.76,
+            "score12m": 0.0
+          },
+          {
+            "period": "Week 3",
+            "score92m": 0.77,
+            "score12m": 0.73
+          },
+          {
+            "period": "Week 4",
+            "score92m": 0.75,
+            "score12m": 0.82
+          },
+          {
+            "period": "Week 5",
+            "score92m": 0.7,
+            "score12m": 0.77
+          },
+          {
+            "period": "Week 6",
+            "score92m": 0.71,
+            "score12m": 0.73
+          },
+          {
+            "period": "Week 7",
+            "score92m": 0.65,
+            "score12m": 0.0
+          },
+          {
+            "period": "Week 8",
+            "score92m": 0.69,
+            "score12m": 0.83
+          },
+          {
+            "period": "Week 9",
+            "score92m": 0.7,
+            "score12m": 0.55
+          },
+          {
+            "period": "Week 10",
+            "score92m": 0.67,
+            "score12m": 0.73
+          },
+          {
+            "period": "Week 11",
+            "score92m": 0.49,
+            "score12m": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "2025 Avg",
+          "Week 1",
+          "Week 2",
+          "Week 3",
+          "Week 4",
+          "Week 5",
+          "Week 6",
+          "Week 7",
+          "Week 8",
+          "Week 9",
+          "Week 10",
+          "Week 11"
+        ],
+        "series": [
+          {
+            "name": "92M",
+            "key": "score92m",
+            "format": "percent",
+            "color": "#48d6b8",
+            "values": [
+              0.77,
+              0.74,
+              0.76,
+              0.77,
+              0.75,
+              0.7,
+              0.71,
+              0.65,
+              0.69,
+              0.7,
+              0.67,
+              0.49
+            ]
+          },
+          {
+            "name": "12M",
+            "key": "score12m",
+            "format": "percent",
+            "color": "#ffb968",
+            "values": [
+              0.57,
+              0.0,
+              0.0,
+              0.73,
+              0.82,
+              0.77,
+              0.73,
+              0.0,
+              0.83,
+              0.55,
+              0.73,
+              null
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "container-jhb",
+      "label": "Container Accuracy JHB",
+      "category": "Accuracy",
+      "description": "Load-by-load accuracy readings for the Johannesburg container stream.",
+      "headlineValue": "99.8%",
+      "headlineDetail": "Load 5 reading",
+      "tone": "good",
+      "note": "Higher is better. Missing loads are left blank so the chart stays honest.",
+      "facts": [
+        {
+          "label": "Latest",
+          "value": "99.8%"
+        },
+        {
+          "label": "Average",
+          "value": "98.2%"
+        },
+        {
+          "label": "Best",
+          "value": "Load 1 - 100.0%"
+        },
+        {
+          "label": "Readings",
+          "value": "5"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "load",
+            "label": "Load",
+            "format": "text"
+          },
+          {
+            "key": "accuracy",
+            "label": "Accuracy",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "load": "Load 1",
+            "accuracy": 1.0
+          },
+          {
+            "load": "Load 2",
+            "accuracy": 0.9429
+          },
+          {
+            "load": "Load 3",
+            "accuracy": 1.0
+          },
+          {
+            "load": "Load 4",
+            "accuracy": 0.97
+          },
+          {
+            "load": "Load 5",
+            "accuracy": 0.9984
+          },
+          {
+            "load": "Load 6",
+            "accuracy": null
+          },
+          {
+            "load": "Load 7",
+            "accuracy": null
+          },
+          {
+            "load": "Load 8",
+            "accuracy": null
+          },
+          {
+            "load": "Load 9",
+            "accuracy": null
+          },
+          {
+            "load": "Load 10",
+            "accuracy": null
+          },
+          {
+            "load": "Load 11",
+            "accuracy": null
+          },
+          {
+            "load": "Load 12",
+            "accuracy": null
+          },
+          {
+            "load": "Load 13",
+            "accuracy": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "Load 1",
+          "Load 2",
+          "Load 3",
+          "Load 4",
+          "Load 5"
+        ],
+        "series": [
+          {
+            "name": "Accuracy",
+            "key": "accuracy",
+            "format": "percent",
+            "color": "#4ee3b9",
+            "values": [
+              1.0,
+              0.9429,
+              1.0,
+              0.97,
+              0.9984
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "container-george",
+      "label": "Container Accuracy George",
+      "category": "Accuracy",
+      "description": "Load-by-load accuracy readings for the George container stream.",
+      "headlineValue": "100.0%",
+      "headlineDetail": "Load 4 reading",
+      "tone": "good",
+      "note": "A shorter series today, but the same live refresh loop will grow it automatically.",
+      "facts": [
+        {
+          "label": "Latest",
+          "value": "100.0%"
+        },
+        {
+          "label": "Average",
+          "value": "98.0%"
+        },
+        {
+          "label": "Best",
+          "value": "Load 4 - 100.0%"
+        },
+        {
+          "label": "Readings",
+          "value": "4"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "load",
+            "label": "Load",
+            "format": "text"
+          },
+          {
+            "key": "accuracy",
+            "label": "Accuracy",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "load": "Load 1",
+            "accuracy": 0.938
+          },
+          {
+            "load": "Load 2",
+            "accuracy": 0.9917
+          },
+          {
+            "load": "Load 3",
+            "accuracy": 0.9912
+          },
+          {
+            "load": "Load 4",
+            "accuracy": 1.0
+          },
+          {
+            "load": "Load 5",
+            "accuracy": null
+          },
+          {
+            "load": "Load 6",
+            "accuracy": null
+          },
+          {
+            "load": "Load 7",
+            "accuracy": null
+          },
+          {
+            "load": "Load 8",
+            "accuracy": null
+          },
+          {
+            "load": "Load 9",
+            "accuracy": null
+          },
+          {
+            "load": "Load 10",
+            "accuracy": null
+          },
+          {
+            "load": "Load 11",
+            "accuracy": null
+          },
+          {
+            "load": "Load 12",
+            "accuracy": null
+          },
+          {
+            "load": "Load 13",
+            "accuracy": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "Load 1",
+          "Load 2",
+          "Load 3",
+          "Load 4"
+        ],
+        "series": [
+          {
+            "name": "Accuracy",
+            "key": "accuracy",
+            "format": "percent",
+            "color": "#6fb6ff",
+            "values": [
+              0.938,
+              0.9917,
+              0.9912,
+              1.0
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "urgent-orders",
+      "label": "Wholesaler Urgent Orders",
+      "category": "Exceptions",
+      "description": "Weekly urgent-order rate. Lower is healthier here.",
+      "headlineValue": "9.0%",
+      "headlineDetail": "Week 11 reading",
+      "tone": "bad",
+      "note": "This one flips the interpretation: the closer to zero, the better.",
+      "facts": [
+        {
+          "label": "Latest",
+          "value": "9.0%"
+        },
+        {
+          "label": "Average",
+          "value": "4.6%"
+        },
+        {
+          "label": "Best",
+          "value": "Week 2 - 0.0%"
+        },
+        {
+          "label": "Readings",
+          "value": "11"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "week",
+            "label": "Week",
+            "format": "text"
+          },
+          {
+            "key": "rate",
+            "label": "Urgent Rate",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "week": "Week 1",
+            "rate": 0.01
+          },
+          {
+            "week": "Week 2",
+            "rate": 0.0
+          },
+          {
+            "week": "Week 3",
+            "rate": 0.01
+          },
+          {
+            "week": "Week 4",
+            "rate": 0.04
+          },
+          {
+            "week": "Week 5",
+            "rate": 0.02
+          },
+          {
+            "week": "Week 6",
+            "rate": 0.06
+          },
+          {
+            "week": "Week 7",
+            "rate": 0.07
+          },
+          {
+            "week": "Week 8",
+            "rate": 0.07
+          },
+          {
+            "week": "Week 9",
+            "rate": 0.03
+          },
+          {
+            "week": "Week 10",
+            "rate": 0.11
+          },
+          {
+            "week": "Week 11",
+            "rate": 0.09
+          },
+          {
+            "week": "Week 12",
+            "rate": null
+          },
+          {
+            "week": "Week 13",
+            "rate": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "Week 1",
+          "Week 2",
+          "Week 3",
+          "Week 4",
+          "Week 5",
+          "Week 6",
+          "Week 7",
+          "Week 8",
+          "Week 9",
+          "Week 10",
+          "Week 11"
+        ],
+        "series": [
+          {
+            "name": "Urgent Rate",
+            "key": "rate",
+            "format": "percent",
+            "color": "#ff8a5b",
+            "values": [
+              0.01,
+              0.0,
+              0.01,
+              0.04,
+              0.02,
+              0.06,
+              0.07,
+              0.07,
+              0.03,
+              0.11,
+              0.09
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "dispatch-accuracy",
+      "label": "Dispatch Accuracy",
+      "category": "Accuracy",
+      "description": "Weekly dispatch accuracy performance.",
+      "headlineValue": "99.3%",
+      "headlineDetail": "Week 11 reading",
+      "tone": "warn",
+      "note": "A near-perfect trend, so the chart leans on fine-grained percentage labels.",
+      "facts": [
+        {
+          "label": "Latest",
+          "value": "99.3%"
+        },
+        {
+          "label": "Average",
+          "value": "99.7%"
+        },
+        {
+          "label": "Best",
+          "value": "Week 1 - 100.0%"
+        },
+        {
+          "label": "Readings",
+          "value": "11"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "week",
+            "label": "Week",
+            "format": "text"
+          },
+          {
+            "key": "accuracy",
+            "label": "Accuracy",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "week": "Week 1",
+            "accuracy": 1.0
+          },
+          {
+            "week": "Week 2",
+            "accuracy": 1.0
+          },
+          {
+            "week": "Week 3",
+            "accuracy": 0.996
+          },
+          {
+            "week": "Week 4",
+            "accuracy": 1.0
+          },
+          {
+            "week": "Week 5",
+            "accuracy": 0.9907
+          },
+          {
+            "week": "Week 6",
+            "accuracy": 1.0
+          },
+          {
+            "week": "Week 7",
+            "accuracy": 1.0
+          },
+          {
+            "week": "Week 8",
+            "accuracy": 0.9927
+          },
+          {
+            "week": "Week 9",
+            "accuracy": 0.996
+          },
+          {
+            "week": "Week 10",
+            "accuracy": 0.9932
+          },
+          {
+            "week": "Week 11",
+            "accuracy": 0.9929
+          },
+          {
+            "week": "Week 12",
+            "accuracy": null
+          },
+          {
+            "week": "Week 13",
+            "accuracy": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "Week 1",
+          "Week 2",
+          "Week 3",
+          "Week 4",
+          "Week 5",
+          "Week 6",
+          "Week 7",
+          "Week 8",
+          "Week 9",
+          "Week 10",
+          "Week 11"
+        ],
+        "series": [
+          {
+            "name": "Accuracy",
+            "key": "accuracy",
+            "format": "percent",
+            "color": "#19d3f3",
+            "values": [
+              1.0,
+              1.0,
+              0.996,
+              1.0,
+              0.9907,
+              1.0,
+              1.0,
+              0.9927,
+              0.996,
+              0.9932,
+              0.9929
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "sku-share",
+      "label": "SKU Picked by Picker",
+      "category": "Ranking",
+      "description": "Team contribution split across the current SKU picker roster.",
+      "headlineValue": "1,616",
+      "headlineDetail": "Top picker: Endwell",
+      "tone": "good",
+      "note": "Donut view shows share concentration while the table keeps the exact counts visible.",
+      "facts": [
+        {
+          "label": "Top Picker",
+          "value": "Endwell - 1,616"
+        },
+        {
+          "label": "Top Share",
+          "value": "-"
+        },
+        {
+          "label": "Total Picked",
+          "value": "4,214"
+        },
+        {
+          "label": "Roster Size",
+          "value": "5"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "picker",
+            "label": "Picker",
+            "format": "text"
+          },
+          {
+            "key": "count",
+            "label": "SKU Count",
+            "format": "integer"
+          },
+          {
+            "key": "share",
+            "label": "Share",
+            "format": "percent"
+          }
+        ],
+        "rows": [
+          {
+            "picker": "Ali",
+            "count": 140.0,
+            "share": null
+          },
+          {
+            "picker": "Angelo",
+            "count": 94.0,
+            "share": null
+          },
+          {
+            "picker": "Charlie",
+            "count": 1199.0,
+            "share": null
+          },
+          {
+            "picker": "Bongani",
+            "count": 1165.0,
+            "share": null
+          },
+          {
+            "picker": "Endwell",
+            "count": 1616.0,
+            "share": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "donut",
+        "series": [
+          {
+            "name": "Ali",
+            "value": 140.0,
+            "share": null,
+            "color": "#ff8a5b"
+          },
+          {
+            "name": "Angelo",
+            "value": 94.0,
+            "share": null,
+            "color": "#26d0ce"
+          },
+          {
+            "name": "Charlie",
+            "value": 1199.0,
+            "share": null,
+            "color": "#ffc857"
+          },
+          {
+            "name": "Bongani",
+            "value": 1165.0,
+            "share": null,
+            "color": "#8ddf6e"
+          },
+          {
+            "name": "Endwell",
+            "value": 1616.0,
+            "share": null,
+            "color": "#8a7dff"
+          }
+        ]
+      }
+    },
+    {
+      "key": "sku-monthly",
+      "label": "SKU Picked by Month",
+      "category": "Volume",
+      "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
+      "headlineValue": "12,007",
+      "headlineDetail": "2026 YTD picked volume",
+      "tone": "good",
+      "note": "Grouped bars keep the three yearly curves easy to compare month by month.",
+      "facts": [
+        {
+          "label": "2026 YTD",
+          "value": "12,007"
+        },
+        {
+          "label": "Latest 2026 Month",
+          "value": "Mar - 4,214"
+        },
+        {
+          "label": "Best 2025 Month",
+          "value": "Jun - 13,634"
+        },
+        {
+          "label": "Months Tracked",
+          "value": "12"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "month",
+            "label": "Month",
+            "format": "text"
+          },
+          {
+            "key": "y2024",
+            "label": "2024",
+            "format": "integer"
+          },
+          {
+            "key": "y2025",
+            "label": "2025",
+            "format": "integer"
+          },
+          {
+            "key": "y2026",
+            "label": "2026",
+            "format": "integer"
+          }
+        ],
+        "rows": [
+          {
+            "month": "Jan",
+            "y2024": 2289.0,
+            "y2025": 6124.0,
+            "y2026": 3242.0
+          },
+          {
+            "month": "Feb",
+            "y2024": 4016.0,
+            "y2025": 4950.0,
+            "y2026": 4551.0
+          },
+          {
+            "month": "Mar",
+            "y2024": 2233.0,
+            "y2025": 6414.0,
+            "y2026": 4214.0
+          },
+          {
+            "month": "Apr",
+            "y2024": 5853.0,
+            "y2025": 8719.0,
+            "y2026": null
+          },
+          {
+            "month": "May",
+            "y2024": 7739.0,
+            "y2025": 12562.0,
+            "y2026": null
+          },
+          {
+            "month": "Jun",
+            "y2024": 4899.0,
+            "y2025": 13634.0,
+            "y2026": null
+          },
+          {
+            "month": "Jul",
+            "y2024": 8621.0,
+            "y2025": 13275.0,
+            "y2026": null
+          },
+          {
+            "month": "Aug",
+            "y2024": 6219.0,
+            "y2025": 8479.0,
+            "y2026": null
+          },
+          {
+            "month": "Sep",
+            "y2024": 3741.0,
+            "y2025": 5453.0,
+            "y2026": null
+          },
+          {
+            "month": "Oct",
+            "y2024": 3941.0,
+            "y2025": 5293.0,
+            "y2026": null
+          },
+          {
+            "month": "Nov",
+            "y2024": 2973.0,
+            "y2025": 4152.0,
+            "y2026": null
+          },
+          {
+            "month": "Dec",
+            "y2024": 1199.0,
+            "y2025": 2067.0,
+            "y2026": null
+          }
+        ]
+      },
+      "chart": {
+        "kind": "bar",
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        "series": [
+          {
+            "name": "2024",
+            "format": "integer",
+            "color": "#4fb0ff",
+            "values": [
+              2289.0,
+              4016.0,
+              2233.0,
+              5853.0,
+              7739.0,
+              4899.0,
+              8621.0,
+              6219.0,
+              3741.0,
+              3941.0,
+              2973.0,
+              1199.0
+            ]
+          },
+          {
+            "name": "2025",
+            "format": "integer",
+            "color": "#ffb85c",
+            "values": [
+              6124.0,
+              4950.0,
+              6414.0,
+              8719.0,
+              12562.0,
+              13634.0,
+              13275.0,
+              8479.0,
+              5453.0,
+              5293.0,
+              4152.0,
+              2067.0
+            ]
+          },
+          {
+            "name": "2026",
+            "format": "integer",
+            "color": "#4ee3b9",
+            "values": [
+              3242.0,
+              4551.0,
+              4214.0,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "key": "points-yoy",
+      "label": "Liseo Points YOY",
+      "category": "Year over Year",
+      "description": "Monthly points history across six years with a total-per-month column kept in the table view.",
+      "headlineValue": "37.0",
+      "headlineDetail": "2026 year-to-date points",
+      "tone": "good",
+      "note": "The line view exposes long-term seasonality and where 2026 is still building up.",
+      "facts": [
+        {
+          "label": "2026 YTD",
+          "value": "37.0"
+        },
+        {
+          "label": "2025 Total",
+          "value": "322"
+        },
+        {
+          "label": "Peak Month",
+          "value": "May 2023 - 72.0"
+        },
+        {
+          "label": "Tracked Years",
+          "value": "2021-2026"
+        }
+      ],
+      "table": {
+        "columns": [
+          {
+            "key": "month",
+            "label": "Month",
+            "format": "text"
+          },
+          {
+            "key": "y2021",
+            "label": "2021",
+            "format": "decimal1"
+          },
+          {
+            "key": "y2022",
+            "label": "2022",
+            "format": "decimal1"
+          },
+          {
+            "key": "y2023",
+            "label": "2023",
+            "format": "decimal1"
+          },
+          {
+            "key": "y2024",
+            "label": "2024",
+            "format": "decimal1"
+          },
+          {
+            "key": "y2025",
+            "label": "2025",
+            "format": "decimal1"
+          },
+          {
+            "key": "y2026",
+            "label": "2026",
+            "format": "decimal1"
+          },
+          {
+            "key": "total",
+            "label": "Total",
+            "format": "decimal1"
+          }
+        ],
+        "rows": [
+          {
+            "month": "Jan",
+            "y2021": 0.0,
+            "y2022": 11.0,
+            "y2023": 0.0,
+            "y2024": 6.0,
+            "y2025": 17.0,
+            "y2026": 14.0,
+            "total": 48.0
+          },
+          {
+            "month": "Feb",
+            "y2021": 0.0,
+            "y2022": 14.0,
+            "y2023": 8.0,
+            "y2024": 24.0,
+            "y2025": 26.0,
+            "y2026": 12.0,
+            "total": 84.0
+          },
+          {
+            "month": "Mar",
+            "y2021": 0.0,
+            "y2022": 41.0,
+            "y2023": 34.0,
+            "y2024": 29.0,
+            "y2025": 33.0,
+            "y2026": 32.5,
+            "total": 148.0
+          },
+          {
+            "month": "Apr",
+            "y2021": 9.0,
+            "y2022": 46.0,
+            "y2023": 21.0,
+            "y2024": 27.0,
+            "y2025": 16.0,
+            "y2026": 0.0,
+            "total": 119.0
+          },
+          {
+            "month": "May",
+            "y2021": 37.0,
+            "y2022": 42.0,
+            "y2023": 72.0,
+            "y2024": 23.0,
+            "y2025": 55.0,
+            "y2026": 0.0,
+            "total": 229.0
+          },
+          {
+            "month": "Jun",
+            "y2021": 35.0,
+            "y2022": 34.0,
+            "y2023": 55.0,
+            "y2024": 59.0,
+            "y2025": 38.0,
+            "y2026": 0.0,
+            "total": 221.0
+          },
+          {
+            "month": "Jul",
+            "y2021": 57.0,
+            "y2022": 27.0,
+            "y2023": 46.0,
+            "y2024": 53.0,
+            "y2025": 41.0,
+            "y2026": 0.0,
+            "total": 224.0
+          },
+          {
+            "month": "Aug",
+            "y2021": 46.0,
+            "y2022": 33.0,
+            "y2023": 26.0,
+            "y2024": 18.0,
+            "y2025": 22.0,
+            "y2026": 0.0,
+            "total": 145.0
+          },
+          {
+            "month": "Sep",
+            "y2021": 26.0,
+            "y2022": 26.0,
+            "y2023": 28.0,
+            "y2024": 27.0,
+            "y2025": 47.0,
+            "y2026": 0.0,
+            "total": 154.0
+          },
+          {
+            "month": "Oct",
+            "y2021": 7.0,
+            "y2022": 21.0,
+            "y2023": 14.0,
+            "y2024": 20.0,
+            "y2025": 21.0,
+            "y2026": 0.0,
+            "total": 83.0
+          },
+          {
+            "month": "Nov",
+            "y2021": 19.0,
+            "y2022": 3.0,
+            "y2023": 14.0,
+            "y2024": 10.0,
+            "y2025": 6.0,
+            "y2026": 0.0,
+            "total": 52.0
+          },
+          {
+            "month": "Dec",
+            "y2021": 3.0,
+            "y2022": 0.0,
+            "y2023": 5.0,
+            "y2024": 13.0,
+            "y2025": 0.0,
+            "y2026": 0.0,
+            "total": 21.0
+          },
+          {
+            "month": "Total",
+            "y2021": 239.0,
+            "y2022": 298.0,
+            "y2023": 323.0,
+            "y2024": 309.0,
+            "y2025": 322.0,
+            "y2026": 37.0,
+            "total": 1528.0
+          }
+        ]
+      },
+      "chart": {
+        "kind": "line",
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun",
+          "Jul",
+          "Aug",
+          "Sep",
+          "Oct",
+          "Nov",
+          "Dec"
+        ],
+        "series": [
+          {
+            "name": "2021",
+            "format": "decimal1",
+            "color": "#4fb0ff",
+            "values": [
+              0.0,
+              0.0,
+              0.0,
+              9.0,
+              37.0,
+              35.0,
+              57.0,
+              46.0,
+              26.0,
+              7.0,
+              19.0,
+              3.0
+            ]
+          },
+          {
+            "name": "2022",
+            "format": "decimal1",
+            "color": "#ffc857",
+            "values": [
+              11.0,
+              14.0,
+              41.0,
+              46.0,
+              42.0,
+              34.0,
+              27.0,
+              33.0,
+              26.0,
+              21.0,
+              3.0,
+              0.0
+            ]
+          },
+          {
+            "name": "2023",
+            "format": "decimal1",
+            "color": "#ff8a5b",
+            "values": [
+              0.0,
+              8.0,
+              34.0,
+              21.0,
+              72.0,
+              55.0,
+              46.0,
+              26.0,
+              28.0,
+              14.0,
+              14.0,
+              5.0
+            ]
+          },
+          {
+            "name": "2024",
+            "format": "decimal1",
+            "color": "#9c8cff",
+            "values": [
+              6.0,
+              24.0,
+              29.0,
+              27.0,
+              23.0,
+              59.0,
+              53.0,
+              18.0,
+              27.0,
+              20.0,
+              10.0,
+              13.0
+            ]
+          },
+          {
+            "name": "2025",
+            "format": "decimal1",
+            "color": "#66e3a6",
+            "values": [
+              17.0,
+              26.0,
+              33.0,
+              16.0,
+              55.0,
+              38.0,
+              41.0,
+              22.0,
+              47.0,
+              21.0,
+              6.0,
+              0.0
+            ]
+          },
+          {
+            "name": "2026",
+            "format": "decimal1",
+            "color": "#19d3f3",
+            "values": [
+              14.0,
+              12.0,
+              32.5,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
