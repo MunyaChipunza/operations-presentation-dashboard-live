@@ -113,13 +113,13 @@ def has_dashboard_changes(output_path: Path) -> bool:
 
 
 def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_path: Path, commit_message: str) -> bool:
-    refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
-
     if not is_git_repo():
+        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
         print("Dashboard data refreshed locally. No Git repository detected, so nothing was pushed.")
         return False
 
     if not has_origin():
+        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
         print("Dashboard data refreshed locally. No origin remote is configured yet.")
         return False
 
