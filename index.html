@@ -8,16 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500;700&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#09090b;--bg2:#15161b;--card:#191b20;--card2:#111217;--line:#373037;--text:#f5efeb;--muted:#b8b1a8;--teal:#39ff88;--cyan:#00cfff;--amber:#ffb347;--coral:#ff6b74;--violet:#8b5cf6;--lime:#39ff88;--shadow:0 20px 50px rgba(0,0,0,.36)}
+:root{--bg:#06070a;--bg2:#0f1620;--card:#131a24;--card2:#0d1118;--line:#243244;--text:#f5efeb;--muted:#bfc7d2;--teal:#38f2b3;--cyan:#54d8ff;--amber:#ffbf5f;--coral:#ff6b74;--violet:#8b5cf6;--lime:#7dff8a;--shadow:0 20px 50px rgba(0,0,0,.36)}
 *{box-sizing:border-box;margin:0;padding:0}
-body{min-height:100vh;background:radial-gradient(circle at top left,rgba(255,107,116,.18),transparent 30%),radial-gradient(circle at top right,rgba(255,179,71,.10),transparent 26%),linear-gradient(180deg,#070709,#111114 55%,#09090b);color:var(--text);font:14px/1.5 'DM Sans',sans-serif}
+body{min-height:100vh;background:radial-gradient(circle at top left,rgba(84,216,255,.18),transparent 28%),radial-gradient(circle at top right,rgba(123,104,255,.16),transparent 26%),radial-gradient(circle at bottom right,rgba(255,126,147,.14),transparent 32%),linear-gradient(180deg,#05070a,#0c1017 54%,#06070a);color:var(--text);font:14px/1.5 'DM Sans',sans-serif}
 .shell{max-width:1480px;margin:0 auto;padding:26px 22px 40px}
-.panel,.stat,.dataset-card,.fact,.surface{background:linear-gradient(180deg,rgba(22,22,26,.98),rgba(12,12,15,.98));border:1px solid rgba(255,255,255,.08);border-radius:20px;box-shadow:var(--shadow)}
-header{padding:24px 26px;background:linear-gradient(135deg,rgba(7,7,9,.98),rgba(63,10,19,.96) 58%,rgba(128,14,33,.92));display:flex;justify-content:space-between;gap:18px;align-items:flex-end;flex-wrap:wrap;position:relative;overflow:hidden}
-header:after{content:"";position:absolute;right:-80px;top:-70px;width:280px;height:280px;background:radial-gradient(circle,rgba(255,107,116,.22),transparent 70%);pointer-events:none}
+.panel,.stat,.dataset-card,.fact,.surface{background:linear-gradient(180deg,rgba(15,20,29,.98),rgba(8,12,18,.98));border:1px solid rgba(150,205,255,.12);border-radius:20px;box-shadow:var(--shadow)}
+header{padding:24px 26px;background:linear-gradient(135deg,rgba(7,10,15,.98),rgba(16,44,66,.96) 34%,rgba(81,33,78,.92) 68%,rgba(164,71,104,.88));display:flex;justify-content:space-between;gap:18px;align-items:flex-end;flex-wrap:wrap;position:relative;overflow:hidden}
+header:after{content:"";position:absolute;right:-80px;top:-70px;width:280px;height:280px;background:radial-gradient(circle,rgba(84,216,255,.18),transparent 70%);pointer-events:none}
 .eyebrow{font:11px 'DM Mono',monospace;letter-spacing:2px;text-transform:uppercase;color:#d1c5bc;margin-bottom:8px}
 .title{font:48px/1 'Bebas Neue',sans-serif;letter-spacing:2px}
-.title span{color:var(--amber)}
+  .title span{color:var(--cyan)}
 .subtitle{margin-top:8px;color:#d2e5eb;max-width:620px}
 .head-side{display:flex;flex-direction:column;align-items:flex-end;gap:12px;position:relative;z-index:1}
 .status{display:inline-flex;align-items:center;gap:10px;padding:8px 14px;border-radius:999px;border:1px solid rgba(57,255,136,.45);background:rgba(57,255,136,.12);font:600 11px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase}
@@ -26,16 +26,18 @@ header:after{content:"";position:absolute;right:-80px;top:-70px;width:280px;heig
 .dot{width:9px;height:9px;border-radius:50%;background:currentColor;box-shadow:0 0 0 0 rgba(255,255,255,.16);animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{0%{transform:scale(1);opacity:1}50%{transform:scale(1.25);opacity:.5}100%{transform:scale(1);opacity:1}}
 .meta{font:11px/1.8 'DM Mono',monospace;color:#eadcd2;text-align:right}
-.meta em{font-style:normal;color:var(--amber)}
+  .meta em{font-style:normal;color:var(--cyan)}
 .refresh-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
 .btns,.toggle{display:flex;gap:8px;flex-wrap:wrap}
 button{border:none;cursor:pointer}
-.btn{padding:10px 14px;border-radius:12px;background:linear-gradient(135deg,rgba(255,107,116,.22),rgba(255,179,71,.14));border:1px solid rgba(255,107,116,.36);color:#fff;font:600 12px 'DM Mono',monospace;transition:.15s}
-.btn:hover{transform:translateY(-1px);border-color:rgba(255,189,89,.5)}
-.btn.active{background:linear-gradient(135deg,var(--amber),#ffd891);color:#14202a;border-color:#ffd891}
+.btn{padding:10px 14px;border-radius:12px;background:linear-gradient(135deg,rgba(84,216,255,.18),rgba(139,92,246,.14));border:1px solid rgba(84,216,255,.24);color:#fff;font:600 12px 'DM Mono',monospace;transition:.15s}
+.btn:hover{transform:translateY(-1px);border-color:rgba(255,191,95,.45)}
+  .btn.active{background:linear-gradient(135deg,#61ecff,#7b68ff 56%,#ff7e93);color:#fff;border-color:rgba(255,255,255,.48)}
 .btn[disabled]{opacity:.65;cursor:wait;transform:none}
 .count{font:11px 'DM Mono',monospace;color:#d0e2e8}
 .grid{display:grid;gap:18px;margin-top:22px}
+.summary-intro{margin-top:22px;display:flex;justify-content:flex-start}
+  .summary-pill-wide{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;border:1px solid rgba(97,236,255,.28);background:linear-gradient(135deg,rgba(97,236,255,.16),rgba(123,104,255,.14),rgba(255,126,147,.14));font:11px 'DM Mono',monospace;letter-spacing:1.2px;text-transform:uppercase;color:#f2f8ff}
 .summary{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}
 .selector-shell{margin-top:22px;padding:18px 22px;display:flex;flex-direction:column;gap:14px}
 .selector-actions{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
@@ -62,8 +64,6 @@ button{border:none;cursor:pointer}
 .section-note{margin-top:14px;color:#c1b7ae;font:12px/1.6 'DM Mono',monospace}
 .section-body{margin-top:16px}
 .stat{padding:18px}
-.stat-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
-.stat-pill{display:inline-flex;align-items:center;padding:6px 9px;border-radius:999px;border:1px solid rgba(255,255,255,.08);background:rgba(255,255,255,.04);font:10px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:#d9e7ed;white-space:nowrap}
 .k{font:11px 'DM Mono',monospace;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:9px}
 .v{font-size:32px;font-weight:700;line-height:1}
 .d{display:none}
@@ -72,14 +72,14 @@ button{border:none;cursor:pointer}
 .dataset-card{padding:10px 14px;cursor:pointer;transition:.15s;position:relative;overflow:hidden;border-radius:12px}
 .dataset-card:after{display:none}
 .dataset-card:hover,.dataset-card.active{transform:translateY(-1px);border-color:rgba(255,255,255,.16)}
-.dataset-card.active{background:linear-gradient(135deg,var(--amber),#ffd891);color:#14202a;border-color:#ffd891}
+  .dataset-card.active{background:linear-gradient(135deg,#61ecff,#7b68ff 56%,#ff7e93);color:#fff;border-color:rgba(255,255,255,.42)}
 .dataset-top{display:block}
 .dataset-cat,.dataset-main,.dataset-detail{display:none}
 .dataset-name{font:600 12px 'DM Mono',monospace;letter-spacing:.8px;text-transform:uppercase;line-height:1.2;margin:0}
-.dataset-card.active .dataset-name{color:#14202a}
+  .dataset-card.active .dataset-name{color:#fff}
 .workspace{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(300px,.8fr);gap:18px}
 .surface{padding:22px}
-.section-label{font:11px 'DM Mono',monospace;letter-spacing:1.4px;text-transform:uppercase;color:var(--amber);margin-bottom:10px}
+  .section-label{font:11px 'DM Mono',monospace;letter-spacing:1.4px;text-transform:uppercase;color:var(--cyan);margin-bottom:10px}
 .detail-title{font:40px/1 'Bebas Neue',sans-serif;letter-spacing:1px}
 .detail-copy{color:#d5e4ea;margin-top:9px;max-width:850px}
 .note{margin-top:10px;color:var(--muted);font:12px/1.6 'DM Mono',monospace}
@@ -91,14 +91,14 @@ button{border:none;cursor:pointer}
 .table-wrap{overflow:auto;border:1px solid rgba(255,255,255,.08);border-radius:18px}
 table{width:100%;border-collapse:collapse;min-width:720px}
 th,td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.06);text-align:left}
-th{position:sticky;top:0;background:#14161c;color:#d0e0e7;font:11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+th{position:sticky;top:0;background:#101722;color:#d0e0e7;font:11px 'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px}
 td{color:#edf7fb}
 tr:nth-child(even) td{background:rgba(255,255,255,.015)}
 th:first-child,td:first-child{position:sticky;left:0;z-index:1}
 th:first-child{background:#14161c;z-index:3}
 td:first-child{background:#111217}
 tr:nth-child(even) td:first-child{background:#17191f}
-.chart-box{border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:16px;background:linear-gradient(180deg,rgba(255,255,255,.02),rgba(255,255,255,.01))}
+.chart-box{border:1px solid rgba(150,205,255,.12);border-radius:18px;padding:16px;background:linear-gradient(180deg,rgba(84,216,255,.04),rgba(255,255,255,.01))}
 .chart-svg{width:100%;height:auto;display:block}
 .axis{stroke:rgba(255,255,255,.10);stroke-width:1}
 .axis-text{fill:var(--muted);font:11px 'DM Mono',monospace}
@@ -132,7 +132,10 @@ tr:nth-child(even) td:first-child{background:#17191f}
       </div>
     </div>
   </header>
-
+  
+  <section class="summary-intro">
+    <div class="summary-pill-wide">Latest Reading</div>
+  </section>
   <section class="grid summary" id="summaryGrid"></section>
   <section class="panel selector-shell">
     <section class="grid dataset-grid" id="datasetGrid"></section>
@@ -261,10 +264,7 @@ function setDataset(key) {
 function renderSummary() {
   const html = (dashboard.summaryCards || []).map(card => `
     <article class="stat ${datasetTone(card.tone)}">
-      <div class="stat-head">
-        <div class="k">${esc(card.label)}</div>
-        <div class="stat-pill">Latest Reading</div>
-      </div>
+      <div class="k">${esc(card.label)}</div>
       <div class="v">${esc(card.value)}</div>
       <div class="d">${esc(card.detail)}</div>
     </article>
@@ -336,11 +336,29 @@ function renderLineChart(chart) {
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
   const values = series.flatMap(item => item.values.filter(value => value !== null && value !== undefined));
-  const rawMax = Math.max(...values, 1);
-  const rawMin = Math.min(...values, 0);
-  const useTightPercentScale = (series[0]?.format === 'percent') && rawMin >= 0.5;
-  const minValue = useTightPercentScale ? Math.max(0, Math.floor((rawMin * 100) - 2) / 100) : 0;
-  const maxValue = useTightPercentScale ? Math.ceil((rawMax * 100) + 2) / 100 : rawMax;
+  const rawMax = values.length ? Math.max(...values) : 1;
+  const rawMin = values.length ? Math.min(...values) : 0;
+  const isPercent = series[0]?.format === 'percent';
+  const baseRange = Math.max(
+    rawMax - rawMin,
+    isPercent ? 0.015 : Math.max(Math.abs(rawMax || 1) * 0.035, 1)
+  );
+  const padding = isPercent
+    ? Math.max(baseRange * 0.14, 0.01)
+    : Math.max(baseRange * 0.12, Math.abs(rawMax || 1) * 0.04, 1);
+  let minValue = rawMin - padding;
+  let maxValue = rawMax + padding;
+  if (isPercent) {
+    minValue = Math.max(0, minValue);
+    maxValue = Math.min(1, maxValue);
+    if ((maxValue - minValue) < 0.04) {
+      const mid = (maxValue + minValue) / 2;
+      minValue = Math.max(0, mid - 0.02);
+      maxValue = Math.min(1, mid + 0.02);
+    }
+  } else if (rawMin >= 0) {
+    minValue = Math.max(0, minValue);
+  }
   const xPos = index => margin.left + (labels.length === 1 ? plotWidth / 2 : (plotWidth * index) / Math.max(labels.length - 1, 1));
   const valueRange = Math.max(maxValue - minValue, 0.0001);
   const yPos = value => margin.top + plotHeight - (plotHeight * ((value - minValue) / valueRange));
