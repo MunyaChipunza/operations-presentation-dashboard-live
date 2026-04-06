@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-04-06T17:55:39.671035+00:00",
-  "sourceModifiedAt": "2026-04-06T17:54:32+00:00",
+  "generatedAt": "2026-04-06T17:56:39.988997+00:00",
+  "sourceModifiedAt": "2026-04-06T17:56:00+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -1351,11 +1351,11 @@
         },
         {
           "label": "Average",
-          "value": "78.0%"
+          "value": "78.2%"
         },
         {
           "label": "Best",
-          "value": "Jan - 92.3%"
+          "value": "Jan - 92.9%"
         }
       ],
       "table": {
@@ -1384,9 +1384,9 @@
         "rows": [
           {
             "month": "Jan",
-            "assembled": 13.0,
+            "assembled": 14.0,
             "backorders": 1.0,
-            "fillRate": 0.9230769230769231
+            "fillRate": 0.9285714285714286
           },
           {
             "month": "Feb",
@@ -1402,7 +1402,7 @@
           },
           {
             "month": "Apr",
-            "assembled": null,
+            "assembled": 2.0,
             "backorders": null,
             "fillRate": null
           },
@@ -1470,7 +1470,7 @@
             "format": "percent",
             "color": "#8b5cf6",
             "values": [
-              0.9230769230769231,
+              0.9285714285714286,
               0.5833333333333333,
               0.8333333333333334
             ],
@@ -1496,9 +1496,9 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.8247863247863247,
-              0.7799145299145298,
-              0.735042735042735
+              0.8293650793650793,
+              0.7817460317460316,
+              0.7341269841269841
             ],
             "style": "dotted",
             "showDots": false,
