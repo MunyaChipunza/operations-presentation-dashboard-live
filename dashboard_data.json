@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-04-06T17:36:38.950329+00:00",
-  "sourceModifiedAt": "2026-03-30T14:51:20+00:00",
+  "generatedAt": "2026-04-06T17:37:39.029843+00:00",
+  "sourceModifiedAt": "2026-04-06T17:37:18+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -165,6 +165,11 @@
           {
             "period": "Week 12",
             "score92m": 0.76,
+            "score12m": null
+          },
+          {
+            "period": "Week 13",
+            "score92m": null,
             "score12m": null
           }
         ]
