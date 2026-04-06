@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-04-06T17:54:39.849362+00:00",
-  "sourceModifiedAt": "2026-04-06T17:52:27+00:00",
+  "generatedAt": "2026-04-06T17:55:39.671035+00:00",
+  "sourceModifiedAt": "2026-04-06T17:54:32+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "79.3%",
+      "value": "83.3%",
       "detail": "Mar fill rate",
       "tone": "warn"
     }
@@ -1002,11 +1002,11 @@
         },
         {
           "label": "Top Share",
-          "value": "42.7%"
+          "value": "42.3%"
         },
         {
           "label": "Total Picked",
-          "value": "1,859"
+          "value": "1,879"
         },
         {
           "label": "Roster Size",
@@ -1035,27 +1035,27 @@
           {
             "picker": "Ali",
             "count": 35.0,
-            "share": 0.018827326519634213
+            "share": 0.018626929217668974
           },
           {
             "picker": "Angelo",
-            "count": 8.0,
-            "share": 0.004303388918773534
+            "count": 28.0,
+            "share": 0.014901543374135177
           },
           {
             "picker": "Charlie",
             "count": 450.0,
-            "share": 0.2420656266810113
+            "share": 0.23948908994145823
           },
           {
             "picker": "Bongani",
             "count": 572.0,
-            "share": 0.3076923076923077
+            "share": 0.3044172432144758
           },
           {
             "picker": "Endwell",
             "count": 794.0,
-            "share": 0.4271113501882733
+            "share": 0.42256519425226186
           }
         ]
       },
@@ -1065,31 +1065,31 @@
           {
             "name": "Ali",
             "value": 35.0,
-            "share": 0.018827326519634213,
+            "share": 0.018626929217668974,
             "color": "#ff8a5b"
           },
           {
             "name": "Angelo",
-            "value": 8.0,
-            "share": 0.004303388918773534,
+            "value": 28.0,
+            "share": 0.014901543374135177,
             "color": "#26d0ce"
           },
           {
             "name": "Charlie",
             "value": 450.0,
-            "share": 0.2420656266810113,
+            "share": 0.23948908994145823,
             "color": "#ffc857"
           },
           {
             "name": "Bongani",
             "value": 572.0,
-            "share": 0.3076923076923077,
+            "share": 0.3044172432144758,
             "color": "#8ddf6e"
           },
           {
             "name": "Endwell",
             "value": 794.0,
-            "share": 0.4271113501882733,
+            "share": 0.42256519425226186,
             "color": "#8a7dff"
           }
         ]
@@ -1336,14 +1336,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "79.3%",
+      "headlineValue": "83.3%",
       "headlineDetail": "Mar fill rate",
       "tone": "warn",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "79.3%"
+          "value": "83.3%"
         },
         {
           "label": "Target",
@@ -1351,7 +1351,7 @@
         },
         {
           "label": "Average",
-          "value": "77.7%"
+          "value": "78.0%"
         },
         {
           "label": "Best",
@@ -1390,15 +1390,15 @@
           },
           {
             "month": "Feb",
-            "assembled": 13.0,
+            "assembled": 12.0,
             "backorders": 5.0,
-            "fillRate": 0.6153846153846154
+            "fillRate": 0.5833333333333333
           },
           {
             "month": "Mar",
-            "assembled": 29.0,
+            "assembled": 36.0,
             "backorders": 6.0,
-            "fillRate": 0.7931034482758621
+            "fillRate": 0.8333333333333334
           },
           {
             "month": "Apr",
@@ -1471,8 +1471,8 @@
             "color": "#8b5cf6",
             "values": [
               0.9230769230769231,
-              0.6153846153846154,
-              0.7931034482758621
+              0.5833333333333333,
+              0.8333333333333334
             ],
             "style": "solid",
             "showDots": true,
@@ -1496,9 +1496,9 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.8421750663129973,
-              0.7771883289124668,
-              0.7122015915119363
+              0.8247863247863247,
+              0.7799145299145298,
+              0.735042735042735
             ],
             "style": "dotted",
             "showDots": false,
