@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-04-06T17:45:39.069177+00:00",
-  "sourceModifiedAt": "2026-04-06T17:44:00+00:00",
+  "generatedAt": "2026-04-06T17:46:39.028284+00:00",
+  "sourceModifiedAt": "2026-04-06T17:46:01+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -26,8 +26,8 @@
     },
     {
       "label": "Dispatch Accuracy",
-      "value": "100.0%",
-      "detail": "Week 12 reading",
+      "value": "99.5%",
+      "detail": "Week 13 reading",
       "tone": "good"
     },
     {
@@ -801,14 +801,14 @@
       "label": "Dispatch Accuracy",
       "category": "Accuracy",
       "description": "Weekly dispatch accuracy performance.",
-      "headlineValue": "100.0%",
-      "headlineDetail": "Week 12 reading",
+      "headlineValue": "99.5%",
+      "headlineDetail": "Week 13 reading",
       "tone": "good",
       "note": "A near-perfect trend, so the chart leans on fine-grained percentage labels.",
       "facts": [
         {
           "label": "Latest",
-          "value": "100.0%"
+          "value": "99.5%"
         },
         {
           "label": "Target",
@@ -824,7 +824,7 @@
         },
         {
           "label": "Readings",
-          "value": "12"
+          "value": "13"
         }
       ],
       "table": {
@@ -891,7 +891,7 @@
           },
           {
             "week": "Week 13",
-            "accuracy": null
+            "accuracy": 0.995
           }
         ]
       },
@@ -909,7 +909,8 @@
           "Week 9",
           "Week 10",
           "Week 11",
-          "Week 12"
+          "Week 12",
+          "Week 13"
         ],
         "series": [
           {
@@ -929,7 +930,8 @@
               0.996,
               0.9932,
               0.9929,
-              1.0
+              1.0,
+              0.995
             ],
             "style": "solid",
             "showDots": true,
@@ -940,6 +942,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -962,18 +965,19 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9986666666666667,
-              0.9983257575757576,
-              0.9979848484848485,
-              0.9976439393939395,
-              0.9973030303030304,
-              0.9969621212121212,
-              0.9966212121212121,
-              0.996280303030303,
-              0.995939393939394,
-              0.9955984848484849,
-              0.9952575757575758,
-              0.9949166666666667
+              0.9986153846153846,
+              0.9982884615384615,
+              0.9979615384615385,
+              0.9976346153846153,
+              0.9973076923076922,
+              0.9969807692307692,
+              0.9966538461538461,
+              0.996326923076923,
+              0.996,
+              0.9956730769230768,
+              0.9953461538461538,
+              0.9950192307692307,
+              0.9946923076923077
             ],
             "style": "dotted",
             "showDots": false,
