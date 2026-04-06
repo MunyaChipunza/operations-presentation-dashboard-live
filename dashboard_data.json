@@ -2,14 +2,14 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-04-06T17:40:38.814405+00:00",
-  "sourceModifiedAt": "2026-04-06T17:37:18+00:00",
+  "generatedAt": "2026-04-06T17:41:39.108432+00:00",
+  "sourceModifiedAt": "2026-04-06T17:40:26+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
       "label": "Housekeeping",
-      "value": "76%",
-      "detail": "Week 12 92M reading",
+      "value": "73%",
+      "detail": "Week 13 92M reading",
       "tone": "warn"
     },
     {
@@ -61,14 +61,14 @@
       "label": "Housekeeping",
       "category": "Quality",
       "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
-      "headlineValue": "76%",
-      "headlineDetail": "Week 12 92M reading",
+      "headlineValue": "73%",
+      "headlineDetail": "Week 13 92M reading",
       "tone": "warn",
       "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
         {
           "label": "Latest",
-          "value": "76%"
+          "value": "73%"
         },
         {
           "label": "Target",
@@ -169,7 +169,7 @@
           },
           {
             "period": "Week 13",
-            "score92m": null,
+            "score92m": 0.73,
             "score12m": null
           }
         ]
@@ -189,7 +189,8 @@
           "Week 9",
           "Week 10",
           "Week 11",
-          "Week 12"
+          "Week 12",
+          "Week 13"
         ],
         "series": [
           {
@@ -210,7 +211,8 @@
               0.7,
               0.67,
               0.49,
-              0.76
+              0.76,
+              0.73
             ],
             "style": "solid",
             "showDots": true,
@@ -234,6 +236,7 @@
               0.55,
               0.77,
               0.73,
+              null,
               null
             ],
             "style": "solid",
@@ -257,6 +260,7 @@
               0.8,
               0.8,
               0.8,
+              0.8,
               0.8
             ],
             "style": "dashed",
@@ -268,19 +272,20 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7721978021978022,
-              0.760934065934066,
-              0.7496703296703296,
-              0.7384065934065934,
-              0.7271428571428571,
-              0.7158791208791209,
-              0.7046153846153846,
-              0.6933516483516483,
-              0.6820879120879121,
-              0.6708241758241759,
-              0.6595604395604395,
-              0.6482967032967033,
-              0.6370329670329671
+              0.7602857142857143,
+              0.752,
+              0.7437142857142858,
+              0.7354285714285714,
+              0.7271428571428572,
+              0.7188571428571429,
+              0.7105714285714286,
+              0.7022857142857143,
+              0.6940000000000001,
+              0.6857142857142857,
+              0.6774285714285715,
+              0.6691428571428572,
+              0.6608571428571429,
+              0.6525714285714286
             ],
             "style": "dotted",
             "showDots": false,
