@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-05-07T10:41:16.915156+00:00",
-  "sourceModifiedAt": "2026-05-03T19:03:30+00:00",
+  "generatedAt": "2026-05-07T10:42:16.997674+00:00",
+  "sourceModifiedAt": "2026-05-06T11:35:30+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -20,9 +20,9 @@
     },
     {
       "label": "George Accuracy",
-      "value": "97.7%",
+      "value": "84.7%",
       "detail": "Load 5 reading",
-      "tone": "warn"
+      "tone": "bad"
     },
     {
       "label": "Dispatch Accuracy",
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "59.1%",
+      "value": "54.5%",
       "detail": "Apr fill rate",
       "tone": "bad"
     }
@@ -505,14 +505,14 @@
       "label": "Container Accuracy George",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the George container stream.",
-      "headlineValue": "97.7%",
+      "headlineValue": "84.7%",
       "headlineDetail": "Load 5 reading",
-      "tone": "warn",
+      "tone": "bad",
       "note": "A shorter series today, but the same live refresh loop will grow it automatically.",
       "facts": [
         {
           "label": "Latest",
-          "value": "97.7%"
+          "value": "84.7%"
         },
         {
           "label": "Target",
@@ -520,7 +520,7 @@
         },
         {
           "label": "Average",
-          "value": "98.0%"
+          "value": "95.3%"
         },
         {
           "label": "Best",
@@ -563,7 +563,7 @@
           },
           {
             "load": "Load 5",
-            "accuracy": 0.9769
+            "accuracy": 0.8466
           },
           {
             "load": "Load 6",
@@ -619,7 +619,7 @@
               0.9917,
               0.9912,
               1.0,
-              0.9769
+              0.8466
             ],
             "style": "solid",
             "showDots": true,
@@ -645,11 +645,11 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.96234,
+              0.9884,
               0.97095,
-              0.97956,
-              0.98817,
-              0.99678
+              0.9535,
+              0.9360499999999999,
+              0.9186
             ],
             "style": "dotted",
             "showDots": false,
@@ -1452,14 +1452,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "59.1%",
+      "headlineValue": "54.5%",
       "headlineDetail": "Apr fill rate",
       "tone": "bad",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "59.1%"
+          "value": "54.5%"
         },
         {
           "label": "Target",
@@ -1467,7 +1467,7 @@
         },
         {
           "label": "Average",
-          "value": "73.4%"
+          "value": "72.3%"
         },
         {
           "label": "Best",
@@ -1519,8 +1519,8 @@
           {
             "month": "Apr",
             "assembled": 22.0,
-            "backorders": 9.0,
-            "fillRate": 0.5909090909090908
+            "backorders": 10.0,
+            "fillRate": 0.5454545454545454
           },
           {
             "month": "May",
@@ -1590,7 +1590,7 @@
               0.9285714285714286,
               0.5833333333333333,
               0.8333333333333334,
-              0.5909090909090908
+              0.5454545454545454
             ],
             "style": "solid",
             "showDots": true,
@@ -1615,10 +1615,10 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.8484848484848485,
-              0.7721861471861472,
-              0.6958874458874459,
-              0.6195887445887445
+              0.8575757575757577,
+              0.7676406926406927,
+              0.6777056277056277,
+              0.5877705627705628
             ],
             "style": "dotted",
             "showDots": false,
