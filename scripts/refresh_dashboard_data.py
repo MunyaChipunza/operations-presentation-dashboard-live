@@ -7,6 +7,7 @@ import html
 import json
 import os
 import re
+import shutil
 import statistics
 import subprocess
 import tempfile
@@ -286,6 +287,14 @@ def create_excel_snapshot(workbook_path: Path) -> Path:
     fd, temp_path = tempfile.mkstemp(suffix=workbook_path.suffix or ".xlsx")
     os.close(fd)
     snapshot_path = Path(temp_path)
+
+    try:
+        shutil.copy2(workbook_path, snapshot_path)
+        return snapshot_path
+    except PermissionError:
+        snapshot_path.unlink(missing_ok=True)
+    except OSError:
+        snapshot_path.unlink(missing_ok=True)
 
     startupinfo = None
     if os.name == "nt":

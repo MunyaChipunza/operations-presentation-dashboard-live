@@ -20,7 +20,7 @@ try {
     $excel.EnableEvents = $false
 
     Start-Sleep -Milliseconds 250
-    $workbook = $excel.Workbooks.Open($SourcePath)
+    $workbook = $excel.Workbooks.Open($SourcePath, 0, $true)
 
     $targetDir = Split-Path -Parent $TargetPath
     if ($targetDir -and -not (Test-Path -LiteralPath $targetDir)) {
