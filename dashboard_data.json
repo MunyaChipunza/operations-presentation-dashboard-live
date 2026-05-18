@@ -2,14 +2,14 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-05-17T16:51:17.853043+00:00",
-  "sourceModifiedAt": "2026-05-12T06:26:54+00:00",
+  "generatedAt": "2026-05-18T05:59:16.616512+00:00",
+  "sourceModifiedAt": "2026-05-17T16:18:45+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
       "label": "Housekeeping",
-      "value": "68%",
-      "detail": "Week 18 92M reading",
+      "value": "65%",
+      "detail": "Week 19 92M reading",
       "tone": "warn"
     },
     {
@@ -26,25 +26,25 @@
     },
     {
       "label": "Dispatch Accuracy",
-      "value": "100.0%",
-      "detail": "Week 18 reading",
+      "value": "99.0%",
+      "detail": "Week 19 reading",
       "tone": "good"
     },
     {
       "label": "Urgent Orders",
-      "value": "1.4%",
-      "detail": "Week 18 reading",
+      "value": "0.0%",
+      "detail": "Week 19 reading",
       "tone": "good"
     },
     {
       "label": "Top SKU Picker",
-      "value": "1,275",
-      "detail": "Top picker: Bongani",
+      "value": "2,585",
+      "detail": "Top picker: Endwell",
       "tone": "good"
     },
     {
       "label": "SKU 2026 YTD",
-      "value": "28,294",
+      "value": "32,186",
       "detail": "2026 YTD picked volume",
       "tone": "warn"
     },
@@ -61,14 +61,14 @@
       "label": "Housekeeping",
       "category": "Quality",
       "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
-      "headlineValue": "68%",
-      "headlineDetail": "Week 18 92M reading",
+      "headlineValue": "65%",
+      "headlineDetail": "Week 19 92M reading",
       "tone": "warn",
       "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
         {
           "label": "Latest",
-          "value": "68%"
+          "value": "65%"
         },
         {
           "label": "Target",
@@ -196,6 +196,11 @@
             "period": "Week 18",
             "score92m": 0.68,
             "score12m": null
+          },
+          {
+            "period": "Week 19",
+            "score92m": 0.65,
+            "score12m": null
           }
         ]
       },
@@ -220,7 +225,8 @@
           "Week 15",
           "Week 16",
           "Week 17",
-          "Week 18"
+          "Week 18",
+          "Week 19"
         ],
         "series": [
           {
@@ -247,7 +253,8 @@
               0.74,
               0.7,
               0.5,
-              0.68
+              0.68,
+              0.65
             ],
             "style": "solid",
             "showDots": true,
@@ -271,6 +278,7 @@
               0.55,
               0.77,
               0.73,
+              null,
               null,
               null,
               null,
@@ -306,6 +314,7 @@
               0.8,
               0.8,
               0.8,
+              0.8,
               0.8
             ],
             "style": "dashed",
@@ -317,25 +326,26 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7484210526315789,
-              0.7435087719298245,
-              0.7385964912280701,
-              0.7336842105263157,
-              0.7287719298245613,
-              0.723859649122807,
-              0.7189473684210526,
-              0.7140350877192981,
-              0.7091228070175438,
-              0.7042105263157894,
-              0.699298245614035,
-              0.6943859649122807,
-              0.6894736842105262,
-              0.6845614035087719,
-              0.6796491228070175,
-              0.6747368421052631,
-              0.6698245614035088,
-              0.6649122807017543,
-              0.6599999999999999
+              0.7488571428571429,
+              0.7438721804511279,
+              0.7388872180451128,
+              0.7339022556390977,
+              0.7289172932330827,
+              0.7239323308270678,
+              0.7189473684210527,
+              0.7139624060150376,
+              0.7089774436090226,
+              0.7039924812030076,
+              0.6990075187969925,
+              0.6940225563909774,
+              0.6890375939849624,
+              0.6840526315789475,
+              0.6790676691729324,
+              0.6740827067669173,
+              0.6690977443609023,
+              0.6641127819548873,
+              0.6591278195488722,
+              0.6541428571428571
             ],
             "style": "dotted",
             "showDots": false,
@@ -677,14 +687,14 @@
       "label": "Wholesaler Urgent Orders",
       "category": "Exceptions",
       "description": "Weekly urgent-order rate. Lower is healthier here.",
-      "headlineValue": "1.4%",
-      "headlineDetail": "Week 18 reading",
+      "headlineValue": "0.0%",
+      "headlineDetail": "Week 19 reading",
       "tone": "good",
       "note": "This one flips the interpretation: the closer to zero, the better.",
       "facts": [
         {
           "label": "Latest",
-          "value": "1.4%"
+          "value": "0.0%"
         },
         {
           "label": "Target",
@@ -692,7 +702,7 @@
         },
         {
           "label": "Average",
-          "value": "5.8%"
+          "value": "5.5%"
         },
         {
           "label": "Best",
@@ -700,7 +710,7 @@
         },
         {
           "label": "Readings",
-          "value": "18"
+          "value": "19"
         }
       ],
       "table": {
@@ -788,6 +798,10 @@
           {
             "week": "Week 18",
             "rate": 0.014
+          },
+          {
+            "week": "Week 19",
+            "rate": 0.0
           }
         ]
       },
@@ -811,7 +825,8 @@
           "Week 15",
           "Week 16",
           "Week 17",
-          "Week 18"
+          "Week 18",
+          "Week 19"
         ],
         "series": [
           {
@@ -837,7 +852,8 @@
               0.1111,
               0.184,
               0.0331,
-              0.014
+              0.014,
+              0.0
             ],
             "style": "solid",
             "showDots": true,
@@ -848,6 +864,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.05,
               0.05,
               0.05,
               0.05,
@@ -876,24 +893,25 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.02233391812865497,
-              0.026484176126590986,
-              0.030634434124527002,
-              0.03478469212246302,
-              0.038934950120399034,
-              0.04308520811833505,
-              0.047235466116271066,
-              0.05138572411420708,
-              0.0555359821121431,
-              0.059686240110079114,
-              0.06383649810801513,
-              0.06798675610595115,
-              0.07213701410388716,
-              0.07628727210182318,
-              0.0804375300997592,
-              0.08458778809769521,
-              0.08873804609563123,
-              0.09288830409356724
+              0.031016315789473684,
+              0.03363438596491228,
+              0.03625245614035087,
+              0.03887052631578947,
+              0.04148859649122807,
+              0.04410666666666666,
+              0.04672473684210526,
+              0.04934280701754386,
+              0.05196087719298245,
+              0.054578947368421046,
+              0.05719701754385964,
+              0.05981508771929824,
+              0.062433157894736836,
+              0.06505122807017544,
+              0.06766929824561403,
+              0.07028736842105263,
+              0.07290543859649122,
+              0.07552350877192981,
+              0.07814157894736841
             ],
             "style": "dotted",
             "showDots": false,
@@ -907,14 +925,14 @@
       "label": "Dispatch Accuracy",
       "category": "Accuracy",
       "description": "Weekly dispatch accuracy performance.",
-      "headlineValue": "100.0%",
-      "headlineDetail": "Week 18 reading",
+      "headlineValue": "99.0%",
+      "headlineDetail": "Week 19 reading",
       "tone": "good",
       "note": "A near-perfect trend, so the chart leans on fine-grained percentage labels.",
       "facts": [
         {
           "label": "Latest",
-          "value": "100.0%"
+          "value": "99.0%"
         },
         {
           "label": "Target",
@@ -930,7 +948,7 @@
         },
         {
           "label": "Readings",
-          "value": "18"
+          "value": "19"
         }
       ],
       "table": {
@@ -1018,6 +1036,10 @@
           {
             "week": "Week 18",
             "accuracy": 1.0
+          },
+          {
+            "week": "Week 19",
+            "accuracy": 0.99
           }
         ]
       },
@@ -1041,7 +1063,8 @@
           "Week 15",
           "Week 16",
           "Week 17",
-          "Week 18"
+          "Week 18",
+          "Week 19"
         ],
         "series": [
           {
@@ -1067,7 +1090,8 @@
               0.9899,
               0.993,
               0.9917,
-              1.0
+              1.0,
+              0.99
             ],
             "style": "solid",
             "showDots": true,
@@ -1078,6 +1102,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -1106,24 +1131,25 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9981730994152047,
-              0.9979377020983833,
-              0.9977023047815617,
-              0.9974669074647403,
-              0.9972315101479189,
-              0.9969961128310973,
-              0.9967607155142759,
-              0.9965253181974545,
-              0.996289920880633,
-              0.9960545235638115,
-              0.9958191262469901,
-              0.9955837289301686,
-              0.9953483316133471,
-              0.9951129342965257,
-              0.9948775369797042,
-              0.9946421396628827,
-              0.9944067423460613,
-              0.9941713450292398
+              0.9985252631578947,
+              0.9982277192982456,
+              0.9979301754385964,
+              0.9976326315789473,
+              0.9973350877192982,
+              0.997037543859649,
+              0.99674,
+              0.9964424561403509,
+              0.9961449122807017,
+              0.9958473684210526,
+              0.9955498245614035,
+              0.9952522807017543,
+              0.9949547368421052,
+              0.9946571929824561,
+              0.9943596491228069,
+              0.9940621052631579,
+              0.9937645614035088,
+              0.9934670175438596,
+              0.9931694736842105
             ],
             "style": "dotted",
             "showDots": false,
@@ -1137,22 +1163,22 @@
       "label": "SKU Picked by Picker",
       "category": "Ranking",
       "description": "Team contribution split across the current SKU picker roster.",
-      "headlineValue": "1,275",
-      "headlineDetail": "Top picker: Bongani",
+      "headlineValue": "2,585",
+      "headlineDetail": "Top picker: Endwell",
       "tone": "good",
       "note": "Donut view shows share concentration while the table keeps the exact counts visible.",
       "facts": [
         {
           "label": "Top Picker",
-          "value": "Bongani - 1,275"
+          "value": "Endwell - 2,585"
         },
         {
           "label": "Top Share",
-          "value": "35.1%"
+          "value": "29.8%"
         },
         {
           "label": "Total Picked",
-          "value": "3,631"
+          "value": "8,686"
         },
         {
           "label": "Roster Size",
@@ -1180,28 +1206,28 @@
         "rows": [
           {
             "picker": "Ali",
-            "count": 200.0,
-            "share": 0.055081244836133296
+            "count": 418.0,
+            "share": 0.04812341699286208
           },
           {
             "picker": "Angelo",
-            "count": 256.0,
-            "share": 0.07050399339025062
+            "count": 1344.0,
+            "share": 0.15473175224499194
           },
           {
             "picker": "Charlie",
-            "count": 1151.0,
-            "share": 0.31699256403194714
+            "count": 2303.0,
+            "share": 0.26513930462813723
           },
           {
             "picker": "Bongani",
-            "count": 1275.0,
-            "share": 0.3511429358303498
+            "count": 2036.0,
+            "share": 0.23440018420446695
           },
           {
             "picker": "Endwell",
-            "count": 749.0,
-            "share": 0.2062792619113192
+            "count": 2585.0,
+            "share": 0.2976053419295418
           }
         ]
       },
@@ -1210,32 +1236,32 @@
         "series": [
           {
             "name": "Ali",
-            "value": 200.0,
-            "share": 0.055081244836133296,
+            "value": 418.0,
+            "share": 0.04812341699286208,
             "color": "#ff8a5b"
           },
           {
             "name": "Angelo",
-            "value": 256.0,
-            "share": 0.07050399339025062,
+            "value": 1344.0,
+            "share": 0.15473175224499194,
             "color": "#26d0ce"
           },
           {
             "name": "Charlie",
-            "value": 1151.0,
-            "share": 0.31699256403194714,
+            "value": 2303.0,
+            "share": 0.26513930462813723,
             "color": "#ffc857"
           },
           {
             "name": "Bongani",
-            "value": 1275.0,
-            "share": 0.3511429358303498,
+            "value": 2036.0,
+            "share": 0.23440018420446695,
             "color": "#8ddf6e"
           },
           {
             "name": "Endwell",
-            "value": 749.0,
-            "share": 0.2062792619113192,
+            "value": 2585.0,
+            "share": 0.2976053419295418,
             "color": "#8a7dff"
           }
         ]
@@ -1246,18 +1272,18 @@
       "label": "SKU Picked by Month",
       "category": "Volume",
       "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
-      "headlineValue": "28,294",
+      "headlineValue": "32,186",
       "headlineDetail": "2026 YTD picked volume",
       "tone": "warn",
       "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
       "facts": [
         {
           "label": "2026 YTD",
-          "value": "28,294"
+          "value": "32,186"
         },
         {
           "label": "Latest 2026 Month",
-          "value": "May - 4,045"
+          "value": "May - 7,937"
         },
         {
           "label": "Best 2025 Month",
@@ -1320,7 +1346,7 @@
             "month": "May",
             "y2024": 7739.0,
             "y2025": 12562.0,
-            "y2026": 4045.0
+            "y2026": 7937.0
           },
           {
             "month": "Jun",
@@ -1439,7 +1465,7 @@
               4551.0,
               6321.0,
               10135.0,
-              4045.0,
+              7937.0,
               null,
               null,
               null,
@@ -1457,18 +1483,18 @@
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              4220.8,
-              4939.8,
-              5658.8,
-              6377.8,
-              7096.8,
-              7815.8,
-              8534.8,
-              9253.8,
-              9972.8,
-              10691.8,
-              11410.8,
-              12129.8
+              3442.3999999999996,
+              4939.799999999999,
+              6437.2,
+              7934.6,
+              9432.0,
+              10929.4,
+              12426.800000000001,
+              13924.2,
+              15421.6,
+              16919.0,
+              18416.4,
+              19913.800000000003
             ],
             "style": "dotted",
             "showDots": false,
