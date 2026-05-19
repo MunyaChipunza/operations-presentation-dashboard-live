@@ -2,14 +2,14 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-05-19T07:37:18.547665+00:00",
-  "sourceModifiedAt": "2026-05-19T07:36:41+00:00",
+  "generatedAt": "2026-05-19T07:38:18.656586+00:00",
+  "sourceModifiedAt": "2026-05-19T07:38:18.306424+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
       "label": "Housekeeping",
-      "value": "65%",
-      "detail": "Week 19 92M reading",
+      "value": "56%",
+      "detail": "Week 20 92M reading",
       "tone": "warn"
     },
     {
@@ -61,14 +61,14 @@
       "label": "Housekeeping",
       "category": "Quality",
       "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
-      "headlineValue": "65%",
-      "headlineDetail": "Week 19 92M reading",
+      "headlineValue": "56%",
+      "headlineDetail": "Week 20 92M reading",
       "tone": "warn",
       "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
         {
           "label": "Latest",
-          "value": "65%"
+          "value": "56%"
         },
         {
           "label": "Target",
@@ -201,6 +201,11 @@
             "period": "Week 19",
             "score92m": 0.65,
             "score12m": null
+          },
+          {
+            "period": "Week 20",
+            "score92m": 0.56,
+            "score12m": null
           }
         ]
       },
@@ -226,7 +231,8 @@
           "Week 16",
           "Week 17",
           "Week 18",
-          "Week 19"
+          "Week 19",
+          "Week 20"
         ],
         "series": [
           {
@@ -254,7 +260,8 @@
               0.7,
               0.5,
               0.68,
-              0.65
+              0.65,
+              0.56
             ],
             "style": "solid",
             "showDots": true,
@@ -278,6 +285,7 @@
               0.55,
               0.77,
               0.73,
+              null,
               null,
               null,
               null,
@@ -315,6 +323,7 @@
               0.8,
               0.8,
               0.8,
+              0.8,
               0.8
             ],
             "style": "dashed",
@@ -326,26 +335,27 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7488571428571429,
-              0.7438721804511279,
-              0.7388872180451128,
-              0.7339022556390977,
-              0.7289172932330827,
-              0.7239323308270678,
-              0.7189473684210527,
-              0.7139624060150376,
-              0.7089774436090226,
-              0.7039924812030076,
-              0.6990075187969925,
-              0.6940225563909774,
-              0.6890375939849624,
-              0.6840526315789475,
-              0.6790676691729324,
-              0.6740827067669173,
-              0.6690977443609023,
-              0.6641127819548873,
-              0.6591278195488722,
-              0.6541428571428571
+              0.7561904761904762,
+              0.7500476190476191,
+              0.743904761904762,
+              0.7377619047619047,
+              0.7316190476190476,
+              0.7254761904761905,
+              0.7193333333333334,
+              0.7131904761904762,
+              0.707047619047619,
+              0.7009047619047619,
+              0.6947619047619048,
+              0.6886190476190476,
+              0.6824761904761905,
+              0.6763333333333333,
+              0.6701904761904762,
+              0.664047619047619,
+              0.6579047619047619,
+              0.6517619047619048,
+              0.6456190476190476,
+              0.6394761904761905,
+              0.6333333333333333
             ],
             "style": "dotted",
             "showDots": false,
