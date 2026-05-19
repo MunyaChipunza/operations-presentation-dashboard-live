@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-05-19T07:47:17.121146+00:00",
-  "sourceModifiedAt": "2026-05-19T07:38:18+00:00",
+  "generatedAt": "2026-05-19T07:48:17.121620+00:00",
+  "sourceModifiedAt": "2026-05-19T07:48:05.349692+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -14,8 +14,8 @@
     },
     {
       "label": "JHB Accuracy",
-      "value": "98.7%",
-      "detail": "Load 8 reading",
+      "value": "98.4%",
+      "detail": "Load 9 reading",
       "tone": "warn"
     },
     {
@@ -369,14 +369,14 @@
       "label": "Container Accuracy JHB",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the Johannesburg container stream.",
-      "headlineValue": "98.7%",
-      "headlineDetail": "Load 8 reading",
+      "headlineValue": "98.4%",
+      "headlineDetail": "Load 9 reading",
       "tone": "warn",
       "note": "Higher is better. Missing loads are left blank so the chart stays honest.",
       "facts": [
         {
           "label": "Latest",
-          "value": "98.7%"
+          "value": "98.4%"
         },
         {
           "label": "Target",
@@ -384,7 +384,7 @@
         },
         {
           "label": "Average",
-          "value": "97.6%"
+          "value": "97.7%"
         },
         {
           "label": "Best",
@@ -392,7 +392,7 @@
         },
         {
           "label": "Readings",
-          "value": "8"
+          "value": "9"
         }
       ],
       "table": {
@@ -443,7 +443,7 @@
           },
           {
             "load": "Load 9",
-            "accuracy": null
+            "accuracy": 0.9843
           },
           {
             "load": "Load 10",
@@ -473,7 +473,8 @@
           "Load 5",
           "Load 6",
           "Load 7",
-          "Load 8"
+          "Load 8",
+          "Load 9"
         ],
         "series": [
           {
@@ -489,7 +490,8 @@
               0.9984,
               0.9957,
               0.9129,
-              0.9865
+              0.9865,
+              0.9843
             ],
             "style": "solid",
             "showDots": true,
@@ -500,6 +502,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -518,14 +521,15 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9853416666666667,
-              0.9826154761904762,
-              0.9798892857142857,
-              0.9771630952380953,
-              0.9744369047619048,
-              0.9717107142857143,
-              0.9689845238095238,
-              0.9662583333333334
+              0.982111111111111,
+              0.9807694444444444,
+              0.9794277777777777,
+              0.9780861111111111,
+              0.9767444444444444,
+              0.9754027777777777,
+              0.974061111111111,
+              0.9727194444444444,
+              0.9713777777777778
             ],
             "style": "dotted",
             "showDots": false,
