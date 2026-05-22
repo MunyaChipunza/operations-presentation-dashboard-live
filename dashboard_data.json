@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-05-22T05:49:17.440927+00:00",
-  "sourceModifiedAt": "2026-05-19T07:48:05+00:00",
+  "generatedAt": "2026-05-22T05:50:17.670189+00:00",
+  "sourceModifiedAt": "2026-05-19T19:28:50+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -14,14 +14,14 @@
     },
     {
       "label": "JHB Accuracy",
-      "value": "98.4%",
+      "value": "99.0%",
       "detail": "Load 9 reading",
-      "tone": "warn"
+      "tone": "good"
     },
     {
       "label": "George Accuracy",
-      "value": "84.7%",
-      "detail": "Load 5 reading",
+      "value": "96.2%",
+      "detail": "Load 6 reading",
       "tone": "bad"
     },
     {
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "53.3%",
+      "value": "57.1%",
       "detail": "May fill rate",
       "tone": "bad"
     }
@@ -369,14 +369,14 @@
       "label": "Container Accuracy JHB",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the Johannesburg container stream.",
-      "headlineValue": "98.4%",
+      "headlineValue": "99.0%",
       "headlineDetail": "Load 9 reading",
-      "tone": "warn",
+      "tone": "good",
       "note": "Higher is better. Missing loads are left blank so the chart stays honest.",
       "facts": [
         {
           "label": "Latest",
-          "value": "98.4%"
+          "value": "99.0%"
         },
         {
           "label": "Target",
@@ -384,7 +384,7 @@
         },
         {
           "label": "Average",
-          "value": "97.7%"
+          "value": "97.2%"
         },
         {
           "label": "Best",
@@ -439,11 +439,11 @@
           },
           {
             "load": "Load 8",
-            "accuracy": 0.9865
+            "accuracy": 0.9338
           },
           {
             "load": "Load 9",
-            "accuracy": 0.9843
+            "accuracy": 0.9904
           },
           {
             "load": "Load 10",
@@ -490,8 +490,8 @@
               0.9984,
               0.9957,
               0.9129,
-              0.9865,
-              0.9843
+              0.9338,
+              0.9904
             ],
             "style": "solid",
             "showDots": true,
@@ -521,15 +521,15 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.982111111111111,
-              0.9807694444444444,
-              0.9794277777777777,
-              0.9780861111111111,
-              0.9767444444444444,
-              0.9754027777777777,
-              0.974061111111111,
-              0.9727194444444444,
-              0.9713777777777778
+              0.9858466666666665,
+              0.9822766666666666,
+              0.9787066666666665,
+              0.9751366666666665,
+              0.9715666666666666,
+              0.9679966666666665,
+              0.9644266666666665,
+              0.9608566666666666,
+              0.9572866666666665
             ],
             "style": "dotted",
             "showDots": false,
@@ -543,14 +543,14 @@
       "label": "Container Accuracy George",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the George container stream.",
-      "headlineValue": "84.7%",
-      "headlineDetail": "Load 5 reading",
+      "headlineValue": "96.2%",
+      "headlineDetail": "Load 6 reading",
       "tone": "bad",
       "note": "A shorter series today, but the same live refresh loop will grow it automatically.",
       "facts": [
         {
           "label": "Latest",
-          "value": "84.7%"
+          "value": "96.2%"
         },
         {
           "label": "Target",
@@ -558,7 +558,7 @@
         },
         {
           "label": "Average",
-          "value": "95.3%"
+          "value": "95.5%"
         },
         {
           "label": "Best",
@@ -566,7 +566,7 @@
         },
         {
           "label": "Readings",
-          "value": "5"
+          "value": "6"
         }
       ],
       "table": {
@@ -605,7 +605,7 @@
           },
           {
             "load": "Load 6",
-            "accuracy": null
+            "accuracy": 0.9623
           },
           {
             "load": "Load 7",
@@ -644,7 +644,8 @@
           "Load 2",
           "Load 3",
           "Load 4",
-          "Load 5"
+          "Load 5",
+          "Load 6"
         ],
         "series": [
           {
@@ -657,7 +658,8 @@
               0.9917,
               0.9912,
               1.0,
-              0.8466
+              0.8466,
+              0.9623
             ],
             "style": "solid",
             "showDots": true,
@@ -668,6 +670,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -683,11 +686,12 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9884,
-              0.97095,
-              0.9535,
-              0.9360499999999999,
-              0.9186
+              0.9767523809523809,
+              0.9680380952380953,
+              0.9593238095238096,
+              0.9506095238095238,
+              0.9418952380952381,
+              0.9331809523809524
             ],
             "style": "dotted",
             "showDots": false,
@@ -1522,14 +1526,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "53.3%",
+      "headlineValue": "57.1%",
       "headlineDetail": "May fill rate",
       "tone": "bad",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "53.3%"
+          "value": "57.1%"
         },
         {
           "label": "Target",
@@ -1537,7 +1541,7 @@
         },
         {
           "label": "Average",
-          "value": "68.5%"
+          "value": "69.2%"
         },
         {
           "label": "Best",
@@ -1594,9 +1598,9 @@
           },
           {
             "month": "May",
-            "assembled": 15.0,
-            "backorders": 7.0,
-            "fillRate": 0.5333333333333333
+            "assembled": 28.0,
+            "backorders": 12.0,
+            "fillRate": 0.5714285714285714
           },
           {
             "month": "Jun",
@@ -1662,7 +1666,7 @@
               0.5833333333333333,
               0.8333333333333334,
               0.5454545454545454,
-              0.5333333333333333
+              0.5714285714285714
             ],
             "style": "solid",
             "showDots": true,
@@ -1688,11 +1692,11 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.8504761904761904,
-              0.7676406926406926,
-              0.6848051948051948,
-              0.6019696969696968,
-              0.519134199134199
+              0.8428571428571429,
+              0.7676406926406927,
+              0.6924242424242424,
+              0.6172077922077922,
+              0.541991341991342
             ],
             "style": "dotted",
             "showDots": false,
