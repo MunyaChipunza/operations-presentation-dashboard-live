@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 
@@ -16,6 +17,15 @@ from refresh_dashboard_data import refresh_dashboard_data  # noqa: E402
 
 
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+TRANSIENT_GIT_ERRORS = (
+    "Could not resolve host",
+    "Failed to connect",
+    "Connection was reset",
+    "Recv failure",
+    "Operation timed out",
+    "TLS",
+    "SSL",
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -76,6 +86,31 @@ def run_git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
     )
 
 
+def git_error_text(result: subprocess.CompletedProcess[str]) -> str:
+    return (result.stderr or result.stdout or "").strip()
+
+
+def is_transient_git_failure(message: str) -> bool:
+    lowered = message.lower()
+    return any(fragment.lower() in lowered for fragment in TRANSIENT_GIT_ERRORS)
+
+
+def run_git_with_retry(*args: str, attempts: int = 4, delay_seconds: float = 5.0) -> subprocess.CompletedProcess[str]:
+    last_result: subprocess.CompletedProcess[str] | None = None
+    for attempt in range(1, attempts + 1):
+        result = run_git(*args, check=False)
+        if result.returncode == 0:
+            return result
+
+        last_result = result
+        if attempt == attempts or not is_transient_git_failure(git_error_text(result)):
+            break
+        time.sleep(delay_seconds * attempt)
+
+    assert last_result is not None
+    return last_result
+
+
 def is_git_repo() -> bool:
     result = run_git("rev-parse", "--is-inside-work-tree", check=False)
     return result.returncode == 0 and result.stdout.strip() == "true"
@@ -96,14 +131,24 @@ def ensure_identity() -> None:
     run_git("config", "user.email", "dashboard-sync@local")
 
 
+def local_ahead_count() -> int:
+    result = run_git("rev-list", "--count", "origin/main..HEAD", check=False)
+    if result.returncode != 0:
+        return 0
+    try:
+        return int(result.stdout.strip() or "0")
+    except ValueError:
+        return 0
+
+
 def sync_repo() -> None:
-    fetch = run_git("fetch", "origin", "main", check=False)
+    fetch = run_git_with_retry("fetch", "origin", "main")
     if fetch.returncode != 0:
-        raise RuntimeError(fetch.stderr.strip() or "Could not fetch origin/main before publishing.")
+        raise RuntimeError(git_error_text(fetch) or "Could not fetch origin/main before publishing.")
 
     rebase = run_git("rebase", "origin/main", check=False)
     if rebase.returncode != 0:
-        raise RuntimeError(rebase.stderr.strip() or rebase.stdout.strip() or "Could not rebase onto origin/main before publishing.")
+        raise RuntimeError(git_error_text(rebase) or "Could not rebase onto origin/main before publishing.")
 
 
 def has_dashboard_changes(output_path: Path) -> bool:
@@ -123,18 +168,25 @@ def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_
         print("Dashboard data refreshed locally. No origin remote is configured yet.")
         return False
 
-    sync_repo()
     refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
+    pending_push = local_ahead_count() > 0
 
-    if not has_dashboard_changes(output_path):
+    if not has_dashboard_changes(output_path) and not pending_push:
         print("Dashboard data is already up to date.")
         return False
 
+    sync_repo()
+
     ensure_identity()
     rel_output = output_path.relative_to(BUNDLE_DIR)
-    run_git("add", "--", str(rel_output))
-    run_git("commit", "-m", commit_message)
-    run_git("push", "-u", "origin", "main")
+    if has_dashboard_changes(output_path):
+        run_git("add", "--", str(rel_output))
+        run_git("commit", "-m", commit_message)
+
+    push = run_git_with_retry("push", "-u", "origin", "main")
+    if push.returncode != 0:
+        raise RuntimeError(git_error_text(push) or "Could not push dashboard data to origin/main.")
+
     print("Dashboard data refreshed and pushed.")
     return True
 
