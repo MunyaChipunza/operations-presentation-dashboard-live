@@ -5,6 +5,7 @@ import os
 import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from pathlib import Path
 
@@ -157,6 +158,12 @@ def has_dashboard_changes(output_path: Path) -> bool:
     return bool(status.stdout.strip())
 
 
+def same_file_content(left: Path, right: Path) -> bool:
+    if not left.exists() or not right.exists():
+        return False
+    return left.read_bytes() == right.read_bytes()
+
+
 def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_path: Path, commit_message: str) -> bool:
     if not is_git_repo():
         refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
@@ -168,27 +175,35 @@ def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_
         print("Dashboard data refreshed locally. No origin remote is configured yet.")
         return False
 
-    refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
     pending_push = local_ahead_count() > 0
+    fd, temp_output_raw = tempfile.mkstemp(suffix=output_path.suffix or ".json")
+    os.close(fd)
+    temp_output = Path(temp_output_raw)
+    try:
+        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=temp_output)
+        dashboard_changed = not same_file_content(temp_output, output_path)
 
-    if not has_dashboard_changes(output_path) and not pending_push:
-        print("Dashboard data is already up to date.")
-        return False
+        if not dashboard_changed and not pending_push:
+            print("Dashboard data is already up to date.")
+            return False
 
-    sync_repo()
+        sync_repo()
+        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
 
-    ensure_identity()
-    rel_output = output_path.relative_to(BUNDLE_DIR)
-    if has_dashboard_changes(output_path):
-        run_git("add", "--", str(rel_output))
-        run_git("commit", "-m", commit_message)
+        ensure_identity()
+        rel_output = output_path.relative_to(BUNDLE_DIR)
+        if has_dashboard_changes(output_path):
+            run_git("add", "--", str(rel_output))
+            run_git("commit", "-m", commit_message)
 
-    push = run_git_with_retry("push", "-u", "origin", "main")
-    if push.returncode != 0:
-        raise RuntimeError(git_error_text(push) or "Could not push dashboard data to origin/main.")
+        push = run_git_with_retry("push", "-u", "origin", "main")
+        if push.returncode != 0:
+            raise RuntimeError(git_error_text(push) or "Could not push dashboard data to origin/main.")
 
-    print("Dashboard data refreshed and pushed.")
-    return True
+        print("Dashboard data refreshed and pushed.")
+        return True
+    finally:
+        temp_output.unlink(missing_ok=True)
 
 
 def main() -> None:
