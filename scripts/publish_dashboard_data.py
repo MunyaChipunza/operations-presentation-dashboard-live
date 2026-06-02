@@ -158,6 +158,24 @@ def has_dashboard_changes(output_path: Path) -> bool:
     return bool(status.stdout.strip())
 
 
+def git_changed_files(*args: str) -> set[str]:
+    result = run_git(*args, check=False)
+    if result.returncode != 0:
+        return set()
+    return {line.strip() for line in result.stdout.splitlines() if line.strip()}
+
+
+def only_output_file_is_dirty(output_path: Path) -> bool:
+    rel_output = output_path.relative_to(BUNDLE_DIR).as_posix()
+    changed = git_changed_files("diff", "--name-only") | git_changed_files("diff", "--cached", "--name-only")
+    return bool(changed) and changed == {rel_output}
+
+
+def restore_output_file(output_path: Path) -> None:
+    rel_output = output_path.relative_to(BUNDLE_DIR)
+    run_git("restore", "--staged", "--worktree", "--", str(rel_output), check=False)
+
+
 def same_file_content(left: Path, right: Path) -> bool:
     if not left.exists() or not right.exists():
         return False
@@ -174,6 +192,9 @@ def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_
         refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
         print("Dashboard data refreshed locally. No origin remote is configured yet.")
         return False
+
+    if only_output_file_is_dirty(output_path):
+        restore_output_file(output_path)
 
     pending_push = local_ahead_count() > 0
     fd, temp_output_raw = tempfile.mkstemp(suffix=output_path.suffix or ".json")
