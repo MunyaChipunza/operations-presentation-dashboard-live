@@ -2,7 +2,7 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-06-03T10:17:17.797436+00:00",
+  "generatedAt": "2026-06-03T10:18:21.275616+00:00",
   "sourceModifiedAt": "2026-06-03T10:14:31.579948+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
@@ -45,14 +45,14 @@
     {
       "label": "SKU 2026 YTD",
       "value": "39,642",
-      "detail": "2026 YTD picked volume",
+      "detail": "2026 YTD picked volume (CPT + George)",
       "tone": "warn"
     },
     {
       "label": "Assembly vs BO",
-      "value": "-",
-      "detail": "No reading yet",
-      "tone": "quiet"
+      "value": "50.0%",
+      "detail": "Jun fill rate",
+      "tone": "bad"
     }
   ],
   "datasets": [
@@ -1373,15 +1373,19 @@
       "key": "sku-monthly",
       "label": "SKU Picked by Month",
       "category": "Volume",
-      "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
+      "description": "Monthly SKU volume split by year, with the 2026 run now separated into CPT and George while still tracking the combined total.",
       "headlineValue": "39,642",
-      "headlineDetail": "2026 YTD picked volume",
+      "headlineDetail": "2026 YTD picked volume (CPT + George)",
       "tone": "warn",
-      "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
+      "note": "Table view keeps the site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and adds the George line whenever it has values.",
       "facts": [
         {
-          "label": "2026 YTD",
+          "label": "2026 Total YTD",
           "value": "39,642"
+        },
+        {
+          "label": "George YTD",
+          "value": "0"
         },
         {
           "label": "Latest 2026 Month",
@@ -1414,8 +1418,18 @@
             "format": "integer"
           },
           {
-            "key": "y2026",
-            "label": "2026",
+            "key": "y2026Cpt",
+            "label": "2026 CPT",
+            "format": "integer"
+          },
+          {
+            "key": "y2026George",
+            "label": "2026 George",
+            "format": "integer"
+          },
+          {
+            "key": "y2026Total",
+            "label": "2026 Total",
             "format": "integer"
           }
         ],
@@ -1424,73 +1438,97 @@
             "month": "Jan",
             "y2024": 2289.0,
             "y2025": 6124.0,
-            "y2026": 3242.0
+            "y2026Cpt": 3242.0,
+            "y2026George": null,
+            "y2026Total": 3242.0
           },
           {
             "month": "Feb",
             "y2024": 4016.0,
             "y2025": 4950.0,
-            "y2026": 4551.0
+            "y2026Cpt": 4551.0,
+            "y2026George": null,
+            "y2026Total": 4551.0
           },
           {
             "month": "Mar",
             "y2024": 2233.0,
             "y2025": 6414.0,
-            "y2026": 6321.0
+            "y2026Cpt": 6321.0,
+            "y2026George": null,
+            "y2026Total": 6321.0
           },
           {
             "month": "Apr",
             "y2024": 5853.0,
             "y2025": 8719.0,
-            "y2026": 10135.0
+            "y2026Cpt": 10135.0,
+            "y2026George": null,
+            "y2026Total": 10135.0
           },
           {
             "month": "May",
             "y2024": 7739.0,
             "y2025": 12562.0,
-            "y2026": 14656.0
+            "y2026Cpt": 14656.0,
+            "y2026George": null,
+            "y2026Total": 14656.0
           },
           {
             "month": "Jun",
             "y2024": 4899.0,
             "y2025": 13634.0,
-            "y2026": 737.0
+            "y2026Cpt": 737.0,
+            "y2026George": null,
+            "y2026Total": 737.0
           },
           {
             "month": "Jul",
             "y2024": 8621.0,
             "y2025": 13275.0,
-            "y2026": null
+            "y2026Cpt": null,
+            "y2026George": null,
+            "y2026Total": null
           },
           {
             "month": "Aug",
             "y2024": 6219.0,
             "y2025": 8479.0,
-            "y2026": null
+            "y2026Cpt": null,
+            "y2026George": null,
+            "y2026Total": null
           },
           {
             "month": "Sep",
             "y2024": 3741.0,
             "y2025": 5453.0,
-            "y2026": null
+            "y2026Cpt": null,
+            "y2026George": null,
+            "y2026Total": null
           },
           {
             "month": "Oct",
             "y2024": 3941.0,
             "y2025": 5293.0,
-            "y2026": null
+            "y2026Cpt": null,
+            "y2026George": null,
+            "y2026Total": null
           },
           {
             "month": "Nov",
             "y2024": 2973.0,
             "y2025": 4152.0,
-            "y2026": null
+            "y2026Cpt": null,
+            "y2026George": null,
+            "y2026Total": null
           },
           {
             "month": "Dec",
             "y2024": 1199.0,
             "y2025": 2067.0,
-            "y2026": null
+            "y2026Cpt": null,
+            "y2026George": null,
+            "y2026Total": null
           }
         ]
       },
@@ -1558,8 +1596,8 @@
             "strokeWidth": 2
           },
           {
-            "name": "2026 Actual",
-            "key": "y2026",
+            "name": "2026 Total",
+            "key": "y2026Total",
             "format": "integer",
             "color": "#00cfff",
             "values": [
@@ -1610,14 +1648,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "-",
-      "headlineDetail": "No reading yet",
-      "tone": "quiet",
+      "headlineValue": "50.0%",
+      "headlineDetail": "Jun fill rate",
+      "tone": "bad",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "-"
+          "value": "50.0%"
         },
         {
           "label": "Target",
@@ -1625,11 +1663,11 @@
         },
         {
           "label": "Average",
-          "value": "-"
+          "value": "64.5%"
         },
         {
           "label": "Best",
-          "value": "-"
+          "value": "Jan - 92.9%"
         }
       ],
       "table": {
@@ -1655,18 +1693,105 @@
             "format": "percent"
           }
         ],
-        "rows": []
+        "rows": [
+          {
+            "month": "Jan",
+            "assembled": 14.0,
+            "backorders": 1.0,
+            "fillRate": 0.9285714285714286
+          },
+          {
+            "month": "Feb",
+            "assembled": 12.0,
+            "backorders": 5.0,
+            "fillRate": 0.5833333333333333
+          },
+          {
+            "month": "Mar",
+            "assembled": 36.0,
+            "backorders": 6.0,
+            "fillRate": 0.8333333333333334
+          },
+          {
+            "month": "Apr",
+            "assembled": 22.0,
+            "backorders": 10.0,
+            "fillRate": 0.5454545454545454
+          },
+          {
+            "month": "May",
+            "assembled": 48.0,
+            "backorders": 25.0,
+            "fillRate": 0.47916666666666663
+          },
+          {
+            "month": "Jun",
+            "assembled": 2.0,
+            "backorders": 1.0,
+            "fillRate": 0.5
+          },
+          {
+            "month": "Jul",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Aug",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Sep",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Oct",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Nov",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          },
+          {
+            "month": "Dec",
+            "assembled": null,
+            "backorders": null,
+            "fillRate": null
+          }
+        ]
       },
       "chart": {
         "kind": "line",
-        "labels": [],
+        "labels": [
+          "Jan",
+          "Feb",
+          "Mar",
+          "Apr",
+          "May",
+          "Jun"
+        ],
         "series": [
           {
             "name": "Fill Rate",
             "key": "fillRate",
             "format": "percent",
             "color": "#8b5cf6",
-            "values": [],
+            "values": [
+              0.9285714285714286,
+              0.5833333333333333,
+              0.8333333333333334,
+              0.5454545454545454,
+              0.47916666666666663,
+              0.5
+            ],
             "style": "solid",
             "showDots": true,
             "strokeWidth": 3
@@ -1675,7 +1800,14 @@
             "name": "Target",
             "format": "percent",
             "color": "#39ff88",
-            "values": [],
+            "values": [
+              0.85,
+              0.85,
+              0.85,
+              0.85,
+              0.85,
+              0.85
+            ],
             "style": "dashed",
             "showDots": false,
             "strokeWidth": 2
@@ -1684,7 +1816,14 @@
             "name": "Trend",
             "format": "percent",
             "color": "#f8fafc",
-            "values": [],
+            "values": [
+              0.8409219748505462,
+              0.7625438054009481,
+              0.6841656359513502,
+              0.6057874665017522,
+              0.5274092970521541,
+              0.4490311276025561
+            ],
             "style": "dotted",
             "showDots": false,
             "strokeWidth": 2

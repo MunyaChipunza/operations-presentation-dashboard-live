@@ -709,35 +709,60 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         month = format_month_label(ws[f"X{row_num}"].value)
         if not month:
             continue
+        y2026_cpt = to_float(ws[f"AA{row_num}"].value)
+        y2026_george = to_float(ws[f"AB{row_num}"].value)
+        y2026_total = None
+        if y2026_cpt is not None or y2026_george is not None:
+            y2026_total = sum(value for value in (y2026_cpt, y2026_george) if value is not None)
         rows.append(
             {
                 "month": month,
                 "y2024": to_float(ws[f"Y{row_num}"].value),
                 "y2025": to_float(ws[f"Z{row_num}"].value),
-                "y2026": to_float(ws[f"AA{row_num}"].value),
+                "y2026Cpt": y2026_cpt,
+                "y2026George": y2026_george,
+                "y2026Total": y2026_total,
             }
         )
 
-    ytd_2026 = sum(row["y2026"] for row in rows if row.get("y2026") is not None)
-    live_rows = [row for row in rows if row.get("y2026") is not None]
+    ytd_2026 = sum(row["y2026Total"] for row in rows if row.get("y2026Total") is not None)
+    ytd_2026_george = sum(row["y2026George"] for row in rows if row.get("y2026George") is not None)
+    live_rows = [row for row in rows if row.get("y2026Total") is not None]
     ytd_2024 = sum(row["y2024"] for row in live_rows if row.get("y2024") is not None)
     ytd_2025 = sum(row["y2025"] for row in live_rows if row.get("y2025") is not None)
     ytd_values = sorted([ytd_2024, ytd_2025, ytd_2026], reverse=True)
     ytd_rank = ytd_values.index(ytd_2026) + 1 if ytd_values else None
     best_2025 = max_row(rows, "y2025")
-    latest_2026 = latest_non_null(rows, "y2026")
+    latest_2026 = latest_non_null(rows, "y2026Total")
+    has_george_data = any(row.get("y2026George") is not None for row in rows)
+    chart_series = [
+        {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
+        {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#39ff88", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
+        {"name": "2026 Total", "key": "y2026Total", "format": "integer", "color": "#00cfff", "values": [row["y2026Total"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 4},
+    ]
+    if has_george_data:
+        chart_series.append(
+            {"name": "2026 George", "key": "y2026George", "format": "integer", "color": "#8b5cf6", "values": [row["y2026George"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 3}
+        )
+        chart_series.append(
+            {"name": "2026 CPT", "key": "y2026Cpt", "format": "integer", "color": "#ff8a5b", "values": [row["y2026Cpt"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2.5}
+        )
+    chart_series.append(
+        {"name": "2026 Trend", "format": "integer", "color": "#f8fafc", "values": build_trendline([row["y2026Total"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2}
+    )
     return {
         "key": "sku-monthly",
         "label": "SKU Picked by Month",
         "category": "Volume",
-        "description": "Monthly SKU volume split by year so you can compare the current run rate with prior years.",
+        "description": "Monthly SKU volume split by year, with the 2026 run now separated into CPT and George while still tracking the combined total.",
         "headlineValue": format_number(ytd_2026, 0),
-        "headlineDetail": "2026 YTD picked volume",
+        "headlineDetail": "2026 YTD picked volume (CPT + George)",
         "tone": tone_from_rank(ytd_rank),
-        "note": "The chart view now uses layered line work so 2026 can be read against the 2025 benchmark and its own trend.",
+        "note": "Table view keeps the site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and adds the George line whenever it has values.",
         "facts": [
-            {"label": "2026 YTD", "value": format_number(ytd_2026, 0)},
-            {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026['y2026'], 0)}" if latest_2026 else "-"},
+            {"label": "2026 Total YTD", "value": format_number(ytd_2026, 0)},
+            {"label": "George YTD", "value": format_number(ytd_2026_george, 0)},
+            {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026['y2026Total'], 0)}" if latest_2026 else "-"},
             {"label": "Best 2025 Month", "value": f"{best_2025['month']} - {format_number(best_2025['y2025'], 0)}" if best_2025 else "-"},
             {"label": "YTD Rank", "value": f"{ytd_rank} of 3" if ytd_rank else "-"},
         ],
@@ -746,19 +771,16 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
                 {"key": "month", "label": "Month", "format": "text"},
                 {"key": "y2024", "label": "2024", "format": "integer"},
                 {"key": "y2025", "label": "2025", "format": "integer"},
-                {"key": "y2026", "label": "2026", "format": "integer"},
+                {"key": "y2026Cpt", "label": "2026 CPT", "format": "integer"},
+                {"key": "y2026George", "label": "2026 George", "format": "integer"},
+                {"key": "y2026Total", "label": "2026 Total", "format": "integer"},
             ],
             "rows": rows,
         },
         "chart": {
             "kind": "line",
             "labels": [row["month"] for row in rows],
-            "series": [
-                {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
-                {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#39ff88", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
-                {"name": "2026 Actual", "key": "y2026", "format": "integer", "color": "#00cfff", "values": [row["y2026"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 4},
-                {"name": "2026 Trend", "format": "integer", "color": "#f8fafc", "values": build_trendline([row["y2026"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2},
-            ],
+            "series": chart_series,
         },
     }
 
@@ -766,12 +788,12 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
 def parse_assembly_backorders(ws) -> dict[str, Any]:
     rows = []
     for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
-        month = format_month_label(ws[f"AC{row_num}"].value)
+        month = format_month_label(ws[f"AD{row_num}"].value)
         if not month:
             continue
-        assembled = to_float(ws[f"AD{row_num}"].value)
-        backorders = to_float(ws[f"AE{row_num}"].value)
-        fill_rate = to_float(ws[f"AF{row_num}"].value)
+        assembled = to_float(ws[f"AE{row_num}"].value)
+        backorders = to_float(ws[f"AF{row_num}"].value)
+        fill_rate = to_float(ws[f"AG{row_num}"].value)
         if fill_rate is None and assembled not in (None, 0) and backorders is not None:
             fill_rate = 1 - (backorders / assembled)
         rows.append(
