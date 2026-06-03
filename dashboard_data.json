@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-06-03T10:14:17.559111+00:00",
-  "sourceModifiedAt": "2026-06-02T11:38:21.253954+00:00",
+  "generatedAt": "2026-06-03T10:15:18.205635+00:00",
+  "sourceModifiedAt": "2026-06-03T10:14:31.579948+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,9 +50,9 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "50.0%",
-      "detail": "Jun fill rate",
-      "tone": "bad"
+      "value": "-",
+      "detail": "No reading yet",
+      "tone": "quiet"
     }
   ],
   "datasets": [
@@ -1610,14 +1610,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "50.0%",
-      "headlineDetail": "Jun fill rate",
-      "tone": "bad",
+      "headlineValue": "-",
+      "headlineDetail": "No reading yet",
+      "tone": "quiet",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "50.0%"
+          "value": "-"
         },
         {
           "label": "Target",
@@ -1625,11 +1625,11 @@
         },
         {
           "label": "Average",
-          "value": "64.5%"
+          "value": "-"
         },
         {
           "label": "Best",
-          "value": "Jan - 92.9%"
+          "value": "-"
         }
       ],
       "table": {
@@ -1655,105 +1655,18 @@
             "format": "percent"
           }
         ],
-        "rows": [
-          {
-            "month": "Jan",
-            "assembled": 14.0,
-            "backorders": 1.0,
-            "fillRate": 0.9285714285714286
-          },
-          {
-            "month": "Feb",
-            "assembled": 12.0,
-            "backorders": 5.0,
-            "fillRate": 0.5833333333333333
-          },
-          {
-            "month": "Mar",
-            "assembled": 36.0,
-            "backorders": 6.0,
-            "fillRate": 0.8333333333333334
-          },
-          {
-            "month": "Apr",
-            "assembled": 22.0,
-            "backorders": 10.0,
-            "fillRate": 0.5454545454545454
-          },
-          {
-            "month": "May",
-            "assembled": 48.0,
-            "backorders": 25.0,
-            "fillRate": 0.47916666666666663
-          },
-          {
-            "month": "Jun",
-            "assembled": 2.0,
-            "backorders": 1.0,
-            "fillRate": 0.5
-          },
-          {
-            "month": "Jul",
-            "assembled": null,
-            "backorders": null,
-            "fillRate": null
-          },
-          {
-            "month": "Aug",
-            "assembled": null,
-            "backorders": null,
-            "fillRate": null
-          },
-          {
-            "month": "Sep",
-            "assembled": null,
-            "backorders": null,
-            "fillRate": null
-          },
-          {
-            "month": "Oct",
-            "assembled": null,
-            "backorders": null,
-            "fillRate": null
-          },
-          {
-            "month": "Nov",
-            "assembled": null,
-            "backorders": null,
-            "fillRate": null
-          },
-          {
-            "month": "Dec",
-            "assembled": null,
-            "backorders": null,
-            "fillRate": null
-          }
-        ]
+        "rows": []
       },
       "chart": {
         "kind": "line",
-        "labels": [
-          "Jan",
-          "Feb",
-          "Mar",
-          "Apr",
-          "May",
-          "Jun"
-        ],
+        "labels": [],
         "series": [
           {
             "name": "Fill Rate",
             "key": "fillRate",
             "format": "percent",
             "color": "#8b5cf6",
-            "values": [
-              0.9285714285714286,
-              0.5833333333333333,
-              0.8333333333333334,
-              0.5454545454545454,
-              0.47916666666666663,
-              0.5
-            ],
+            "values": [],
             "style": "solid",
             "showDots": true,
             "strokeWidth": 3
@@ -1762,14 +1675,7 @@
             "name": "Target",
             "format": "percent",
             "color": "#39ff88",
-            "values": [
-              0.85,
-              0.85,
-              0.85,
-              0.85,
-              0.85,
-              0.85
-            ],
+            "values": [],
             "style": "dashed",
             "showDots": false,
             "strokeWidth": 2
@@ -1778,14 +1684,7 @@
             "name": "Trend",
             "format": "percent",
             "color": "#f8fafc",
-            "values": [
-              0.8409219748505462,
-              0.7625438054009481,
-              0.6841656359513502,
-              0.6057874665017522,
-              0.5274092970521541,
-              0.4490311276025561
-            ],
+            "values": [],
             "style": "dotted",
             "showDots": false,
             "strokeWidth": 2
