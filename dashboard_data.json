@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-06-03T10:20:28.840156+00:00",
-  "sourceModifiedAt": "2026-06-03T10:14:31.579948+00:00",
+  "generatedAt": "2026-06-03T10:21:17.643082+00:00",
+  "sourceModifiedAt": "2026-06-03T10:20:59.744406+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -44,7 +44,7 @@
     },
     {
       "label": "SKU 2026 YTD",
-      "value": "39,642",
+      "value": "45,301",
       "detail": "2026 YTD picked volume (CPT + George)",
       "tone": "warn"
     },
@@ -1374,22 +1374,22 @@
       "label": "SKU Picked by Month",
       "category": "Volume",
       "description": "Monthly SKU volume split by year, with the 2026 run now separated into CPT and George while still tracking the combined total.",
-      "headlineValue": "39,642",
+      "headlineValue": "45,301",
       "headlineDetail": "2026 YTD picked volume (CPT + George)",
       "tone": "warn",
       "note": "Table view keeps the site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and adds the George line whenever it has values.",
       "facts": [
         {
           "label": "2026 Total YTD",
-          "value": "39,642"
+          "value": "45,301"
         },
         {
           "label": "George YTD",
-          "value": "0"
+          "value": "5,659"
         },
         {
           "label": "Latest 2026 Month",
-          "value": "Jun - 737"
+          "value": "Jun - 933"
         },
         {
           "label": "Best 2025 Month",
@@ -1447,40 +1447,40 @@
             "y2024": 4016.0,
             "y2025": 4950.0,
             "y2026Cpt": 4551.0,
-            "y2026George": null,
-            "y2026Total": 4551.0
+            "y2026George": 93.0,
+            "y2026Total": 4644.0
           },
           {
             "month": "Mar",
             "y2024": 2233.0,
             "y2025": 6414.0,
             "y2026Cpt": 6321.0,
-            "y2026George": null,
-            "y2026Total": 6321.0
+            "y2026George": 902.0,
+            "y2026Total": 7223.0
           },
           {
             "month": "Apr",
             "y2024": 5853.0,
             "y2025": 8719.0,
             "y2026Cpt": 10135.0,
-            "y2026George": null,
-            "y2026Total": 10135.0
+            "y2026George": 1414.0,
+            "y2026Total": 11549.0
           },
           {
             "month": "May",
             "y2024": 7739.0,
             "y2025": 12562.0,
             "y2026Cpt": 14656.0,
-            "y2026George": null,
-            "y2026Total": 14656.0
+            "y2026George": 3054.0,
+            "y2026Total": 17710.0
           },
           {
             "month": "Jun",
             "y2024": 4899.0,
             "y2025": 13634.0,
             "y2026Cpt": 737.0,
-            "y2026George": null,
-            "y2026Total": 737.0
+            "y2026George": 196.0,
+            "y2026Total": 933.0
           },
           {
             "month": "Jul",
@@ -1602,6 +1602,52 @@
             "color": "#00cfff",
             "values": [
               3242.0,
+              4644.0,
+              7223.0,
+              11549.0,
+              17710.0,
+              933.0,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 4
+          },
+          {
+            "name": "2026 George",
+            "key": "y2026George",
+            "format": "integer",
+            "color": "#8b5cf6",
+            "values": [
+              null,
+              93.0,
+              902.0,
+              1414.0,
+              3054.0,
+              196.0,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null
+            ],
+            "style": "solid",
+            "showDots": true,
+            "strokeWidth": 3
+          },
+          {
+            "name": "2026 CPT",
+            "key": "y2026Cpt",
+            "format": "integer",
+            "color": "#ff8a5b",
+            "values": [
+              3242.0,
               4551.0,
               6321.0,
               10135.0,
@@ -1616,25 +1662,25 @@
             ],
             "style": "solid",
             "showDots": true,
-            "strokeWidth": 4
+            "strokeWidth": 2.5
           },
           {
             "name": "2026 Trend",
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              5063.857142857143,
-              5681.114285714286,
-              6298.371428571429,
-              6915.628571428571,
-              7532.885714285714,
-              8150.142857142857,
-              8767.400000000001,
-              9384.657142857144,
-              10001.914285714287,
-              10619.17142857143,
-              11236.428571428572,
-              11853.685714285715
+              5265.952380952382,
+              6179.638095238096,
+              7093.32380952381,
+              8007.009523809524,
+              8920.695238095239,
+              9834.380952380952,
+              10748.066666666666,
+              11661.752380952381,
+              12575.438095238096,
+              13489.12380952381,
+              14402.809523809523,
+              15316.495238095238
             ],
             "style": "dotted",
             "showDots": false,
