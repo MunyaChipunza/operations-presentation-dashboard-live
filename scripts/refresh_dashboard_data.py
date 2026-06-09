@@ -336,6 +336,48 @@ def create_excel_snapshot(workbook_path: Path) -> Path:
     raise RuntimeError(last_message)
 
 
+def sync_live_workbook(workbook_path: Path) -> None:
+    helper_script = Path(__file__).with_name("sync_live_excel_workbook.ps1")
+    if not helper_script.exists():
+        return
+
+    startupinfo = None
+    if os.name == "nt":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo.wShowWindow = 0
+
+    command = [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(helper_script),
+        "-SourcePath",
+        str(workbook_path),
+    ]
+    last_message = "Excel could not sync the active workbook before refresh."
+    for attempt in range(4):
+        result = subprocess.run(
+            command,
+            check=False,
+            text=True,
+            capture_output=True,
+            creationflags=CREATE_NO_WINDOW,
+            startupinfo=startupinfo,
+        )
+        if result.returncode in (0, 3):
+            return
+
+        last_message = result.stderr.strip() or result.stdout.strip() or last_message
+        if "0x800AC472" not in last_message or attempt == 3:
+            break
+        time.sleep(1.5)
+
+    raise RuntimeError(last_message)
+
+
 def load_dashboard_workbook(workbook_path: Path) -> tuple[Any, Path | None]:
     try:
         return load_workbook(workbook_path, data_only=True), None
@@ -942,6 +984,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
     workbook = None
     snapshot_path: Path | None = None
     try:
+        sync_live_workbook(workbook_path)
         workbook, snapshot_path = load_dashboard_workbook(workbook_path)
         ws = workbook["DATA"]
         source_mtime = dt.datetime.fromtimestamp(workbook_path.stat().st_mtime, dt.timezone.utc)
