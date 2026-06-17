@@ -18,6 +18,7 @@ from refresh_dashboard_data import refresh_dashboard_data  # noqa: E402
 
 
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+WORKBOOK_NAME_HINTS = ("PPT presentation source data", "Operations Data")
 TRANSIENT_GIT_ERRORS = (
     "Could not resolve host",
     "Failed to connect",
@@ -43,9 +44,11 @@ def find_default_workbook(bundle_dir: Path) -> Path | None:
     for root in search_roots:
         if not root.exists():
             continue
-        preferred = sorted(root.glob("*PPT presentation source data*.xlsx"))
-        if preferred:
-            return preferred[0]
+        for hint in WORKBOOK_NAME_HINTS:
+            for pattern in (f"*{hint}*.xlsx", f"*{hint}*.xlsm"):
+                preferred = sorted(root.glob(pattern))
+                if preferred:
+                    return preferred[0]
         for pattern in ("*.xlsx", "*.xlsm"):
             matches = sorted(root.glob(pattern))
             if matches:
@@ -158,22 +161,26 @@ def has_dashboard_changes(output_path: Path) -> bool:
     return bool(status.stdout.strip())
 
 
-def git_changed_files(*args: str) -> set[str]:
-    result = run_git(*args, check=False)
-    if result.returncode != 0:
-        return set()
-    return {line.strip() for line in result.stdout.splitlines() if line.strip()}
+def write_local_output(source_path: Path, output_path: Path) -> None:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copy2(source_path, output_path)
 
 
-def only_output_file_is_dirty(output_path: Path) -> bool:
+def dirty_paths_excluding_output(output_path: Path) -> list[str]:
     rel_output = output_path.relative_to(BUNDLE_DIR).as_posix()
-    changed = git_changed_files("diff", "--name-only") | git_changed_files("diff", "--cached", "--name-only")
-    return bool(changed) and changed == {rel_output}
+    result = run_git("status", "--porcelain", check=False)
+    if result.returncode != 0:
+        return ["<git-status-unavailable>"]
 
-
-def restore_output_file(output_path: Path) -> None:
-    rel_output = output_path.relative_to(BUNDLE_DIR)
-    run_git("restore", "--staged", "--worktree", "--", str(rel_output), check=False)
+    dirty_paths: list[str] = []
+    for line in result.stdout.splitlines():
+        if len(line) < 4:
+            continue
+        candidate = line[3:].strip().replace("\\", "/")
+        if candidate == rel_output:
+            continue
+        dirty_paths.append(candidate)
+    return dirty_paths
 
 
 def same_file_content(left: Path, right: Path) -> bool:
@@ -183,32 +190,40 @@ def same_file_content(left: Path, right: Path) -> bool:
 
 
 def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_path: Path, commit_message: str) -> bool:
-    if not is_git_repo():
-        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
-        print("Dashboard data refreshed locally. No Git repository detected, so nothing was pushed.")
-        return False
-
-    if not has_origin():
-        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
-        print("Dashboard data refreshed locally. No origin remote is configured yet.")
-        return False
-
-    if only_output_file_is_dirty(output_path):
-        restore_output_file(output_path)
-
-    pending_push = local_ahead_count() > 0
     fd, temp_output_raw = tempfile.mkstemp(suffix=output_path.suffix or ".json")
     os.close(fd)
     temp_output = Path(temp_output_raw)
     try:
         refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=temp_output)
         dashboard_changed = not same_file_content(temp_output, output_path)
+        if dashboard_changed:
+            write_local_output(temp_output, output_path)
+
+        if not is_git_repo():
+            print("Dashboard data refreshed locally. No Git repository detected, so nothing was pushed.")
+            return False
+
+        if not has_origin():
+            print("Dashboard data refreshed locally. No origin remote is configured yet.")
+            return False
+
+        dirty_paths = dirty_paths_excluding_output(output_path)
+        if dirty_paths:
+            print(f"Dashboard data refreshed locally. Git publish skipped because the repo has other pending changes: {', '.join(dirty_paths[:5])}")
+            return False
+
+        pending_push = local_ahead_count() > 0
 
         if not dashboard_changed and not pending_push:
             print("Dashboard data is already up to date.")
             return False
 
-        sync_repo()
+        try:
+            sync_repo()
+        except RuntimeError as exc:
+            print(f"Dashboard data refreshed locally. Git sync skipped: {exc}")
+            return False
+
         refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
 
         ensure_identity()
@@ -219,7 +234,8 @@ def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_
 
         push = run_git_with_retry("push", "-u", "origin", "main")
         if push.returncode != 0:
-            raise RuntimeError(git_error_text(push) or "Could not push dashboard data to origin/main.")
+            print(f"Dashboard data refreshed locally. Git push skipped: {git_error_text(push) or 'Could not push dashboard data to origin/main.'}")
+            return False
 
         print("Dashboard data refreshed and pushed.")
         return True

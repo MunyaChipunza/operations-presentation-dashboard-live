@@ -15,6 +15,7 @@ BUNDLE_DIR = SCRIPT_DIR.parent
 LOG_PATH = SCRIPT_DIR / "local_autopublish.log"
 sys.path.insert(0, str(SCRIPT_DIR))
 
+from refresh_dashboard_data import choose_preferred_source, path_is_csv, path_is_excel, sync_local_workbook_from_csv  # noqa: E402
 from publish_dashboard_data import find_default_workbook, push_dashboard  # noqa: E402
 
 
@@ -40,15 +41,26 @@ def resolve_workbook_path(candidate: str | None) -> Path:
     fallback = find_default_workbook(BUNDLE_DIR)
     if fallback and fallback.exists():
         return fallback.resolve()
+    source_path = choose_preferred_source(None, BUNDLE_DIR)
+    if source_path and source_path.exists():
+        return source_path.resolve()
     raise FileNotFoundError("No local workbook could be found for auto-publish.")
 
 
 def main() -> int:
     args = parse_args()
     workbook_path = resolve_workbook_path(args.workbook)
+    source_path = workbook_path
+
+    if path_is_excel(workbook_path):
+        preferred_source = choose_preferred_source(workbook_path, BUNDLE_DIR)
+        if preferred_source and path_is_csv(preferred_source):
+            sync_local_workbook_from_csv(preferred_source, workbook_path)
+    else:
+        source_path = choose_preferred_source(workbook_path, BUNDLE_DIR) or workbook_path
 
     push_dashboard(
-        workbook_path=workbook_path,
+        workbook_path=source_path,
         workbook_url=None,
         output_path=BUNDLE_DIR / "dashboard_data.json",
         commit_message="Refresh operations dashboard data",

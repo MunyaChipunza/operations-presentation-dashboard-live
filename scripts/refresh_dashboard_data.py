@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import base64
+import csv
 import datetime as dt
 import html
 import json
@@ -18,19 +19,22 @@ import zipfile
 from pathlib import Path
 from typing import Any, Callable
 
-from openpyxl import load_workbook
+from openpyxl import Workbook, load_workbook
 
 
-WORKBOOK_NAME_HINT = "PPT presentation source data"
+WORKBOOK_NAME_HINTS = ("PPT presentation source data", "Operations Data")
+CSV_SOURCE_HINTS = ("Operations Data", "PPT presentation source data")
 TIMEZONE_NAME = "Africa/Johannesburg"
 DEFAULT_OUTPUT = "dashboard_data.json"
 LIVE_DATA_MAX_ROW = 100
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
+EXCEL_SUFFIXES = {".xlsx", ".xlsm"}
+CSV_SUFFIX = ".csv"
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Build dashboard JSON from the PPT presentation source workbook.")
-    parser.add_argument("--workbook", help="Local workbook path (.xlsx/.xlsm).")
+    parser.add_argument("--workbook", help="Local workbook or CSV export path (.xlsx/.xlsm/.csv).")
     parser.add_argument("--workbook-url", help="Public share or direct download URL for the workbook.")
     parser.add_argument("--output", default=DEFAULT_OUTPUT, help="Where to write the dashboard JSON.")
     return parser.parse_args()
@@ -97,6 +101,70 @@ def mean(values: list[float]) -> float | None:
     if not values:
         return None
     return statistics.fmean(values)
+
+
+def path_is_csv(path: Path) -> bool:
+    return path.suffix.lower() == CSV_SUFFIX
+
+
+def path_is_excel(path: Path) -> bool:
+    return path.suffix.lower() in EXCEL_SUFFIXES
+
+
+def safe_key(text: str, fallback: str) -> str:
+    cleaned = re.sub(r"[^0-9a-zA-Z]+", "_", text.strip().lower()).strip("_")
+    if not cleaned:
+        return fallback
+    if cleaned[0].isdigit():
+        cleaned = f"n_{cleaned}"
+    return cleaned
+
+
+def candidate_source_dirs(bundle_dir: Path) -> list[Path]:
+    roots: list[Path] = []
+    for candidate in (Path.home() / "Downloads", bundle_dir.parent, bundle_dir.parent.parent):
+        if candidate.exists() and candidate not in roots:
+            roots.append(candidate)
+    return roots
+
+
+def iter_matching_files(roots: list[Path], patterns: tuple[str, ...]) -> list[Path]:
+    matches: list[Path] = []
+    seen: set[Path] = set()
+    for root in roots:
+        for pattern in patterns:
+            for candidate in root.glob(pattern):
+                if candidate.is_file() and candidate not in seen:
+                    seen.add(candidate)
+                    matches.append(candidate)
+    return matches
+
+
+def latest_path(paths: list[Path]) -> Path | None:
+    if not paths:
+        return None
+    return max(paths, key=lambda candidate: candidate.stat().st_mtime)
+
+
+def find_default_csv_export(bundle_dir: Path) -> Path | None:
+    roots = candidate_source_dirs(bundle_dir)
+    patterns = tuple(f"*{hint}*.csv" for hint in CSV_SOURCE_HINTS)
+    return latest_path(iter_matching_files(roots, patterns))
+
+
+def choose_preferred_source(candidate_path: Path | None, bundle_dir: Path) -> Path | None:
+    workbook_path = candidate_path.resolve() if candidate_path and candidate_path.exists() else None
+    if workbook_path and path_is_csv(workbook_path):
+        return workbook_path
+
+    newer_csv = find_default_csv_export(bundle_dir)
+    if newer_csv and (workbook_path is None or newer_csv.stat().st_mtime > workbook_path.stat().st_mtime):
+        return newer_csv.resolve()
+
+    if workbook_path:
+        return workbook_path
+
+    return find_default_workbook(bundle_dir)
 
 
 def tone_from_percent(value: float | None, *, good: float, warn: float, higher_is_better: bool = True) -> str:
@@ -279,6 +347,161 @@ def write_temp_workbook(payload: bytes, suffix: str) -> Path:
     return path
 
 
+def coerce_csv_cell(value: Any) -> Any:
+    text = clean_text(value)
+    if not text:
+        return None
+
+    if text.endswith("%"):
+        percent_value = to_float(text[:-1])
+        if percent_value is not None:
+            return percent_value / 100
+
+    numeric_text = text.replace(",", "")
+    if re.fullmatch(r"[-+]?\d*\.?\d+", numeric_text):
+        numeric_value = float(numeric_text)
+        if is_whole_number(numeric_value):
+            return int(round(numeric_value))
+        return numeric_value
+
+    return text
+
+
+def read_csv_rows(csv_path: Path) -> list[list[str]]:
+    with csv_path.open("r", encoding="utf-8-sig", newline="") as handle:
+        return list(csv.reader(handle))
+
+
+def csv_value(rows: list[list[str]], row_num: int, col_num: int) -> Any:
+    row_index = row_num - 1
+    col_index = col_num - 1
+    if row_index < 0 or row_index >= len(rows):
+        return None
+    row = rows[row_index]
+    if col_index < 0 or col_index >= len(row):
+        return None
+    return coerce_csv_cell(row[col_index])
+
+
+def raw_csv_value(rows: list[list[str]], row_num: int, col_num: int) -> str:
+    row_index = row_num - 1
+    col_index = col_num - 1
+    if row_index < 0 or row_index >= len(rows):
+        return ""
+    row = rows[row_index]
+    if col_index < 0 or col_index >= len(row):
+        return ""
+    return clean_text(row[col_index])
+
+
+def find_csv_header_column(rows: list[list[str]], header: str) -> int | None:
+    if len(rows) < 2:
+        return None
+    header_row = rows[1]
+    for index, value in enumerate(header_row, start=1):
+        if clean_text(value) == header:
+            return index
+    return None
+
+
+def create_csv_snapshot(csv_path: Path) -> Path:
+    workbook = Workbook()
+    ws = workbook.active
+    ws.title = "DATA"
+    rows = read_csv_rows(csv_path)
+    for row_num, row in enumerate(rows, start=1):
+        for col_num, value in enumerate(row, start=1):
+            ws.cell(row=row_num, column=col_num).value = coerce_csv_cell(value)
+
+    fd, temp_path = tempfile.mkstemp(suffix=".xlsx")
+    os.close(fd)
+    output_path = Path(temp_path)
+    workbook.save(output_path)
+    workbook.close()
+    return output_path
+
+
+def clear_sheet_block(ws, *, start_row: int, end_row: int, start_col: int, end_col: int) -> None:
+    for row_num in range(start_row, end_row + 1):
+        for col_num in range(start_col, end_col + 1):
+            ws.cell(row=row_num, column=col_num).value = None
+
+
+def set_fill_rate_formula(ws, row_num: int) -> None:
+    ws.cell(row=row_num, column=33).value = f'=IF(OR(AE{row_num}="",AF{row_num}="",AE{row_num}=0),"",1-AF{row_num}/AE{row_num})'
+
+
+def sync_local_workbook_from_csv(csv_path: Path, workbook_path: Path) -> bool:
+    if not path_is_csv(csv_path) or not path_is_excel(workbook_path):
+        return False
+
+    rows = read_csv_rows(csv_path)
+    if not rows:
+        return False
+
+    workbook = load_workbook(workbook_path)
+    try:
+        ws = workbook["DATA"]
+        workbook_has_george_split = clean_text(ws.cell(row=2, column=28).value).startswith("2026")
+        csv_secondary_header = raw_csv_value(rows, 2, 28)
+        csv_has_split_2026 = csv_secondary_header.startswith("2026")
+        existing_george_values = {row_num: to_float(ws.cell(row=row_num, column=28).value) for row_num in range(3, LIVE_DATA_MAX_ROW + 1)}
+        csv_month_col = find_csv_header_column(rows, "Month")
+        csv_assembled_col = find_csv_header_column(rows, "Assembled")
+        csv_backorders_col = find_csv_header_column(rows, "Backorders")
+        csv_fill_rate_col = find_csv_header_column(rows, "Fill Rate")
+        if not all((csv_month_col, csv_assembled_col, csv_backorders_col, csv_fill_rate_col)):
+            raise ValueError("Could not find the Liseo assembly headers in the CSV export.")
+
+        clear_sheet_block(ws, start_row=3, end_row=LIVE_DATA_MAX_ROW, start_col=1, end_col=27)
+        clear_sheet_block(ws, start_row=3, end_row=LIVE_DATA_MAX_ROW, start_col=29, end_col=33)
+
+        for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
+            for col_num in range(1, 28):
+                ws.cell(row=row_num, column=col_num).value = csv_value(rows, row_num, col_num)
+
+            if workbook_has_george_split:
+                total_2026 = to_float(ws.cell(row=row_num, column=27).value)
+                if csv_has_split_2026:
+                    ws.cell(row=row_num, column=28).value = csv_value(rows, row_num, 28)
+                else:
+                    preserved_george = existing_george_values.get(row_num)
+                    if total_2026 is None:
+                        ws.cell(row=row_num, column=28).value = preserved_george
+                    elif preserved_george is None:
+                        ws.cell(row=row_num, column=28).value = None
+                    else:
+                        adjusted_cpt = total_2026 - preserved_george
+                        if adjusted_cpt < 0:
+                            ws.cell(row=row_num, column=28).value = None
+                        else:
+                            ws.cell(row=row_num, column=27).value = adjusted_cpt
+                            ws.cell(row=row_num, column=28).value = preserved_george
+
+            ws.cell(row=row_num, column=29).value = None
+            ws.cell(row=row_num, column=30).value = csv_value(rows, row_num, csv_month_col)
+            ws.cell(row=row_num, column=31).value = csv_value(rows, row_num, csv_assembled_col)
+            ws.cell(row=row_num, column=32).value = csv_value(rows, row_num, csv_backorders_col)
+
+            csv_fill_rate_value = csv_value(rows, row_num, csv_fill_rate_col)
+            if csv_fill_rate_value is not None:
+                ws.cell(row=row_num, column=33).value = csv_fill_rate_value
+            elif csv_value(rows, row_num, csv_assembled_col) is not None or csv_value(rows, row_num, csv_backorders_col) is not None:
+                set_fill_rate_formula(ws, row_num)
+            else:
+                ws.cell(row=row_num, column=33).value = None
+
+        calculation = getattr(workbook, "calculation", None)
+        if calculation is not None:
+            calculation.fullCalcOnLoad = True
+            calculation.forceFullCalc = True
+
+        workbook.save(workbook_path)
+        return True
+    finally:
+        workbook.close()
+
+
 def create_excel_snapshot(workbook_path: Path) -> Path:
     helper_script = Path(__file__).with_name("save_excel_snapshot.ps1")
     if not helper_script.exists():
@@ -336,49 +559,11 @@ def create_excel_snapshot(workbook_path: Path) -> Path:
     raise RuntimeError(last_message)
 
 
-def sync_live_workbook(workbook_path: Path) -> None:
-    helper_script = Path(__file__).with_name("sync_live_excel_workbook.ps1")
-    if not helper_script.exists():
-        return
-
-    startupinfo = None
-    if os.name == "nt":
-        startupinfo = subprocess.STARTUPINFO()
-        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-        startupinfo.wShowWindow = 0
-
-    command = [
-        "powershell",
-        "-NoProfile",
-        "-ExecutionPolicy",
-        "Bypass",
-        "-File",
-        str(helper_script),
-        "-SourcePath",
-        str(workbook_path),
-    ]
-    last_message = "Excel could not sync the active workbook before refresh."
-    for attempt in range(4):
-        result = subprocess.run(
-            command,
-            check=False,
-            text=True,
-            capture_output=True,
-            creationflags=CREATE_NO_WINDOW,
-            startupinfo=startupinfo,
-        )
-        if result.returncode in (0, 3):
-            return
-
-        last_message = result.stderr.strip() or result.stdout.strip() or last_message
-        if "0x800AC472" not in last_message or attempt == 3:
-            break
-        time.sleep(1.5)
-
-    raise RuntimeError(last_message)
-
-
 def load_dashboard_workbook(workbook_path: Path) -> tuple[Any, Path | None]:
+    if path_is_csv(workbook_path):
+        snapshot_path = create_csv_snapshot(workbook_path)
+        return load_workbook(snapshot_path, data_only=True), snapshot_path
+
     try:
         return load_workbook(workbook_path, data_only=True), None
     except PermissionError:
@@ -521,17 +706,19 @@ def download_workbook(url: str) -> tuple[Path, str]:
 
 
 def find_default_workbook(bundle_dir: Path) -> Path | None:
-    search_roots = [bundle_dir.parent, bundle_dir.parent.parent]
+    search_roots = candidate_source_dirs(bundle_dir)
     for root in search_roots:
         if not root.exists():
             continue
-        preferred = sorted(root.glob(f"*{WORKBOOK_NAME_HINT}*.xlsx"))
-        if preferred:
-            return preferred[0]
+        for hint in WORKBOOK_NAME_HINTS:
+            for pattern in (f"*{hint}*.xlsx", f"*{hint}*.xlsm"):
+                preferred = sorted(root.glob(pattern))
+                if preferred:
+                    return preferred[0].resolve()
         for pattern in ("*.xlsx", "*.xlsm"):
             matches = sorted(root.glob(pattern))
             if matches:
-                return matches[0]
+                return matches[0].resolve()
     return None
 
 
@@ -745,78 +932,201 @@ def parse_sku_share(ws) -> dict[str, Any]:
     }
 
 
-def parse_monthly_sku(ws) -> dict[str, Any]:
-    rows = []
-    for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
-        month = format_month_label(ws[f"X{row_num}"].value)
-        if not month:
+def find_monthly_sku_layout(ws) -> dict[str, Any]:
+    for col_num in range(2, ws.max_column + 1):
+        current = clean_text(ws.cell(row=2, column=col_num).value)
+        next_value = clean_text(ws.cell(row=2, column=col_num + 1).value)
+        if current != "2024" or next_value != "2025":
             continue
-        y2026_cpt = to_float(ws[f"AA{row_num}"].value)
-        y2026_george = to_float(ws[f"AB{row_num}"].value)
-        y2026_total = None
-        if y2026_cpt is not None or y2026_george is not None:
-            y2026_total = sum(value for value in (y2026_cpt, y2026_george) if value is not None)
-        rows.append(
+
+        month_col = col_num - 1
+        year_2026_cols: list[int] = []
+        cursor = col_num + 2
+        while cursor <= ws.max_column:
+            header = clean_text(ws.cell(row=2, column=cursor).value)
+            if header.startswith("2026"):
+                year_2026_cols.append(cursor)
+                cursor += 1
+                continue
+            break
+
+        if year_2026_cols:
+            return {
+                "month_col": month_col,
+                "year_2024_col": col_num,
+                "year_2025_col": col_num + 1,
+                "year_2026_cols": year_2026_cols,
+            }
+
+    raise ValueError("Could not locate the monthly SKU section in the DATA sheet.")
+
+
+def find_liseo_layout(ws) -> dict[str, int]:
+    section_col = None
+    for col_num in range(1, ws.max_column + 1):
+        if clean_text(ws.cell(row=1, column=col_num).value) == "Liseo Assembly vs Backorders":
+            section_col = col_num
+            break
+
+    if section_col is None:
+        raise ValueError("Could not locate the Liseo assembly section in the DATA sheet.")
+
+    columns: dict[str, int] = {}
+    for label in ("Month", "Assembled", "Backorders", "Fill Rate"):
+        for col_num in range(section_col, min(ws.max_column, section_col + 6) + 1):
+            if clean_text(ws.cell(row=2, column=col_num).value) == label:
+                columns[label] = col_num
+                break
+        if label not in columns:
+            raise ValueError(f"Could not find '{label}' inside the Liseo assembly section.")
+    return columns
+
+
+def parse_monthly_sku(ws) -> dict[str, Any]:
+    layout = find_monthly_sku_layout(ws)
+
+    def year_2026_key(label: str, index: int) -> str:
+        suffix = clean_text(label).replace("2026", "", 1).strip()
+        if not suffix:
+            return "y2026" if index == 1 else f"y2026_{index}"
+        parts = [part for part in re.split(r"[^0-9a-zA-Z]+", suffix) if part]
+        if not parts:
+            return "y2026" if index == 1 else f"y2026_{index}"
+        return "y2026" + "".join(part[:1].upper() + part[1:].lower() for part in parts)
+
+    year_2026_specs = []
+    for index, col_num in enumerate(layout["year_2026_cols"], start=1):
+        header = clean_text(ws.cell(row=2, column=col_num).value) or f"2026 {index}"
+        year_2026_specs.append(
             {
-                "month": month,
-                "y2024": to_float(ws[f"Y{row_num}"].value),
-                "y2025": to_float(ws[f"Z{row_num}"].value),
-                "y2026Cpt": y2026_cpt,
-                "y2026George": y2026_george,
-                "y2026Total": y2026_total,
+                "column": col_num,
+                "key": year_2026_key(header, index),
+                "label": header,
             }
         )
 
-    ytd_2026 = sum(row["y2026Total"] for row in rows if row.get("y2026Total") is not None)
-    ytd_2026_george = sum(row["y2026George"] for row in rows if row.get("y2026George") is not None)
-    live_rows = [row for row in rows if row.get("y2026Total") is not None]
+    rows = []
+    for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
+        month = format_month_label(ws.cell(row=row_num, column=layout["month_col"]).value)
+        if not month:
+            continue
+        row_data = {
+            "month": month,
+            "y2024": to_float(ws.cell(row=row_num, column=layout["year_2024_col"]).value),
+            "y2025": to_float(ws.cell(row=row_num, column=layout["year_2025_col"]).value),
+        }
+        for spec in year_2026_specs:
+            row_data[spec["key"]] = to_float(ws.cell(row=row_num, column=spec["column"]).value)
+        if len(year_2026_specs) > 1:
+            total_value = sum(value for value in (row_data.get(spec["key"]) for spec in year_2026_specs) if value is not None)
+            row_data["y2026Total"] = total_value if total_value else (0 if any(row_data.get(spec["key"]) == 0 for spec in year_2026_specs) else None)
+        rows.append(row_data)
+
+    primary_2026_key = "y2026Total" if len(year_2026_specs) > 1 else year_2026_specs[0]["key"]
+    george_spec = next((spec for spec in year_2026_specs if "george" in spec["label"].lower()), None)
+    cpt_spec = next((spec for spec in year_2026_specs if "cpt" in spec["label"].lower()), None)
+    ytd_2026 = sum(row[primary_2026_key] for row in rows if row.get(primary_2026_key) is not None)
+    live_rows = [row for row in rows if row.get(primary_2026_key) is not None]
     ytd_2024 = sum(row["y2024"] for row in live_rows if row.get("y2024") is not None)
     ytd_2025 = sum(row["y2025"] for row in live_rows if row.get("y2025") is not None)
     ytd_values = sorted([ytd_2024, ytd_2025, ytd_2026], reverse=True)
     ytd_rank = ytd_values.index(ytd_2026) + 1 if ytd_values else None
     best_2025 = max_row(rows, "y2025")
-    latest_2026 = latest_non_null(rows, "y2026Total")
-    has_george_data = any(row.get("y2026George") is not None for row in rows)
+    latest_2026 = latest_non_null(rows, primary_2026_key)
+    ytd_2026_george = 0 if george_spec else None
+    if george_spec:
+        ytd_2026_george = sum(row[george_spec["key"]] for row in rows if row.get(george_spec["key"]) is not None)
+    table_columns = [
+        {"key": "month", "label": "Month", "format": "text"},
+        {"key": "y2024", "label": "2024", "format": "integer"},
+        {"key": "y2025", "label": "2025", "format": "integer"},
+    ] + [{"key": spec["key"], "label": spec["label"], "format": "integer"} for spec in year_2026_specs]
+    if len(year_2026_specs) > 1:
+        table_columns.append({"key": "y2026Total", "label": "2026 Total", "format": "integer"})
+
     chart_series = [
         {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
         {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#39ff88", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
-        {"name": "2026 Total", "key": "y2026Total", "format": "integer", "color": "#00cfff", "values": [row["y2026Total"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 4},
     ]
-    if has_george_data:
+    if len(year_2026_specs) > 1:
         chart_series.append(
-            {"name": "2026 George", "key": "y2026George", "format": "integer", "color": "#8b5cf6", "values": [row["y2026George"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 3}
+            {
+                "name": "2026 Total",
+                "key": "y2026Total",
+                "format": "integer",
+                "color": "#00cfff",
+                "values": [row.get("y2026Total") for row in rows],
+                "style": "solid",
+                "showDots": True,
+                "strokeWidth": 4,
+            }
         )
+        ordered_components = []
+        if george_spec:
+            ordered_components.append((george_spec, "#8b5cf6", 3))
+        if cpt_spec and cpt_spec != george_spec:
+            ordered_components.append((cpt_spec, "#ff8a5b", 2.5))
+        ordered_component_keys = {component[0]["key"] for component in ordered_components}
+        for spec in year_2026_specs:
+            if spec["key"] in ordered_component_keys:
+                continue
+            ordered_components.append((spec, "#ffd54f", 2.5))
+        for spec, color, stroke_width in ordered_components:
+            chart_series.append(
+                {
+                    "name": spec["label"],
+                    "key": spec["key"],
+                    "format": "integer",
+                    "color": color,
+                    "values": [row.get(spec["key"]) for row in rows],
+                    "style": "solid",
+                    "showDots": True,
+                    "strokeWidth": stroke_width,
+                }
+            )
+    else:
+        spec = year_2026_specs[0]
         chart_series.append(
-            {"name": "2026 CPT", "key": "y2026Cpt", "format": "integer", "color": "#ff8a5b", "values": [row["y2026Cpt"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2.5}
+            {
+                "name": "2026 Actual",
+                "key": spec["key"],
+                "format": "integer",
+                "color": "#00cfff",
+                "values": [row.get(spec["key"]) for row in rows],
+                "style": "solid",
+                "showDots": True,
+                "strokeWidth": 4,
+            }
         )
     chart_series.append(
-        {"name": "2026 Trend", "format": "integer", "color": "#f8fafc", "values": build_trendline([row["y2026Total"] for row in rows]), "style": "dotted", "showDots": False, "strokeWidth": 2}
+        {
+            "name": "2026 Trend",
+            "format": "integer",
+            "color": "#f8fafc",
+            "values": build_trendline([row.get(primary_2026_key) for row in rows]),
+            "style": "dotted",
+            "showDots": False,
+            "strokeWidth": 2,
+        }
     )
     return {
         "key": "sku-monthly",
         "label": "SKU Picked by Month",
         "category": "Volume",
-        "description": "Monthly SKU volume split by year, with the 2026 run now separated into CPT and George while still tracking the combined total.",
+        "description": "Monthly SKU volume split by year, with the 2026 run separated into CPT and George whenever that breakdown exists.",
         "headlineValue": format_number(ytd_2026, 0),
-        "headlineDetail": "2026 YTD picked volume (CPT + George)",
+        "headlineDetail": "2026 YTD picked volume (CPT + George)" if len(year_2026_specs) > 1 and george_spec else "2026 YTD picked volume",
         "tone": tone_from_rank(ytd_rank),
-        "note": "Table view keeps the site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and adds the George line whenever it has values.",
+        "note": "Table view keeps the 2026 site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and keeps George distinct.",
         "facts": [
-            {"label": "2026 Total YTD", "value": format_number(ytd_2026, 0)},
-            {"label": "George YTD", "value": format_number(ytd_2026_george, 0)},
-            {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026['y2026Total'], 0)}" if latest_2026 else "-"},
+            {"label": "2026 Total YTD" if len(year_2026_specs) > 1 else "2026 YTD", "value": format_number(ytd_2026, 0)},
+            *([{"label": "George YTD", "value": format_number(ytd_2026_george, 0)}] if george_spec else []),
+            {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026[primary_2026_key], 0)}" if latest_2026 else "-"},
             {"label": "Best 2025 Month", "value": f"{best_2025['month']} - {format_number(best_2025['y2025'], 0)}" if best_2025 else "-"},
             {"label": "YTD Rank", "value": f"{ytd_rank} of 3" if ytd_rank else "-"},
         ],
         "table": {
-            "columns": [
-                {"key": "month", "label": "Month", "format": "text"},
-                {"key": "y2024", "label": "2024", "format": "integer"},
-                {"key": "y2025", "label": "2025", "format": "integer"},
-                {"key": "y2026Cpt", "label": "2026 CPT", "format": "integer"},
-                {"key": "y2026George", "label": "2026 George", "format": "integer"},
-                {"key": "y2026Total", "label": "2026 Total", "format": "integer"},
-            ],
+            "columns": table_columns,
             "rows": rows,
         },
         "chart": {
@@ -828,14 +1138,15 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
 
 
 def parse_assembly_backorders(ws) -> dict[str, Any]:
+    layout = find_liseo_layout(ws)
     rows = []
     for row_num in range(3, LIVE_DATA_MAX_ROW + 1):
-        month = format_month_label(ws[f"AD{row_num}"].value)
+        month = format_month_label(ws.cell(row=row_num, column=layout["Month"]).value)
         if not month:
             continue
-        assembled = to_float(ws[f"AE{row_num}"].value)
-        backorders = to_float(ws[f"AF{row_num}"].value)
-        fill_rate = to_float(ws[f"AG{row_num}"].value)
+        assembled = to_float(ws.cell(row=row_num, column=layout["Assembled"]).value)
+        backorders = to_float(ws.cell(row=row_num, column=layout["Backorders"]).value)
+        fill_rate = to_float(ws.cell(row=row_num, column=layout["Fill Rate"]).value)
         if fill_rate is None and assembled not in (None, 0) and backorders is not None:
             fill_rate = 1 - (backorders / assembled)
         rows.append(
@@ -984,7 +1295,6 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
     workbook = None
     snapshot_path: Path | None = None
     try:
-        sync_live_workbook(workbook_path)
         workbook, snapshot_path = load_dashboard_workbook(workbook_path)
         ws = workbook["DATA"]
         source_mtime = dt.datetime.fromtimestamp(workbook_path.stat().st_mtime, dt.timezone.utc)
@@ -1165,9 +1475,9 @@ def resolve_workbook(args: argparse.Namespace, bundle_dir: Path) -> tuple[Path, 
         temp_path, filename = download_workbook(args.workbook_url)
         return temp_path, filename
 
-    path = find_default_workbook(bundle_dir)
+    path = choose_preferred_source(None, bundle_dir)
     if path is None:
-        raise FileNotFoundError("Could not find a local workbook to build the dashboard from.")
+        raise FileNotFoundError("Could not find a local workbook or CSV export to build the dashboard from.")
     return path.resolve(), path.name
 
 
