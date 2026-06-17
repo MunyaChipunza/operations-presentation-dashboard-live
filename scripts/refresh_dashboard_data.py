@@ -897,23 +897,23 @@ def parse_sku_share(ws) -> dict[str, Any]:
     total_units = sum(row["count"] for row in rows if row.get("count") is not None)
     return {
         "key": "sku-share",
-        "label": "SKU Picked by Picker",
+        "label": "Picker Contribution",
         "category": "Ranking",
-        "description": "Team contribution split across the current SKU picker roster.",
+        "description": "Executive view of picked-SKU volume concentration across the active picker roster.",
         "headlineValue": format_number(top_picker["count"], 0) if top_picker else "-",
-        "headlineDetail": f"Top picker: {top_picker['picker']}" if top_picker else "No picker data yet",
+        "headlineDetail": f"{top_picker['picker']} leads picked volume" if top_picker else "No picker data yet",
         "tone": "good",
-        "note": "Donut view shows share concentration while the table keeps the exact counts visible.",
+        "note": "Donut view shows contribution mix while the table keeps exact picked counts and shares visible.",
         "facts": [
-            {"label": "Top Picker", "value": f"{top_picker['picker']} - {format_number(top_picker['count'], 0)}" if top_picker else "-"},
-            {"label": "Top Share", "value": format_percent(top_picker["share"], 1) if top_picker else "-"},
-            {"label": "Total Picked", "value": format_number(total_units, 0)},
-            {"label": "Roster Size", "value": str(len(rows))},
+            {"label": "Leading Picker", "value": f"{top_picker['picker']} - {format_number(top_picker['count'], 0)}" if top_picker else "-"},
+            {"label": "Lead Share", "value": format_percent(top_picker["share"], 1) if top_picker else "-"},
+            {"label": "Total SKUs Picked", "value": format_number(total_units, 0)},
+            {"label": "Active Pickers", "value": str(len(rows))},
         ],
         "table": {
             "columns": [
                 {"key": "picker", "label": "Picker", "format": "text"},
-                {"key": "count", "label": "SKU Count", "format": "integer"},
+                {"key": "count", "label": "Picked SKUs", "format": "integer"},
                 {"key": "share", "label": "Share", "format": "percent"},
             ],
             "rows": rows,
@@ -1046,7 +1046,7 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
 
     chart_series = [
         {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
-        {"name": "2025 Target", "key": "y2025", "format": "integer", "color": "#39ff88", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
+        {"name": "2025 Benchmark", "key": "y2025", "format": "integer", "color": "#39ff88", "values": [row["y2025"] for row in rows], "style": "dashed", "showDots": False, "strokeWidth": 2},
     ]
     if len(year_2026_specs) > 1:
         chart_series.append(
@@ -1100,7 +1100,7 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         )
     chart_series.append(
         {
-            "name": "2026 Trend",
+            "name": "2026 Run-Rate Trend",
             "format": "integer",
             "color": "#f8fafc",
             "values": build_trendline([row.get(primary_2026_key) for row in rows]),
@@ -1111,19 +1111,19 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
     )
     return {
         "key": "sku-monthly",
-        "label": "SKU Picked by Month",
+        "label": "SKUs Picked Trend",
         "category": "Volume",
-        "description": "Monthly SKU volume split by year, with a combined SKUs Picked total and the 2026 run separated into CPT and George whenever that breakdown exists.",
+        "description": "Executive monthly view of picked-SKU volume versus prior years, with the combined current-year total shown alongside the CPT and George split whenever that breakdown exists.",
         "headlineValue": format_number(ytd_2026, 0),
-        "headlineDetail": "2026 YTD picked volume (CPT + George)" if len(year_2026_specs) > 1 and george_spec else "2026 YTD picked volume",
+        "headlineDetail": "2026 YTD SKUs picked across CPT and George" if len(year_2026_specs) > 1 and george_spec else "2026 YTD SKUs picked",
         "tone": tone_from_rank(ytd_rank),
         "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
         "facts": [
             {"label": "2026 SKUs Picked YTD" if len(year_2026_specs) > 1 else "2026 YTD", "value": format_number(ytd_2026, 0)},
-            *([{"label": "George YTD", "value": format_number(ytd_2026_george, 0)}] if george_spec else []),
-            {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026[primary_2026_key], 0)}" if latest_2026 else "-"},
+            *([{"label": "George Contribution YTD", "value": format_number(ytd_2026_george, 0)}] if george_spec else []),
+            {"label": "Latest Month Total", "value": f"{latest_2026['month']} - {format_number(latest_2026[primary_2026_key], 0)}" if latest_2026 else "-"},
             {"label": "Best 2025 Month", "value": f"{best_2025['month']} - {format_number(best_2025['y2025'], 0)}" if best_2025 else "-"},
-            {"label": "YTD Rank", "value": f"{ytd_rank} of 3" if ytd_rank else "-"},
+            {"label": "YTD Position", "value": f"{ytd_rank} of 3" if ytd_rank else "-"},
         ],
         "table": {
             "columns": table_columns,
@@ -1428,13 +1428,13 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
                     "tone": urgent["tone"],
                 },
                 {
-                    "label": "Top SKU Picker",
+                    "label": "Top Picker Volume",
                     "value": sku_share["headlineValue"],
                     "detail": sku_share["headlineDetail"],
                     "tone": sku_share["tone"],
                 },
                 {
-                    "label": "SKU 2026 YTD",
+                    "label": "SKUs Picked YTD",
                     "value": monthly_sku["headlineValue"],
                     "detail": monthly_sku["headlineDetail"],
                     "tone": monthly_sku["tone"],
