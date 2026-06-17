@@ -2,15 +2,15 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-06-17T06:40:16.401440+00:00",
-  "sourceModifiedAt": "2026-06-17T06:37:51.033203+00:00",
+  "generatedAt": "2026-06-17T07:09:15.575746+00:00",
+  "sourceModifiedAt": "2026-06-17T07:04:38.423287+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
       "label": "Housekeeping",
-      "value": "80%",
+      "value": "73%",
       "detail": "Week 25 92M reading",
-      "tone": "good"
+      "tone": "warn"
     },
     {
       "label": "JHB Accuracy",
@@ -61,14 +61,14 @@
       "label": "Housekeeping",
       "category": "Quality",
       "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
-      "headlineValue": "80%",
+      "headlineValue": "73%",
       "headlineDetail": "Week 25 92M reading",
-      "tone": "good",
+      "tone": "warn",
       "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
         {
           "label": "Latest",
-          "value": "80%"
+          "value": "73%"
         },
         {
           "label": "Target",
@@ -229,7 +229,7 @@
           },
           {
             "period": "Week 25",
-            "score92m": 0.8,
+            "score92m": 0.73,
             "score12m": null
           }
         ]
@@ -296,7 +296,7 @@
               0.7,
               0.72,
               0.74,
-              0.8
+              0.73
             ],
             "style": "solid",
             "showDots": true,
@@ -380,32 +380,32 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7208547008547008,
-              0.7195863247863248,
-              0.7183179487179487,
-              0.7170495726495726,
-              0.7157811965811965,
-              0.7145128205128205,
-              0.7132444444444445,
-              0.7119760683760683,
-              0.7107076923076923,
-              0.7094393162393162,
-              0.7081709401709402,
-              0.7069025641025641,
-              0.705634188034188,
-              0.7043658119658119,
-              0.7030974358974359,
-              0.7018290598290599,
-              0.7005606837606837,
-              0.6992923076923077,
-              0.6980239316239316,
-              0.6967555555555556,
-              0.6954871794871794,
-              0.6942188034188034,
-              0.6929504273504273,
-              0.6916820512820513,
-              0.6904136752136752,
-              0.6891452991452991
+              0.7256410256410257,
+              0.723774358974359,
+              0.7219076923076924,
+              0.7200410256410257,
+              0.7181743589743591,
+              0.7163076923076924,
+              0.7144410256410257,
+              0.7125743589743591,
+              0.7107076923076924,
+              0.7088410256410257,
+              0.7069743589743591,
+              0.7051076923076924,
+              0.7032410256410258,
+              0.7013743589743591,
+              0.6995076923076924,
+              0.6976410256410257,
+              0.695774358974359,
+              0.6939076923076923,
+              0.6920410256410258,
+              0.6901743589743591,
+              0.6883076923076924,
+              0.6864410256410257,
+              0.684574358974359,
+              0.6827076923076923,
+              0.6808410256410258,
+              0.6789743589743591
             ],
             "style": "dotted",
             "showDots": false,
@@ -1187,7 +1187,7 @@
           },
           {
             "week": "Week 23",
-            "accuracy": 1.0
+            "accuracy": 0.999
           },
           {
             "week": "Week 24",
@@ -1257,7 +1257,7 @@
               0.997,
               1.0,
               1.0,
-              1.0,
+              0.999,
               1.0,
               0.998
             ],
@@ -1305,31 +1305,31 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9964953846153847,
-              0.9965107692307693,
-              0.996526153846154,
-              0.9965415384615385,
-              0.9965569230769231,
-              0.9965723076923078,
-              0.9965876923076924,
-              0.9966030769230769,
-              0.9966184615384616,
-              0.9966338461538462,
-              0.9966492307692308,
-              0.9966646153846155,
-              0.99668,
-              0.9966953846153846,
-              0.9967107692307693,
-              0.9967261538461539,
-              0.9967415384615386,
-              0.9967569230769231,
-              0.9967723076923077,
-              0.9967876923076924,
-              0.996803076923077,
-              0.9968184615384615,
-              0.9968338461538462,
-              0.9968492307692308,
-              0.9968646153846155
+              0.9965476923076922,
+              0.9965553846153845,
+              0.9965630769230769,
+              0.9965707692307691,
+              0.9965784615384615,
+              0.9965861538461538,
+              0.996593846153846,
+              0.9966015384615384,
+              0.9966092307692307,
+              0.9966169230769231,
+              0.9966246153846153,
+              0.9966323076923076,
+              0.99664,
+              0.9966476923076922,
+              0.9966553846153845,
+              0.9966630769230769,
+              0.9966707692307691,
+              0.9966784615384615,
+              0.9966861538461538,
+              0.996693846153846,
+              0.9967015384615384,
+              0.9967092307692307,
+              0.9967169230769231,
+              0.9967246153846153,
+              0.9967323076923076
             ],
             "style": "dotted",
             "showDots": false,
@@ -1451,14 +1451,14 @@
       "key": "sku-monthly",
       "label": "SKU Picked by Month",
       "category": "Volume",
-      "description": "Monthly SKU volume split by year, with the 2026 run separated into CPT and George whenever that breakdown exists.",
+      "description": "Monthly SKU volume split by year, with a combined SKUs Picked total and the 2026 run separated into CPT and George whenever that breakdown exists.",
       "headlineValue": "44,109",
       "headlineDetail": "2026 YTD picked volume (CPT + George)",
       "tone": "warn",
-      "note": "Table view keeps the 2026 site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and keeps George distinct.",
+      "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
       "facts": [
         {
-          "label": "2026 Total YTD",
+          "label": "2026 SKUs Picked YTD",
           "value": "44,109"
         },
         {
@@ -1507,7 +1507,7 @@
           },
           {
             "key": "y2026Total",
-            "label": "2026 Total",
+            "label": "SKUs Picked",
             "format": "integer"
           }
         ],
@@ -1674,7 +1674,7 @@
             "strokeWidth": 2
           },
           {
-            "name": "2026 Total",
+            "name": "SKUs Picked",
             "key": "y2026Total",
             "format": "integer",
             "color": "#00cfff",

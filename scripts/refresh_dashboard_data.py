@@ -1042,7 +1042,7 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         {"key": "y2025", "label": "2025", "format": "integer"},
     ] + [{"key": spec["key"], "label": spec["label"], "format": "integer"} for spec in year_2026_specs]
     if len(year_2026_specs) > 1:
-        table_columns.append({"key": "y2026Total", "label": "2026 Total", "format": "integer"})
+        table_columns.append({"key": "y2026Total", "label": "SKUs Picked", "format": "integer"})
 
     chart_series = [
         {"name": "2024", "key": "y2024", "format": "integer", "color": "#3b82f6", "values": [row["y2024"] for row in rows], "style": "solid", "showDots": True, "strokeWidth": 2},
@@ -1051,7 +1051,7 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
     if len(year_2026_specs) > 1:
         chart_series.append(
             {
-                "name": "2026 Total",
+                "name": "SKUs Picked",
                 "key": "y2026Total",
                 "format": "integer",
                 "color": "#00cfff",
@@ -1113,13 +1113,13 @@ def parse_monthly_sku(ws) -> dict[str, Any]:
         "key": "sku-monthly",
         "label": "SKU Picked by Month",
         "category": "Volume",
-        "description": "Monthly SKU volume split by year, with the 2026 run separated into CPT and George whenever that breakdown exists.",
+        "description": "Monthly SKU volume split by year, with a combined SKUs Picked total and the 2026 run separated into CPT and George whenever that breakdown exists.",
         "headlineValue": format_number(ytd_2026, 0),
         "headlineDetail": "2026 YTD picked volume (CPT + George)" if len(year_2026_specs) > 1 and george_spec else "2026 YTD picked volume",
         "tone": tone_from_rank(ytd_rank),
-        "note": "Table view keeps the 2026 site split visible, while chart view reads the combined 2026 total against the 2025 benchmark and keeps George distinct.",
+        "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
         "facts": [
-            {"label": "2026 Total YTD" if len(year_2026_specs) > 1 else "2026 YTD", "value": format_number(ytd_2026, 0)},
+            {"label": "2026 SKUs Picked YTD" if len(year_2026_specs) > 1 else "2026 YTD", "value": format_number(ytd_2026, 0)},
             *([{"label": "George YTD", "value": format_number(ytd_2026_george, 0)}] if george_spec else []),
             {"label": "Latest 2026 Month", "value": f"{latest_2026['month']} - {format_number(latest_2026[primary_2026_key], 0)}" if latest_2026 else "-"},
             {"label": "Best 2025 Month", "value": f"{best_2025['month']} - {format_number(best_2025['y2025'], 0)}" if best_2025 else "-"},
