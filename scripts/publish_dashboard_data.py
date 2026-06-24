@@ -72,8 +72,11 @@ def git_executable() -> str:
     raise FileNotFoundError("Git executable not found. Install Git for Windows first.")
 
 
-def run_git(*args: str, check: bool = True) -> subprocess.CompletedProcess[str]:
-    command = [git_executable(), "-C", str(BUNDLE_DIR), *args]
+def run_git(*args: str, check: bool = True, repo_dir: Path | None = BUNDLE_DIR) -> subprocess.CompletedProcess[str]:
+    command = [git_executable()]
+    if repo_dir is not None:
+        command.extend(["-C", str(repo_dir)])
+    command.extend(args)
     startupinfo = None
     if os.name == "nt":
         startupinfo = subprocess.STARTUPINFO()
@@ -99,10 +102,15 @@ def is_transient_git_failure(message: str) -> bool:
     return any(fragment.lower() in lowered for fragment in TRANSIENT_GIT_ERRORS)
 
 
-def run_git_with_retry(*args: str, attempts: int = 4, delay_seconds: float = 5.0) -> subprocess.CompletedProcess[str]:
+def run_git_with_retry(
+    *args: str,
+    attempts: int = 4,
+    delay_seconds: float = 5.0,
+    repo_dir: Path | None = BUNDLE_DIR,
+) -> subprocess.CompletedProcess[str]:
     last_result: subprocess.CompletedProcess[str] | None = None
     for attempt in range(1, attempts + 1):
-        result = run_git(*args, check=False)
+        result = run_git(*args, check=False, repo_dir=repo_dir)
         if result.returncode == 0:
             return result
 
@@ -123,6 +131,14 @@ def is_git_repo() -> bool:
 def has_origin() -> bool:
     result = run_git("remote", "get-url", "origin", check=False)
     return result.returncode == 0 and bool(result.stdout.strip())
+
+
+def origin_url() -> str | None:
+    result = run_git("remote", "get-url", "origin", check=False)
+    if result.returncode != 0:
+        return None
+    value = result.stdout.strip()
+    return value or None
 
 
 def ensure_identity() -> None:
@@ -166,6 +182,67 @@ def write_local_output(source_path: Path, output_path: Path) -> None:
     shutil.copy2(source_path, output_path)
 
 
+def ensure_identity_for_repo(repo_dir: Path) -> None:
+    run_git("config", "user.name", "Operations Dashboard Sync", repo_dir=repo_dir)
+    run_git("config", "user.email", "dashboard-sync@local", repo_dir=repo_dir)
+
+
+def push_output_from_clean_clone(output_path: Path, rel_output: Path, commit_message: str) -> bool:
+    remote_url = origin_url()
+    if not remote_url:
+        print("Dashboard data refreshed locally. No origin remote is configured yet.")
+        return False
+
+    clone_dir = Path(tempfile.mkdtemp(prefix="ops-dashboard-publish-"))
+    try:
+        clone = run_git_with_retry(
+            "clone",
+            "--branch",
+            "main",
+            "--single-branch",
+            remote_url,
+            str(clone_dir),
+            repo_dir=None,
+        )
+        if clone.returncode != 0:
+            print(
+                "Dashboard data refreshed locally. Git clone skipped: "
+                f"{git_error_text(clone) or 'Could not clone origin/main for publishing.'}"
+            )
+            return False
+
+        clone_output = clone_dir / rel_output
+        write_local_output(output_path, clone_output)
+
+        status = run_git("status", "--short", "--", rel_output.as_posix(), check=False, repo_dir=clone_dir)
+        if not status.stdout.strip():
+            print("Dashboard data is already up to date.")
+            return False
+
+        ensure_identity_for_repo(clone_dir)
+        run_git("add", "--", rel_output.as_posix(), repo_dir=clone_dir)
+        commit = run_git("commit", "-m", commit_message, check=False, repo_dir=clone_dir)
+        if commit.returncode != 0:
+            print(
+                "Dashboard data refreshed locally. Git commit skipped: "
+                f"{git_error_text(commit) or 'Could not commit dashboard data.'}"
+            )
+            return False
+
+        push = run_git_with_retry("push", "origin", "main", repo_dir=clone_dir)
+        if push.returncode != 0:
+            print(
+                "Dashboard data refreshed locally. Git push skipped: "
+                f"{git_error_text(push) or 'Could not push dashboard data to origin/main.'}"
+            )
+            return False
+
+        print("Dashboard data refreshed and pushed.")
+        return True
+    finally:
+        shutil.rmtree(clone_dir, ignore_errors=True)
+
+
 def dirty_paths_excluding_output(output_path: Path) -> list[str]:
     rel_output = output_path.relative_to(BUNDLE_DIR).as_posix()
     result = run_git("status", "--porcelain", check=False)
@@ -207,38 +284,17 @@ def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_
             print("Dashboard data refreshed locally. No origin remote is configured yet.")
             return False
 
-        dirty_paths = dirty_paths_excluding_output(output_path)
-        if dirty_paths:
-            print(f"Dashboard data refreshed locally. Git publish skipped because the repo has other pending changes: {', '.join(dirty_paths[:5])}")
-            return False
-
-        pending_push = local_ahead_count() > 0
-
-        if not dashboard_changed and not pending_push:
+        if not dashboard_changed:
             print("Dashboard data is already up to date.")
             return False
 
         try:
-            sync_repo()
-        except RuntimeError as exc:
-            print(f"Dashboard data refreshed locally. Git sync skipped: {exc}")
+            rel_output = output_path.relative_to(BUNDLE_DIR)
+        except ValueError:
+            print("Dashboard data refreshed locally. The output file is outside the dashboard repo, so nothing was pushed.")
             return False
 
-        refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=output_path)
-
-        ensure_identity()
-        rel_output = output_path.relative_to(BUNDLE_DIR)
-        if has_dashboard_changes(output_path):
-            run_git("add", "--", str(rel_output))
-            run_git("commit", "-m", commit_message)
-
-        push = run_git_with_retry("push", "-u", "origin", "main")
-        if push.returncode != 0:
-            print(f"Dashboard data refreshed locally. Git push skipped: {git_error_text(push) or 'Could not push dashboard data to origin/main.'}")
-            return False
-
-        print("Dashboard data refreshed and pushed.")
-        return True
+        return push_output_from_clean_clone(output_path, rel_output, commit_message)
     finally:
         temp_output.unlink(missing_ok=True)
 

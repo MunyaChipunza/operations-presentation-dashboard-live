@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import os
 import sys
 import traceback
@@ -15,7 +16,7 @@ BUNDLE_DIR = SCRIPT_DIR.parent
 LOG_PATH = SCRIPT_DIR / "local_autopublish.log"
 sys.path.insert(0, str(SCRIPT_DIR))
 
-from refresh_dashboard_data import choose_preferred_source, path_is_csv, path_is_excel, sync_local_workbook_from_csv  # noqa: E402
+from refresh_dashboard_data import choose_preferred_source, path_is_excel  # noqa: E402
 from publish_dashboard_data import find_default_workbook, push_dashboard  # noqa: E402
 
 
@@ -28,7 +29,8 @@ def parse_args() -> argparse.Namespace:
 def log(message: str) -> None:
     LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
     with LOG_PATH.open("a", encoding="utf-8") as handle:
-        handle.write(message.rstrip() + "\n")
+        stamp = dt.datetime.now().isoformat(timespec="seconds")
+        handle.write(f"[{stamp}] {message.rstrip()}\n")
 
 
 def resolve_workbook_path(candidate: str | None) -> Path:
@@ -51,20 +53,23 @@ def main() -> int:
     args = parse_args()
     workbook_path = resolve_workbook_path(args.workbook)
     source_path = workbook_path
+    log(f"Auto-publish start. Workbook candidate: {workbook_path}")
 
     if path_is_excel(workbook_path):
         preferred_source = choose_preferred_source(workbook_path, BUNDLE_DIR)
-        if preferred_source and path_is_csv(preferred_source):
-            sync_local_workbook_from_csv(preferred_source, workbook_path)
+        if preferred_source and preferred_source != workbook_path:
+            source_path = preferred_source
+            log(f"Found fresher source for publishing: {preferred_source}")
     else:
         source_path = choose_preferred_source(workbook_path, BUNDLE_DIR) or workbook_path
 
-    push_dashboard(
+    published = push_dashboard(
         workbook_path=source_path,
         workbook_url=None,
         output_path=BUNDLE_DIR / "dashboard_data.json",
         commit_message="Refresh operations dashboard data",
     )
+    log(f"Auto-publish completed. Published={published}. Source used: {source_path}")
     return 0
 
 
