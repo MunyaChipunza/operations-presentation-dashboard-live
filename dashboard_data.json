@@ -2,20 +2,20 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-06-25T06:14:16.865159+00:00",
-  "sourceModifiedAt": "2026-06-23T19:45:14+00:00",
+  "generatedAt": "2026-07-01T05:28:04.089380+00:00",
+  "sourceModifiedAt": "2026-06-30T16:09:12+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
       "label": "Housekeeping",
       "value": "71%",
-      "detail": "Week 26 92M reading",
+      "detail": "Week 27 92M reading",
       "tone": "warn"
     },
     {
       "label": "JHB Accuracy",
-      "value": "97.2%",
-      "detail": "Load 12 reading",
+      "value": "97.6%",
+      "detail": "Load 13 reading",
       "tone": "warn"
     },
     {
@@ -26,25 +26,25 @@
     },
     {
       "label": "Dispatch Accuracy",
-      "value": "99.3%",
-      "detail": "Week 26 reading",
+      "value": "100.0%",
+      "detail": "Week 27 reading",
       "tone": "good"
     },
     {
       "label": "Urgent Orders",
-      "value": "45.5%",
-      "detail": "Week 26 reading",
+      "value": "60.0%",
+      "detail": "Week 27 reading",
       "tone": "bad"
     },
     {
       "label": "Top Picker Volume",
-      "value": "2,987",
+      "value": "3,561",
       "detail": "Endwell leads picked volume",
       "tone": "good"
     },
     {
       "label": "SKUs Picked YTD",
-      "value": "48,246",
+      "value": "50,117",
       "detail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn"
     },
@@ -62,7 +62,7 @@
       "category": "Quality",
       "description": "Weekly housekeeping performance with both the 92M and 12M score streams.",
       "headlineValue": "71%",
-      "headlineDetail": "Week 26 92M reading",
+      "headlineDetail": "Week 27 92M reading",
       "tone": "warn",
       "note": "Shows weekly housekeeping performance against the green 80% target line and the 2025 average benchmark.",
       "facts": [
@@ -236,6 +236,11 @@
             "period": "Week 26",
             "score92m": 0.71,
             "score12m": null
+          },
+          {
+            "period": "Week 27",
+            "score92m": 0.71,
+            "score12m": null
           }
         ]
       },
@@ -268,7 +273,8 @@
           "Week 23",
           "Week 24",
           "Week 25",
-          "Week 26"
+          "Week 26",
+          "Week 27"
         ],
         "series": [
           {
@@ -303,6 +309,7 @@
               0.72,
               0.74,
               0.73,
+              0.71,
               0.71
             ],
             "style": "solid",
@@ -327,6 +334,7 @@
               0.55,
               0.77,
               0.73,
+              null,
               null,
               null,
               null,
@@ -378,6 +386,7 @@
               0.8,
               0.8,
               0.8,
+              0.8,
               0.8
             ],
             "style": "dashed",
@@ -389,33 +398,34 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7234656084656084,
-              0.7218599918599917,
-              0.7202543752543752,
-              0.7186487586487585,
-              0.7170431420431419,
-              0.7154375254375254,
-              0.7138319088319087,
-              0.7122262922262921,
-              0.7106206756206755,
-              0.7090150590150589,
-              0.7074094424094423,
-              0.7058038258038257,
-              0.7041982091982091,
-              0.7025925925925925,
-              0.7009869759869759,
-              0.6993813593813593,
-              0.6977757427757427,
-              0.6961701261701261,
-              0.6945645095645094,
-              0.6929588929588929,
-              0.6913532763532763,
-              0.6897476597476596,
-              0.6881420431420431,
-              0.6865364265364264,
-              0.6849308099308098,
-              0.6833251933251933,
-              0.6817195767195766
+              0.721551724137931,
+              0.7201669403393541,
+              0.7187821565407772,
+              0.7173973727422003,
+              0.7160125889436234,
+              0.7146278051450465,
+              0.7132430213464696,
+              0.7118582375478927,
+              0.7104734537493158,
+              0.7090886699507389,
+              0.707703886152162,
+              0.7063191023535851,
+              0.7049343185550082,
+              0.7035495347564312,
+              0.7021647509578544,
+              0.7007799671592775,
+              0.6993951833607006,
+              0.6980103995621236,
+              0.6966256157635468,
+              0.6952408319649699,
+              0.6938560481663929,
+              0.692471264367816,
+              0.6910864805692392,
+              0.6897016967706623,
+              0.6883169129720853,
+              0.6869321291735084,
+              0.6855473453749316,
+              0.6841625615763547
             ],
             "style": "dotted",
             "showDots": false,
@@ -429,14 +439,14 @@
       "label": "Container Accuracy JHB",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the Johannesburg container stream.",
-      "headlineValue": "97.2%",
-      "headlineDetail": "Load 12 reading",
+      "headlineValue": "97.6%",
+      "headlineDetail": "Load 13 reading",
       "tone": "warn",
       "note": "Higher is better. Missing loads are left blank so the chart stays honest.",
       "facts": [
         {
           "label": "Latest",
-          "value": "97.2%"
+          "value": "97.6%"
         },
         {
           "label": "Target",
@@ -452,7 +462,7 @@
         },
         {
           "label": "Readings",
-          "value": "12"
+          "value": "13"
         }
       ],
       "table": {
@@ -519,7 +529,7 @@
           },
           {
             "load": "Load 13",
-            "accuracy": null
+            "accuracy": 0.9761
           }
         ]
       },
@@ -537,7 +547,8 @@
           "Load 9",
           "Load 10",
           "Load 11",
-          "Load 12"
+          "Load 12",
+          "Load 13"
         ],
         "series": [
           {
@@ -557,7 +568,8 @@
               0.99,
               0.975,
               0.988,
-              0.972
+              0.972,
+              0.9761
             ],
             "style": "solid",
             "showDots": true,
@@ -568,6 +580,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -590,18 +603,19 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9781153846153847,
-              0.9772307692307693,
-              0.976346153846154,
-              0.9754615384615386,
-              0.9745769230769232,
-              0.9736923076923077,
-              0.9728076923076924,
-              0.971923076923077,
-              0.9710384615384616,
-              0.9701538461538463,
-              0.9692692307692309,
-              0.9683846153846155
+              0.9770758241758242,
+              0.9764747252747252,
+              0.9758736263736264,
+              0.9752725274725275,
+              0.9746714285714285,
+              0.9740703296703297,
+              0.9734692307692308,
+              0.9728681318681318,
+              0.972267032967033,
+              0.971665934065934,
+              0.9710648351648351,
+              0.9704637362637363,
+              0.9698626373626373
             ],
             "style": "dotted",
             "showDots": false,
@@ -785,14 +799,14 @@
       "label": "Wholesaler Urgent Orders",
       "category": "Exceptions",
       "description": "Weekly urgent-order rate. Lower is healthier here.",
-      "headlineValue": "45.5%",
-      "headlineDetail": "Week 26 reading",
+      "headlineValue": "60.0%",
+      "headlineDetail": "Week 27 reading",
       "tone": "bad",
       "note": "This one flips the interpretation: the closer to zero, the better.",
       "facts": [
         {
           "label": "Latest",
-          "value": "45.5%"
+          "value": "60.0%"
         },
         {
           "label": "Target",
@@ -800,7 +814,7 @@
         },
         {
           "label": "Average",
-          "value": "18.9%"
+          "value": "20.0%"
         },
         {
           "label": "Best",
@@ -808,7 +822,7 @@
         },
         {
           "label": "Readings",
-          "value": "26"
+          "value": "27"
         }
       ],
       "table": {
@@ -923,11 +937,15 @@
           },
           {
             "week": "Week 25",
-            "rate": 0.4267
+            "rate": 0.4
           },
           {
             "week": "Week 26",
-            "rate": 0.455
+            "rate": 0.3651
+          },
+          {
+            "week": "Week 27",
+            "rate": 0.6
           }
         ]
       },
@@ -959,7 +977,8 @@
           "Week 23",
           "Week 24",
           "Week 25",
-          "Week 26"
+          "Week 26",
+          "Week 27"
         ],
         "series": [
           {
@@ -992,8 +1011,9 @@
               0.37,
               0.379,
               0.329,
-              0.4267,
-              0.455
+              0.4,
+              0.3651,
+              0.6
             ],
             "style": "solid",
             "showDots": true,
@@ -1004,6 +1024,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.05,
               0.05,
               0.05,
               0.05,
@@ -1040,32 +1061,33 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              -0.057973504273504256,
-              -0.03818885470085469,
-              -0.018404205128205113,
-              0.001380444444444462,
-              0.02116509401709403,
-              0.0409497435897436,
-              0.06073439316239318,
-              0.08051904273504273,
-              0.10030369230769232,
-              0.1200883418803419,
-              0.13987299145299145,
-              0.15965764102564103,
-              0.17944229059829062,
-              0.1992269401709402,
-              0.21901158974358972,
-              0.2387962393162393,
-              0.25858088888888886,
-              0.27836553846153844,
-              0.298150188034188,
-              0.3179348376068376,
-              0.3377194871794872,
-              0.35750413675213677,
-              0.37728878632478635,
-              0.39707343589743593,
-              0.4168580854700855,
-              0.436642735042735
+              -0.06089470899470903,
+              -0.04080850630850634,
+              -0.02072230362230365,
+              -0.0006361009361009612,
+              0.019450101750101728,
+              0.03953630443630442,
+              0.05962250712250711,
+              0.07970870980870978,
+              0.09979491249491249,
+              0.11988111518111519,
+              0.13996731786731786,
+              0.16005352055352054,
+              0.18013972323972324,
+              0.20022592592592595,
+              0.2203121286121286,
+              0.2403983312983313,
+              0.260484533984534,
+              0.28057073667073673,
+              0.3006569393569394,
+              0.320743142043142,
+              0.3408293447293448,
+              0.36091554741554743,
+              0.3810017501017501,
+              0.40108795278795284,
+              0.4211741554741555,
+              0.44126035816035813,
+              0.4613465608465609
             ],
             "style": "dotted",
             "showDots": false,
@@ -1079,14 +1101,14 @@
       "label": "Dispatch Accuracy",
       "category": "Accuracy",
       "description": "Weekly dispatch accuracy performance.",
-      "headlineValue": "99.3%",
-      "headlineDetail": "Week 26 reading",
+      "headlineValue": "100.0%",
+      "headlineDetail": "Week 27 reading",
       "tone": "good",
       "note": "A near-perfect trend, so the chart leans on fine-grained percentage labels.",
       "facts": [
         {
           "label": "Latest",
-          "value": "99.3%"
+          "value": "100.0%"
         },
         {
           "label": "Target",
@@ -1094,7 +1116,7 @@
         },
         {
           "label": "Average",
-          "value": "99.6%"
+          "value": "99.7%"
         },
         {
           "label": "Best",
@@ -1102,7 +1124,7 @@
         },
         {
           "label": "Readings",
-          "value": "26"
+          "value": "27"
         }
       ],
       "table": {
@@ -1222,6 +1244,10 @@
           {
             "week": "Week 26",
             "accuracy": 0.9929
+          },
+          {
+            "week": "Week 27",
+            "accuracy": 1.0
           }
         ]
       },
@@ -1253,7 +1279,8 @@
           "Week 23",
           "Week 24",
           "Week 25",
-          "Week 26"
+          "Week 26",
+          "Week 27"
         ],
         "series": [
           {
@@ -1287,7 +1314,8 @@
               0.999,
               1.0,
               0.998,
-              0.9929
+              0.9929,
+              1.0
             ],
             "style": "solid",
             "showDots": true,
@@ -1298,6 +1326,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -1334,32 +1363,33 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9968102564102564,
-              0.9967851282051282,
-              0.9967600000000001,
-              0.9967348717948719,
-              0.9967097435897436,
-              0.9966846153846154,
-              0.9966594871794873,
-              0.996634358974359,
-              0.9966092307692308,
-              0.9965841025641026,
-              0.9965589743589744,
-              0.9965338461538462,
-              0.996508717948718,
-              0.9964835897435897,
-              0.9964584615384616,
-              0.9964333333333334,
-              0.9964082051282052,
-              0.9963830769230769,
-              0.9963579487179488,
-              0.9963328205128206,
-              0.9963076923076923,
-              0.9962825641025641,
-              0.996257435897436,
-              0.9962323076923078,
-              0.9962071794871795,
-              0.9961820512820513
+              0.9965560846560847,
+              0.996561457061457,
+              0.9965668294668295,
+              0.9965722018722019,
+              0.9965775742775743,
+              0.9965829466829467,
+              0.9965883190883191,
+              0.9965936914936915,
+              0.9965990638990639,
+              0.9966044363044363,
+              0.9966098087098088,
+              0.9966151811151811,
+              0.9966205535205536,
+              0.9966259259259259,
+              0.9966312983312984,
+              0.9966366707366707,
+              0.9966420431420432,
+              0.9966474155474155,
+              0.996652787952788,
+              0.9966581603581603,
+              0.9966635327635328,
+              0.9966689051689052,
+              0.9966742775742776,
+              0.99667964997965,
+              0.9966850223850224,
+              0.9966903947903948,
+              0.9966957671957672
             ],
             "style": "dotted",
             "showDots": false,
@@ -1373,14 +1403,14 @@
       "label": "Picker Contribution",
       "category": "Ranking",
       "description": "Executive view of picked-SKU volume concentration across the active picker roster.",
-      "headlineValue": "2,987",
+      "headlineValue": "3,561",
       "headlineDetail": "Endwell leads picked volume",
       "tone": "good",
       "note": "Donut view shows contribution mix while the table keeps exact picked counts and shares visible.",
       "facts": [
         {
           "label": "Leading Picker",
-          "value": "Endwell - 2,987"
+          "value": "Endwell - 3,561"
         },
         {
           "label": "Lead Share",
@@ -1388,7 +1418,7 @@
         },
         {
           "label": "Total SKUs Picked",
-          "value": "7,939"
+          "value": "9,343"
         },
         {
           "label": "Active Pickers",
@@ -1416,27 +1446,27 @@
         "rows": [
           {
             "picker": "Ali",
-            "count": 182.0,
+            "count": 243.0,
             "share": 0.021
           },
           {
             "picker": "Angelo",
-            "count": 138.0,
+            "count": 178.0,
             "share": 0.016
           },
           {
             "picker": "Charlie",
-            "count": 2536.0,
+            "count": 2859.0,
             "share": 0.289
           },
           {
             "picker": "Bongani",
-            "count": 2096.0,
+            "count": 2502.0,
             "share": 0.272
           },
           {
             "picker": "Endwell",
-            "count": 2987.0,
+            "count": 3561.0,
             "share": 0.401
           }
         ]
@@ -1446,31 +1476,31 @@
         "series": [
           {
             "name": "Ali",
-            "value": 182.0,
+            "value": 243.0,
             "share": 0.021,
             "color": "#ff8a5b"
           },
           {
             "name": "Angelo",
-            "value": 138.0,
+            "value": 178.0,
             "share": 0.016,
             "color": "#26d0ce"
           },
           {
             "name": "Charlie",
-            "value": 2536.0,
+            "value": 2859.0,
             "share": 0.289,
             "color": "#ffc857"
           },
           {
             "name": "Bongani",
-            "value": 2096.0,
+            "value": 2502.0,
             "share": 0.272,
             "color": "#8ddf6e"
           },
           {
             "name": "Endwell",
-            "value": 2987.0,
+            "value": 3561.0,
             "share": 0.401,
             "color": "#8a7dff"
           }
@@ -1482,22 +1512,22 @@
       "label": "SKUs Picked Trend",
       "category": "Volume",
       "description": "Executive monthly view of picked-SKU volume versus prior years, with the combined current-year total shown alongside the CPT and George split whenever that breakdown exists.",
-      "headlineValue": "48,246",
+      "headlineValue": "50,117",
       "headlineDetail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn",
       "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
       "facts": [
         {
           "label": "2026 SKUs Picked YTD",
-          "value": "48,246"
+          "value": "50,117"
         },
         {
           "label": "George Contribution YTD",
-          "value": "6,865"
+          "value": "7,332"
         },
         {
           "label": "Latest Month Total",
-          "value": "Jun - 9,341"
+          "value": "Jun - 11,212"
         },
         {
           "label": "Best 2025 Month",
@@ -1586,9 +1616,9 @@
             "month": "Jun",
             "y2024": 4899.0,
             "y2025": 13634.0,
-            "y2026Cpt": 7939.0,
-            "y2026George": 1402.0,
-            "y2026Total": 9341.0
+            "y2026Cpt": 9343.0,
+            "y2026George": 1869.0,
+            "y2026Total": 11212.0
           },
           {
             "month": "Jul",
@@ -1714,7 +1744,7 @@
               6321.0,
               10135.0,
               14656.0,
-              9341.0,
+              11212.0,
               null,
               null,
               null,
@@ -1737,7 +1767,7 @@
               902.0,
               1414.0,
               3054.0,
-              1402.0,
+              1869.0,
               null,
               null,
               null,
@@ -1760,7 +1790,7 @@
               5419.0,
               8721.0,
               11602.0,
-              7939.0,
+              9343.0,
               null,
               null,
               null,
@@ -1777,18 +1807,18 @@
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              3425.0,
-              5271.4,
-              7117.8,
-              8964.2,
-              10810.6,
-              12657.0,
-              14503.400000000001,
-              16349.800000000001,
-              18196.2,
-              20042.600000000002,
-              21889.0,
-              23735.4
+              3068.6190476190477,
+              5182.304761904762,
+              7295.990476190476,
+              9409.676190476192,
+              11523.361904761905,
+              13637.04761904762,
+              15750.733333333334,
+              17864.41904761905,
+              19978.10476190476,
+              22091.79047619048,
+              24205.47619047619,
+              26319.161904761902
             ],
             "style": "dotted",
             "showDots": false,
@@ -1880,7 +1910,7 @@
           },
           {
             "month": "Jun",
-            "assembled": 18.0,
+            "assembled": 24.0,
             "backorders": 8.0,
             "fillRate": 0.818
           },
