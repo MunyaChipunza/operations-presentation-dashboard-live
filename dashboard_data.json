@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-14T20:14:15.439998+00:00",
-  "sourceModifiedAt": "2026-07-14T20:12:20+00:00",
+  "generatedAt": "2026-07-14T20:18:16.882657+00:00",
+  "sourceModifiedAt": "2026-07-14T20:16:56+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -38,13 +38,13 @@
     },
     {
       "label": "Top Picker Volume",
-      "value": "1,035",
-      "detail": "Endwell leads picked volume",
+      "value": "2,028",
+      "detail": "Charlie leads picked volume",
       "tone": "good"
     },
     {
       "label": "SKUs Picked YTD",
-      "value": "52,938",
+      "value": "55,229",
       "detail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn"
     },
@@ -1463,22 +1463,22 @@
       "label": "Picker Contribution",
       "category": "Ranking",
       "description": "Executive view of picked-SKU volume concentration across the active picker roster.",
-      "headlineValue": "1,035",
-      "headlineDetail": "Endwell leads picked volume",
+      "headlineValue": "2,028",
+      "headlineDetail": "Charlie leads picked volume",
       "tone": "good",
       "note": "Donut view shows contribution mix while the table keeps exact picked counts and shares visible.",
       "facts": [
         {
           "label": "Leading Picker",
-          "value": "Endwell - 1,035"
+          "value": "Charlie - 2,028"
         },
         {
           "label": "Lead Share",
-          "value": "40.1%"
+          "value": "28.9%"
         },
         {
           "label": "Total SKUs Picked",
-          "value": "2,303"
+          "value": "3,985"
         },
         {
           "label": "Active Pickers",
@@ -1511,17 +1511,17 @@
           },
           {
             "picker": "Angelo",
-            "count": 12.0,
+            "count": 105.0,
             "share": 0.016
           },
           {
             "picker": "Charlie",
-            "count": 953.0,
+            "count": 2028.0,
             "share": 0.289
           },
           {
             "picker": "Bongani",
-            "count": 303.0,
+            "count": 817.0,
             "share": 0.272
           },
           {
@@ -1542,19 +1542,19 @@
           },
           {
             "name": "Angelo",
-            "value": 12.0,
+            "value": 105.0,
             "share": 0.016,
             "color": "#26d0ce"
           },
           {
             "name": "Charlie",
-            "value": 953.0,
+            "value": 2028.0,
             "share": 0.289,
             "color": "#ffc857"
           },
           {
             "name": "Bongani",
-            "value": 303.0,
+            "value": 817.0,
             "share": 0.272,
             "color": "#8ddf6e"
           },
@@ -1572,14 +1572,14 @@
       "label": "SKUs Picked Trend",
       "category": "Volume",
       "description": "Executive monthly view of picked-SKU volume versus prior years, with the combined current-year total shown alongside the CPT and George split whenever that breakdown exists.",
-      "headlineValue": "52,938",
+      "headlineValue": "55,229",
       "headlineDetail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn",
       "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
       "facts": [
         {
           "label": "2026 SKUs Picked YTD",
-          "value": "52,938"
+          "value": "55,229"
         },
         {
           "label": "George Contribution YTD",
@@ -1587,7 +1587,7 @@
         },
         {
           "label": "Latest Month Total",
-          "value": "Jul - 2,809"
+          "value": "Jul - 5,100"
         },
         {
           "label": "Best 2025 Month",
@@ -1684,9 +1684,9 @@
             "month": "Jul",
             "y2024": 8621.0,
             "y2025": 13275.0,
-            "y2026Cpt": 2303.0,
+            "y2026Cpt": 4594.0,
             "y2026George": 506.0,
-            "y2026Total": 2809.0
+            "y2026Total": 5100.0
           },
           {
             "month": "Aug",
@@ -1805,7 +1805,7 @@
               10135.0,
               14656.0,
               11224.0,
-              2809.0,
+              5100.0,
               null,
               null,
               null,
@@ -1851,7 +1851,7 @@
               8721.0,
               11602.0,
               9355.0,
-              2303.0,
+              4594.0,
               null,
               null,
               null,
@@ -1867,18 +1867,18 @@
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              5378.785714285714,
-              6106.714285714285,
-              6834.642857142857,
-              7562.5714285714275,
-              8290.5,
-              9018.42857142857,
-              9746.357142857141,
-              10474.285714285714,
-              11202.214285714286,
-              11930.142857142857,
-              12658.071428571428,
-              13386.0
+              4969.678571428572,
+              5943.071428571428,
+              6916.464285714286,
+              7889.857142857143,
+              8863.25,
+              9836.642857142857,
+              10810.035714285714,
+              11783.428571428572,
+              12756.821428571428,
+              13730.214285714286,
+              14703.607142857141,
+              15677.0
             ],
             "style": "dotted",
             "showDots": false,
