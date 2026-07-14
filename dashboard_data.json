@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-14T20:19:15.983310+00:00",
-  "sourceModifiedAt": "2026-07-14T20:17:57+00:00",
+  "generatedAt": "2026-07-14T20:20:15.507132+00:00",
+  "sourceModifiedAt": "2026-07-14T20:19:25+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -44,7 +44,7 @@
     },
     {
       "label": "SKUs Picked YTD",
-      "value": "55,229",
+      "value": "55,859",
       "detail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn"
     },
@@ -1572,22 +1572,22 @@
       "label": "SKUs Picked Trend",
       "category": "Volume",
       "description": "Executive monthly view of picked-SKU volume versus prior years, with the combined current-year total shown alongside the CPT and George split whenever that breakdown exists.",
-      "headlineValue": "55,229",
+      "headlineValue": "55,859",
       "headlineDetail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn",
       "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
       "facts": [
         {
           "label": "2026 SKUs Picked YTD",
-          "value": "55,229"
+          "value": "55,859"
         },
         {
           "label": "George Contribution YTD",
-          "value": "7,838"
+          "value": "8,468"
         },
         {
           "label": "Latest Month Total",
-          "value": "Jul - 5,100"
+          "value": "Jul - 5,730"
         },
         {
           "label": "Best 2025 Month",
@@ -1685,8 +1685,8 @@
             "y2024": 8621.0,
             "y2025": 13275.0,
             "y2026Cpt": 4594.0,
-            "y2026George": 506.0,
-            "y2026Total": 5100.0
+            "y2026George": 1136.0,
+            "y2026Total": 5730.0
           },
           {
             "month": "Aug",
@@ -1805,7 +1805,7 @@
               10135.0,
               14656.0,
               11224.0,
-              5100.0,
+              5730.0,
               null,
               null,
               null,
@@ -1828,7 +1828,7 @@
               1414.0,
               3054.0,
               1869.0,
-              506.0,
+              1136.0,
               null,
               null,
               null,
@@ -1867,18 +1867,18 @@
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              4969.678571428572,
-              5943.071428571428,
-              6916.464285714286,
-              7889.857142857143,
-              8863.25,
-              9836.642857142857,
-              10810.035714285714,
-              11783.428571428572,
-              12756.821428571428,
-              13730.214285714286,
-              14703.607142857141,
-              15677.0
+              4857.178571428572,
+              5898.071428571428,
+              6938.964285714286,
+              7979.857142857143,
+              9020.75,
+              10061.642857142857,
+              11102.535714285714,
+              12143.428571428572,
+              13184.321428571428,
+              14225.214285714286,
+              15266.107142857141,
+              16307.0
             ],
             "style": "dotted",
             "showDots": false,
