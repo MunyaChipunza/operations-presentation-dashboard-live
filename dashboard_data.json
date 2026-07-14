@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-14T20:18:16.882657+00:00",
-  "sourceModifiedAt": "2026-07-14T20:16:56+00:00",
+  "generatedAt": "2026-07-14T20:19:15.983310+00:00",
+  "sourceModifiedAt": "2026-07-14T20:17:57+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -1478,7 +1478,7 @@
         },
         {
           "label": "Total SKUs Picked",
-          "value": "3,985"
+          "value": "4,594"
         },
         {
           "label": "Active Pickers",
@@ -1526,7 +1526,7 @@
           },
           {
             "picker": "Endwell",
-            "count": 1035.0,
+            "count": 1644.0,
             "share": 0.401
           }
         ]
@@ -1560,7 +1560,7 @@
           },
           {
             "name": "Endwell",
-            "value": 1035.0,
+            "value": 1644.0,
             "share": 0.401,
             "color": "#8a7dff"
           }
