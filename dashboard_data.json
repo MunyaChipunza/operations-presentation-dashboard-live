@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-15T05:41:16.526911+00:00",
-  "sourceModifiedAt": "2026-07-15T05:39:14+00:00",
+  "generatedAt": "2026-07-15T06:04:25.181055+00:00",
+  "sourceModifiedAt": "2026-07-15T05:44:34+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -1976,7 +1976,7 @@
           },
           {
             "month": "Jul",
-            "assembled": 13.0,
+            "assembled": 12.0,
             "backorders": 3.0,
             "fillRate": 0.625
           },
