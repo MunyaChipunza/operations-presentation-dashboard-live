@@ -559,12 +559,48 @@ def create_excel_snapshot(workbook_path: Path) -> Path:
     raise RuntimeError(last_message)
 
 
+def sync_live_excel_workbook(workbook_path: Path) -> bool:
+    if os.name != "nt" or not path_is_excel(workbook_path):
+        return False
+
+    helper_script = Path(__file__).with_name("sync_live_excel_workbook.ps1")
+    if not helper_script.exists():
+        return False
+
+    startupinfo = None
+    if os.name == "nt":
+        startupinfo = subprocess.STARTUPINFO()
+        startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+        startupinfo.wShowWindow = 0
+
+    command = [
+        "powershell",
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        str(helper_script),
+        "-SourcePath",
+        str(workbook_path),
+    ]
+    result = subprocess.run(
+        command,
+        check=False,
+        text=True,
+        capture_output=True,
+        creationflags=CREATE_NO_WINDOW,
+        startupinfo=startupinfo,
+    )
+    return result.returncode == 0
+
+
 def load_dashboard_workbook(workbook_path: Path) -> tuple[Any, Path | None]:
     if path_is_csv(workbook_path):
         snapshot_path = create_csv_snapshot(workbook_path)
         return load_workbook(snapshot_path, data_only=True), snapshot_path
 
     if os.name == "nt":
+        sync_live_excel_workbook(workbook_path)
         try:
             snapshot_path = create_excel_snapshot(workbook_path)
             return load_workbook(snapshot_path, data_only=True), snapshot_path
@@ -1298,7 +1334,7 @@ def parse_points_yoy(ws) -> dict[str, Any]:
     }
 
 
-def build_dashboard(workbook_path: Path) -> dict[str, Any]:
+def build_dashboard(workbook_path: Path, source_name: str | None = None) -> dict[str, Any]:
     workbook = None
     snapshot_path: Path | None = None
     try:
@@ -1399,7 +1435,7 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
         return {
             "title": "Operations Live Dashboard",
             "subtitle": "PPT Presentation Source",
-            "sourceName": workbook_path.name,
+            "sourceName": source_name or workbook_path.name,
             "generatedAt": generated_at.isoformat(),
             "sourceModifiedAt": source_mtime.isoformat(),
             "refreshSeconds": 60,
@@ -1471,36 +1507,40 @@ def build_dashboard(workbook_path: Path) -> dict[str, Any]:
             cleanup_temp_file(snapshot_path)
 
 
-def resolve_workbook(args: argparse.Namespace, bundle_dir: Path) -> tuple[Path, str]:
+def resolve_workbook(args: argparse.Namespace, bundle_dir: Path) -> tuple[Path, str, bool]:
+    if args.workbook_url:
+        temp_path, filename = download_workbook(args.workbook_url)
+        return temp_path, filename, True
+
     if args.workbook:
         path = Path(args.workbook).expanduser().resolve()
         if not path.exists():
             raise FileNotFoundError(f"Workbook not found: {path}")
-        return path, path.name
-
-    if args.workbook_url:
-        temp_path, filename = download_workbook(args.workbook_url)
-        return temp_path, filename
+        return path, path.name, False
 
     path = choose_preferred_source(None, bundle_dir)
     if path is None:
         raise FileNotFoundError("Could not find a local workbook or CSV export to build the dashboard from.")
-    return path.resolve(), path.name
+    return path.resolve(), path.name, False
 
 
 def refresh_dashboard_data(*, workbook: str | None = None, workbook_url: str | None = None, output: str | Path = DEFAULT_OUTPUT) -> Path:
     script_dir = Path(__file__).resolve().parent
     bundle_dir = script_dir.parent
     args = argparse.Namespace(workbook=workbook, workbook_url=workbook_url, output=output)
-    workbook_path, _ = resolve_workbook(args, bundle_dir)
+    workbook_path, source_name, cleanup_source = resolve_workbook(args, bundle_dir)
 
     output_path = Path(output).expanduser()
     if not output_path.is_absolute():
         output_path = (bundle_dir / output_path).resolve()
 
-    payload = build_dashboard(workbook_path)
-    output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
-    return output_path
+    try:
+        payload = build_dashboard(workbook_path, source_name)
+        output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
+        return output_path
+    finally:
+        if cleanup_source:
+            cleanup_temp_file(workbook_path)
 
 
 def main() -> None:

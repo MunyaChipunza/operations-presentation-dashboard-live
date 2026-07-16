@@ -1,3 +1,4 @@
 __pycache__/
 scripts/__pycache__/
 scripts/local_autopublish.log
+scripts/workbook_source.local.json
