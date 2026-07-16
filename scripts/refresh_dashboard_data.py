@@ -4,6 +4,7 @@ import argparse
 import base64
 import csv
 import datetime as dt
+import email.utils
 import html
 import json
 import os
@@ -680,6 +681,36 @@ def looks_like_excel_payload(payload: bytes) -> bool:
     return payload[:4] == b"PK\x03\x04"
 
 
+def normalize_datetime(value: dt.datetime | None) -> dt.datetime | None:
+    if value is None:
+        return None
+    if value.tzinfo is None:
+        return value.replace(tzinfo=dt.timezone.utc)
+    return value.astimezone(dt.timezone.utc)
+
+
+def parse_iso_datetime(value: Any) -> dt.datetime | None:
+    text = clean_text(value)
+    if not text:
+        return None
+    if text.endswith("Z"):
+        text = text[:-1] + "+00:00"
+    try:
+        return normalize_datetime(dt.datetime.fromisoformat(text))
+    except ValueError:
+        return None
+
+
+def parse_http_datetime(value: Any) -> dt.datetime | None:
+    text = clean_text(value)
+    if not text:
+        return None
+    try:
+        return normalize_datetime(email.utils.parsedate_to_datetime(text))
+    except (TypeError, ValueError, IndexError):
+        return None
+
+
 def onedrive_badger_headers() -> dict[str, str]:
     token_payload = request_json(
         "https://api-badgerp.svc.ms/v1.0/token",
@@ -697,7 +728,7 @@ def onedrive_badger_headers() -> dict[str, str]:
     }
 
 
-def download_onedrive_share(url: str) -> tuple[Path, str]:
+def download_onedrive_share(url: str) -> tuple[Path, str, dt.datetime | None]:
     token = share_token(url)
     headers = onedrive_badger_headers()
     metadata = request_json(f"https://api.onedrive.com/v1.0/shares/{token}/driveItem", headers=headers)
@@ -708,12 +739,15 @@ def download_onedrive_share(url: str) -> tuple[Path, str]:
         suffix = Path(filename).suffix or ".xlsx"
         target = write_temp_workbook(data, suffix)
         ensure_excel_file(target)
-        return target, filename
+        modified_at = parse_iso_datetime(metadata.get("lastModifiedDateTime"))
+        if modified_at is None:
+            modified_at = parse_iso_datetime((metadata.get("fileSystemInfo") or {}).get("lastModifiedDateTime"))
+        return target, filename, modified_at
 
     raise RuntimeError("OneDrive share metadata loaded, but no downloadable workbook URL was available.")
 
 
-def download_workbook(url: str) -> tuple[Path, str]:
+def download_workbook(url: str) -> tuple[Path, str, dt.datetime | None]:
     headers = {"User-Agent": "Mozilla/5.0 Codex Dashboard Refresher"}
     last_error: Exception | None = None
 
@@ -729,16 +763,18 @@ def download_workbook(url: str) -> tuple[Path, str]:
                     target = write_temp_workbook(payload, suffix)
                     ensure_excel_file(target)
                     filename = Path(urllib.parse.urlsplit(final_url).path).name or "dashboard_source.xlsx"
-                    return target, filename
+                    return target, filename, parse_http_datetime(response.headers.get("Last-Modified"))
                 page_html = payload.decode("utf-8", errors="ignore")
                 nested_url = extract_download_url_from_html(page_html)
                 if nested_url:
-                    nested_payload = request_bytes(nested_url, headers=headers)
-                    suffix = Path(urllib.parse.urlsplit(nested_url).path).suffix or ".xlsx"
-                    target = write_temp_workbook(nested_payload, suffix)
-                    ensure_excel_file(target)
-                    filename = Path(urllib.parse.urlsplit(nested_url).path).name or "dashboard_source.xlsx"
-                    return target, filename
+                    nested_request = urllib.request.Request(nested_url, headers=headers)
+                    with urllib.request.urlopen(nested_request, timeout=60) as nested_response:
+                        nested_payload = nested_response.read()
+                        suffix = Path(urllib.parse.urlsplit(nested_url).path).suffix or ".xlsx"
+                        target = write_temp_workbook(nested_payload, suffix)
+                        ensure_excel_file(target)
+                        filename = Path(urllib.parse.urlsplit(nested_url).path).name or "dashboard_source.xlsx"
+                        return target, filename, parse_http_datetime(nested_response.headers.get("Last-Modified"))
         except Exception as exc:  # noqa: BLE001
             last_error = exc
 
@@ -1334,13 +1370,17 @@ def parse_points_yoy(ws) -> dict[str, Any]:
     }
 
 
-def build_dashboard(workbook_path: Path, source_name: str | None = None) -> dict[str, Any]:
+def build_dashboard(
+    workbook_path: Path,
+    source_name: str | None = None,
+    source_modified_at: dt.datetime | None = None,
+) -> dict[str, Any]:
     workbook = None
     snapshot_path: Path | None = None
     try:
         workbook, snapshot_path = load_dashboard_workbook(workbook_path)
         ws = workbook["DATA"]
-        source_mtime = dt.datetime.fromtimestamp(workbook_path.stat().st_mtime, dt.timezone.utc)
+        source_mtime = normalize_datetime(source_modified_at) or dt.datetime.fromtimestamp(workbook_path.stat().st_mtime, dt.timezone.utc)
         generated_at = dt.datetime.now(dt.timezone.utc)
 
         housekeeping = parse_housekeeping(ws)
@@ -1507,35 +1547,35 @@ def build_dashboard(workbook_path: Path, source_name: str | None = None) -> dict
             cleanup_temp_file(snapshot_path)
 
 
-def resolve_workbook(args: argparse.Namespace, bundle_dir: Path) -> tuple[Path, str, bool]:
+def resolve_workbook(args: argparse.Namespace, bundle_dir: Path) -> tuple[Path, str, bool, dt.datetime | None]:
     if args.workbook_url:
-        temp_path, filename = download_workbook(args.workbook_url)
-        return temp_path, filename, True
+        temp_path, filename, modified_at = download_workbook(args.workbook_url)
+        return temp_path, filename, True, modified_at
 
     if args.workbook:
         path = Path(args.workbook).expanduser().resolve()
         if not path.exists():
             raise FileNotFoundError(f"Workbook not found: {path}")
-        return path, path.name, False
+        return path, path.name, False, None
 
     path = choose_preferred_source(None, bundle_dir)
     if path is None:
         raise FileNotFoundError("Could not find a local workbook or CSV export to build the dashboard from.")
-    return path.resolve(), path.name, False
+    return path.resolve(), path.name, False, None
 
 
 def refresh_dashboard_data(*, workbook: str | None = None, workbook_url: str | None = None, output: str | Path = DEFAULT_OUTPUT) -> Path:
     script_dir = Path(__file__).resolve().parent
     bundle_dir = script_dir.parent
     args = argparse.Namespace(workbook=workbook, workbook_url=workbook_url, output=output)
-    workbook_path, source_name, cleanup_source = resolve_workbook(args, bundle_dir)
+    workbook_path, source_name, cleanup_source, source_modified_at = resolve_workbook(args, bundle_dir)
 
     output_path = Path(output).expanduser()
     if not output_path.is_absolute():
         output_path = (bundle_dir / output_path).resolve()
 
     try:
-        payload = build_dashboard(workbook_path, source_name)
+        payload = build_dashboard(workbook_path, source_name, source_modified_at)
         output_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
         return output_path
     finally:
