@@ -6,14 +6,88 @@ param(
 
 $ErrorActionPreference = "Stop"
 
+function Test-PythonOpenpyxl {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$PythonPath
+    )
+
+    if (-not (Test-Path $PythonPath)) {
+        return $false
+    }
+
+    $result = & $PythonPath -c "import openpyxl" 2>$null
+    return $LASTEXITCODE -eq 0
+}
+
+function Resolve-PythonRunner {
+    $candidates = @()
+
+    $candidates += @(
+        "C:\Users\Dell\AppData\Local\Python\pythoncore-3.14-64\python.exe",
+        "C:\Users\Dell\AppData\Local\Programs\Python\Python313\python.exe"
+    )
+
+    try {
+        $pyList = & py -0p 2>$null
+        foreach ($line in $pyList) {
+            if ($line -match '^\s*-V:[^ ]+\s+\*?\s*(.+python\.exe)\s*$') {
+                $candidates += $Matches[1].Trim()
+            }
+        }
+    }
+    catch {
+    }
+
+    try {
+        $commandPython = (Get-Command python -ErrorAction Stop).Source
+        if ($commandPython) {
+            $candidates += $commandPython
+        }
+    }
+    catch {
+    }
+
+    $seen = @{}
+    foreach ($candidate in $candidates) {
+        if (-not $candidate) {
+            continue
+        }
+        $normalized = [System.IO.Path]::GetFullPath($candidate)
+        if ($seen.ContainsKey($normalized)) {
+            continue
+        }
+        $seen[$normalized] = $true
+
+        if ($normalized -like '*\WindowsApps\*') {
+            continue
+        }
+
+        if (-not (Test-PythonOpenpyxl -PythonPath $normalized)) {
+            continue
+        }
+
+        $pythonwCandidate = Join-Path (Split-Path $normalized) "pythonw.exe"
+        if (Test-Path $pythonwCandidate) {
+            return $pythonwCandidate
+        }
+        return $normalized
+    }
+
+    throw "Could not find a Python interpreter with openpyxl installed."
+}
+
 $runnerScriptPath = (Resolve-Path (Join-Path $PSScriptRoot "run_local_autopublish.pyw")).Path
-$pythonPath = (Get-Command python -ErrorAction Stop).Source
-$pythonwPath = Join-Path (Split-Path $pythonPath) "pythonw.exe"
-$runnerExe = if (Test-Path $pythonwPath) { $pythonwPath } else { $pythonPath }
+$runnerExe = Resolve-PythonRunner
 $triggerTime = (Get-Date).AddMinutes(1)
 
 if ($WorkbookPath) {
-    $candidateWorkbook = (Resolve-Path (Join-Path $PSScriptRoot $WorkbookPath)).Path
+    if ([System.IO.Path]::IsPathRooted($WorkbookPath)) {
+        $candidateWorkbook = (Resolve-Path $WorkbookPath).Path
+    }
+    else {
+        $candidateWorkbook = (Resolve-Path (Join-Path $PSScriptRoot $WorkbookPath)).Path
+    }
 } else {
     $searchRoots = @(
         (Resolve-Path (Join-Path $PSScriptRoot "..\\..\\..")).Path,

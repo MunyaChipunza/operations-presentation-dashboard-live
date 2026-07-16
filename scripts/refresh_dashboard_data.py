@@ -564,6 +564,13 @@ def load_dashboard_workbook(workbook_path: Path) -> tuple[Any, Path | None]:
         snapshot_path = create_csv_snapshot(workbook_path)
         return load_workbook(snapshot_path, data_only=True), snapshot_path
 
+    if os.name == "nt":
+        try:
+            snapshot_path = create_excel_snapshot(workbook_path)
+            return load_workbook(snapshot_path, data_only=True), snapshot_path
+        except Exception:
+            pass
+
     try:
         return load_workbook(workbook_path, data_only=True), None
     except PermissionError:

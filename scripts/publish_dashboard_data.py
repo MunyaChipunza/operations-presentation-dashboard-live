@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import json
 import os
 import shutil
 import subprocess
@@ -266,13 +267,40 @@ def same_file_content(left: Path, right: Path) -> bool:
     return left.read_bytes() == right.read_bytes()
 
 
+def load_dashboard_payload(path: Path) -> dict | None:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def comparable_dashboard_payload(path: Path) -> dict | None:
+    payload = load_dashboard_payload(path)
+    if payload is None:
+        return None
+    payload = dict(payload)
+    payload.pop("generatedAt", None)
+    return payload
+
+
+def dashboard_content_changed(left: Path, right: Path) -> bool:
+    left_payload = comparable_dashboard_payload(left)
+    right_payload = comparable_dashboard_payload(right)
+    if left_payload is not None and right_payload is not None:
+        return left_payload != right_payload
+    return not same_file_content(left, right)
+
+
 def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_path: Path, commit_message: str) -> bool:
     fd, temp_output_raw = tempfile.mkstemp(suffix=output_path.suffix or ".json")
     os.close(fd)
     temp_output = Path(temp_output_raw)
     try:
         refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=temp_output)
-        dashboard_changed = not same_file_content(temp_output, output_path)
+        dashboard_changed = dashboard_content_changed(temp_output, output_path)
         if dashboard_changed:
             write_local_output(temp_output, output_path)
 

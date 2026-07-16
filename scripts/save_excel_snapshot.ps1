@@ -18,9 +18,16 @@ try {
     $excel.Visible = $false
     $excel.ScreenUpdating = $false
     $excel.EnableEvents = $false
+    $excel.Calculation = -4105
 
     Start-Sleep -Milliseconds 250
     $workbook = $excel.Workbooks.Open($SourcePath, 0, $true)
+    $workbook.ForceFullCalculation = $true
+    $workbook.FullCalculationOnLoad = $true
+    $excel.CalculateFullRebuild()
+    while ($excel.CalculationState -ne 0) {
+        Start-Sleep -Milliseconds 250
+    }
 
     $targetDir = Split-Path -Parent $TargetPath
     if ($targetDir -and -not (Test-Path -LiteralPath $targetDir)) {
