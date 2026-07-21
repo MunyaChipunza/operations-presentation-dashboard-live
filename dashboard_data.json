@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T14:08:31.865838+00:00",
-  "sourceModifiedAt": "2026-07-21T14:08:03+00:00",
+  "generatedAt": "2026-07-21T14:16:38.681401+00:00",
+  "sourceModifiedAt": "2026-07-21T14:15:36+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -14,7 +14,7 @@
     },
     {
       "label": "JHB Accuracy",
-      "value": "98.6%",
+      "value": "98.7%",
       "detail": "Load 14 reading",
       "tone": "warn"
     },
@@ -469,14 +469,14 @@
       "label": "Container Accuracy JHB",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the Johannesburg container stream.",
-      "headlineValue": "98.6%",
+      "headlineValue": "98.7%",
       "headlineDetail": "Load 14 reading",
       "tone": "warn",
       "note": "Higher is better. Missing loads are left blank so the chart stays honest.",
       "facts": [
         {
           "label": "Latest",
-          "value": "98.6%"
+          "value": "98.7%"
         },
         {
           "label": "Target",
@@ -563,7 +563,7 @@
           },
           {
             "load": "Load 14",
-            "accuracy": 0.9863
+            "accuracy": 0.9871
           }
         ]
       },
@@ -605,7 +605,7 @@
               0.988,
               0.972,
               0.9761,
-              0.9863
+              0.9871
             ],
             "style": "solid",
             "showDots": true,
@@ -640,20 +640,20 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9751285714285713,
-              0.9750142857142856,
-              0.9748999999999999,
-              0.9747857142857141,
+              0.9750371428571428,
+              0.9749457142857143,
+              0.9748542857142857,
+              0.9747628571428572,
               0.9746714285714285,
-              0.9745571428571428,
-              0.974442857142857,
-              0.9743285714285713,
-              0.9742142857142856,
-              0.9740999999999999,
-              0.9739857142857142,
-              0.9738714285714285,
-              0.9737571428571428,
-              0.973642857142857
+              0.97458,
+              0.9744885714285714,
+              0.9743971428571429,
+              0.9743057142857142,
+              0.9742142857142857,
+              0.9741228571428571,
+              0.9740314285714285,
+              0.9739399999999999,
+              0.9738485714285714
             ],
             "style": "dotted",
             "showDots": false,
