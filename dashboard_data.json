@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T14:37:29.219252+00:00",
-  "sourceModifiedAt": "2026-07-21T14:36:58+00:00",
+  "generatedAt": "2026-07-21T14:38:28.469795+00:00",
+  "sourceModifiedAt": "2026-07-21T14:38:01+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -44,7 +44,7 @@
     },
     {
       "label": "SKUs Picked YTD",
-      "value": "55,859",
+      "value": "58,360",
       "detail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn"
     },
@@ -1602,22 +1602,22 @@
       "label": "SKUs Picked Trend",
       "category": "Volume",
       "description": "Executive monthly view of picked-SKU volume versus prior years, with the combined current-year total shown alongside the CPT and George split whenever that breakdown exists.",
-      "headlineValue": "55,859",
+      "headlineValue": "58,360",
       "headlineDetail": "2026 YTD SKUs picked across CPT and George",
       "tone": "warn",
       "note": "Table view keeps the combined SKUs Picked total visible alongside the 2026 CPT and George split, while chart view reads that combined total against the 2025 benchmark.",
       "facts": [
         {
           "label": "2026 SKUs Picked YTD",
-          "value": "55,859"
+          "value": "58,360"
         },
         {
           "label": "George Contribution YTD",
-          "value": "8,468"
+          "value": "8,877"
         },
         {
           "label": "Latest Month Total",
-          "value": "Jul - 5,730"
+          "value": "Jul - 8,231"
         },
         {
           "label": "Best 2025 Month",
@@ -1714,9 +1714,9 @@
             "month": "Jul",
             "y2024": 8621.0,
             "y2025": 13275.0,
-            "y2026Cpt": 4594.0,
-            "y2026George": 1136.0,
-            "y2026Total": 5730.0
+            "y2026Cpt": 6686.0,
+            "y2026George": 1545.0,
+            "y2026Total": 8231.0
           },
           {
             "month": "Aug",
@@ -1835,7 +1835,7 @@
               10135.0,
               14656.0,
               11224.0,
-              5730.0,
+              8231.0,
               null,
               null,
               null,
@@ -1858,7 +1858,7 @@
               1414.0,
               3054.0,
               1869.0,
-              1136.0,
+              1545.0,
               null,
               null,
               null,
@@ -1881,7 +1881,7 @@
               8721.0,
               11602.0,
               9355.0,
-              4594.0,
+              6686.0,
               null,
               null,
               null,
@@ -1897,18 +1897,18 @@
             "format": "integer",
             "color": "#f8fafc",
             "values": [
-              4857.178571428572,
-              5898.071428571428,
-              6938.964285714286,
-              7979.857142857143,
-              9020.75,
-              10061.642857142857,
-              11102.535714285714,
-              12143.428571428572,
-              13184.321428571428,
-              14225.214285714286,
-              15266.107142857141,
-              16307.0
+              4410.571428571428,
+              5719.428571428572,
+              7028.285714285714,
+              8337.142857142857,
+              9646.0,
+              10954.857142857143,
+              12263.714285714286,
+              13572.571428571428,
+              14881.428571428572,
+              16190.285714285714,
+              17499.14285714286,
+              18808.0
             ],
             "style": "dotted",
             "showDots": false,
