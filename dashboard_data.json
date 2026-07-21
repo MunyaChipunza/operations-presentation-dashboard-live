@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T14:26:31.424793+00:00",
-  "sourceModifiedAt": "2026-07-21T14:26:01+00:00",
+  "generatedAt": "2026-07-21T14:32:29.427236+00:00",
+  "sourceModifiedAt": "2026-07-21T14:31:26+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -20,8 +20,8 @@
     },
     {
       "label": "George Accuracy",
-      "value": "99.8%",
-      "detail": "Load 10 reading",
+      "value": "99.4%",
+      "detail": "Load 11 reading",
       "tone": "good"
     },
     {
@@ -667,14 +667,14 @@
       "label": "Container Accuracy George",
       "category": "Accuracy",
       "description": "Load-by-load accuracy readings for the George container stream.",
-      "headlineValue": "99.8%",
-      "headlineDetail": "Load 10 reading",
+      "headlineValue": "99.4%",
+      "headlineDetail": "Load 11 reading",
       "tone": "good",
       "note": "A shorter series today, but the same live refresh loop will grow it automatically.",
       "facts": [
         {
           "label": "Latest",
-          "value": "99.8%"
+          "value": "99.4%"
         },
         {
           "label": "Target",
@@ -682,7 +682,7 @@
         },
         {
           "label": "Average",
-          "value": "96.6%"
+          "value": "96.9%"
         },
         {
           "label": "Best",
@@ -690,7 +690,7 @@
         },
         {
           "label": "Readings",
-          "value": "10"
+          "value": "11"
         }
       ],
       "table": {
@@ -749,7 +749,7 @@
           },
           {
             "load": "Load 11",
-            "accuracy": null
+            "accuracy": 0.9943
           },
           {
             "load": "Load 12",
@@ -773,7 +773,8 @@
           "Load 7",
           "Load 8",
           "Load 9",
-          "Load 10"
+          "Load 10",
+          "Load 11"
         ],
         "series": [
           {
@@ -791,7 +792,8 @@
               0.985,
               0.9503,
               0.9976,
-              0.9976
+              0.9976,
+              0.9943
             ],
             "style": "solid",
             "showDots": true,
@@ -802,6 +804,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.99,
               0.99,
               0.99,
               0.99,
@@ -822,16 +825,17 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.9539927272727273,
-              0.9566721212121213,
-              0.9593515151515152,
-              0.9620309090909092,
-              0.9647103030303031,
-              0.9673896969696971,
-              0.970069090909091,
-              0.972748484848485,
-              0.975427878787879,
-              0.9781072727272728
+              0.9521499999999999,
+              0.9554436363636363,
+              0.9587372727272727,
+              0.962030909090909,
+              0.9653245454545454,
+              0.9686181818181818,
+              0.9719118181818182,
+              0.9752054545454545,
+              0.9784990909090909,
+              0.9817927272727273,
+              0.9850863636363636
             ],
             "style": "dotted",
             "showDots": false,
