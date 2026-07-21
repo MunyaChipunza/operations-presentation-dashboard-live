@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T14:36:29.147916+00:00",
-  "sourceModifiedAt": "2026-07-21T14:36:16+00:00",
+  "generatedAt": "2026-07-21T14:37:29.219252+00:00",
+  "sourceModifiedAt": "2026-07-21T14:36:58+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -1504,11 +1504,11 @@
         },
         {
           "label": "Lead Share",
-          "value": "48.5%"
+          "value": "37.5%"
         },
         {
           "label": "Total SKUs Picked",
-          "value": "5,175"
+          "value": "6,686"
         },
         {
           "label": "Active Pickers",
@@ -1537,27 +1537,27 @@
           {
             "picker": "Ali",
             "count": 4.0,
-            "share": 0.0007729468599033816
+            "share": 0.0005982650314089142
           },
           {
             "picker": "Angelo",
             "count": 200.0,
-            "share": 0.03864734299516908
+            "share": 0.029913251570445706
           },
           {
             "picker": "Charlie",
             "count": 2510.0,
-            "share": 0.485024154589372
+            "share": 0.3754113072090936
           },
           {
             "picker": "Bongani",
-            "count": 817.0,
-            "share": 0.1578743961352657
+            "count": 2176.0,
+            "share": 0.3254561770864493
           },
           {
             "picker": "Endwell",
-            "count": 1644.0,
-            "share": 0.31768115942028985
+            "count": 1796.0,
+            "share": 0.26862099910260245
           }
         ]
       },
@@ -1567,31 +1567,31 @@
           {
             "name": "Ali",
             "value": 4.0,
-            "share": 0.0007729468599033816,
+            "share": 0.0005982650314089142,
             "color": "#ff8a5b"
           },
           {
             "name": "Angelo",
             "value": 200.0,
-            "share": 0.03864734299516908,
+            "share": 0.029913251570445706,
             "color": "#26d0ce"
           },
           {
             "name": "Charlie",
             "value": 2510.0,
-            "share": 0.485024154589372,
+            "share": 0.3754113072090936,
             "color": "#ffc857"
           },
           {
             "name": "Bongani",
-            "value": 817.0,
-            "share": 0.1578743961352657,
+            "value": 2176.0,
+            "share": 0.3254561770864493,
             "color": "#8ddf6e"
           },
           {
             "name": "Endwell",
-            "value": 1644.0,
-            "share": 0.31768115942028985,
+            "value": 1796.0,
+            "share": 0.26862099910260245,
             "color": "#8a7dff"
           }
         ]
