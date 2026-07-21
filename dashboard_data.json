@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T14:35:28.251913+00:00",
-  "sourceModifiedAt": "2026-07-21T14:34:45+00:00",
+  "generatedAt": "2026-07-21T14:36:29.147916+00:00",
+  "sourceModifiedAt": "2026-07-21T14:36:16+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -38,7 +38,7 @@
     },
     {
       "label": "Top Picker Volume",
-      "value": "2,028",
+      "value": "2,510",
       "detail": "Charlie leads picked volume",
       "tone": "good"
     },
@@ -1493,22 +1493,22 @@
       "label": "Picker Contribution",
       "category": "Ranking",
       "description": "Executive view of picked-SKU volume concentration across the active picker roster.",
-      "headlineValue": "2,028",
+      "headlineValue": "2,510",
       "headlineDetail": "Charlie leads picked volume",
       "tone": "good",
       "note": "Donut view shows contribution mix while the table keeps exact picked counts and shares visible.",
       "facts": [
         {
           "label": "Leading Picker",
-          "value": "Charlie - 2,028"
+          "value": "Charlie - 2,510"
         },
         {
           "label": "Lead Share",
-          "value": "44.1%"
+          "value": "48.5%"
         },
         {
           "label": "Total SKUs Picked",
-          "value": "4,594"
+          "value": "5,175"
         },
         {
           "label": "Active Pickers",
@@ -1536,28 +1536,28 @@
         "rows": [
           {
             "picker": "Ali",
-            "count": 0.0,
-            "share": 0.0
+            "count": 4.0,
+            "share": 0.0007729468599033816
           },
           {
             "picker": "Angelo",
-            "count": 105.0,
-            "share": 0.02285589899869395
+            "count": 200.0,
+            "share": 0.03864734299516908
           },
           {
             "picker": "Charlie",
-            "count": 2028.0,
-            "share": 0.4414453635176317
+            "count": 2510.0,
+            "share": 0.485024154589372
           },
           {
             "picker": "Bongani",
             "count": 817.0,
-            "share": 0.17784066173269483
+            "share": 0.1578743961352657
           },
           {
             "picker": "Endwell",
             "count": 1644.0,
-            "share": 0.35785807575097955
+            "share": 0.31768115942028985
           }
         ]
       },
@@ -1566,32 +1566,32 @@
         "series": [
           {
             "name": "Ali",
-            "value": 0.0,
-            "share": 0.0,
+            "value": 4.0,
+            "share": 0.0007729468599033816,
             "color": "#ff8a5b"
           },
           {
             "name": "Angelo",
-            "value": 105.0,
-            "share": 0.02285589899869395,
+            "value": 200.0,
+            "share": 0.03864734299516908,
             "color": "#26d0ce"
           },
           {
             "name": "Charlie",
-            "value": 2028.0,
-            "share": 0.4414453635176317,
+            "value": 2510.0,
+            "share": 0.485024154589372,
             "color": "#ffc857"
           },
           {
             "name": "Bongani",
             "value": 817.0,
-            "share": 0.17784066173269483,
+            "share": 0.1578743961352657,
             "color": "#8ddf6e"
           },
           {
             "name": "Endwell",
             "value": 1644.0,
-            "share": 0.35785807575097955,
+            "share": 0.31768115942028985,
             "color": "#8a7dff"
           }
         ]
