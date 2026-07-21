@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T07:19:33.626557+00:00",
-  "sourceModifiedAt": "2026-07-16T06:31:15.754327+00:00",
+  "generatedAt": "2026-07-21T07:20:39.347052+00:00",
+  "sourceModifiedAt": "2026-07-16T06:30:16+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "83.3%",
+      "value": "82.4%",
       "detail": "Jul fill rate",
       "tone": "warn"
     }
@@ -1892,14 +1892,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "83.3%",
+      "headlineValue": "82.4%",
       "headlineDetail": "Jul fill rate",
       "tone": "warn",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "83.3%"
+          "value": "82.4%"
         },
         {
           "label": "Target",
@@ -1907,7 +1907,7 @@
         },
         {
           "label": "Average",
-          "value": "69.6%"
+          "value": "69.4%"
         },
         {
           "label": "Best",
@@ -1976,9 +1976,9 @@
           },
           {
             "month": "Jul",
-            "assembled": 18.0,
+            "assembled": 17.0,
             "backorders": 3.0,
-            "fillRate": 0.8333333333333334
+            "fillRate": 0.8235294117647058
           },
           {
             "month": "Aug",
@@ -2036,7 +2036,7 @@
               0.5454545454545454,
               0.47916666666666663,
               0.6666666666666667,
-              0.8333333333333334
+              0.8235294117647058
             ],
             "style": "solid",
             "showDots": true,
@@ -2064,13 +2064,13 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7463957173778603,
-              0.7294952071737786,
-              0.712594696969697,
-              0.6956941867656153,
-              0.6787936765615338,
-              0.6618931663574521,
-              0.6449926561533705
+              0.7481464176579723,
+              0.7301954872858234,
+              0.7122445569136746,
+              0.6942936265415257,
+              0.6763426961693768,
+              0.658391765797228,
+              0.6404408354250791
             ],
             "style": "dotted",
             "showDots": false,
