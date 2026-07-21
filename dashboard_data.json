@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-21T16:53:30.640605+00:00",
-  "sourceModifiedAt": "2026-07-21T14:39:26+00:00",
+  "generatedAt": "2026-07-21T18:08:44.081129+00:00",
+  "sourceModifiedAt": "2026-07-21T18:05:27+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -32,8 +32,8 @@
     },
     {
       "label": "Urgent Orders",
-      "value": "39.1%",
-      "detail": "Week 29 reading",
+      "value": "25.0%",
+      "detail": "Week 30 reading",
       "tone": "bad"
     },
     {
@@ -50,9 +50,9 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "87.5%",
+      "value": "75.0%",
       "detail": "Jul fill rate",
-      "tone": "good"
+      "tone": "warn"
     }
   ],
   "datasets": [
@@ -849,14 +849,14 @@
       "label": "Wholesaler Urgent Orders",
       "category": "Exceptions",
       "description": "Weekly urgent-order rate. Lower is healthier here.",
-      "headlineValue": "39.1%",
-      "headlineDetail": "Week 29 reading",
+      "headlineValue": "25.0%",
+      "headlineDetail": "Week 30 reading",
       "tone": "bad",
       "note": "This one flips the interpretation: the closer to zero, the better.",
       "facts": [
         {
           "label": "Latest",
-          "value": "39.1%"
+          "value": "25.0%"
         },
         {
           "label": "Target",
@@ -864,7 +864,7 @@
         },
         {
           "label": "Average",
-          "value": "20.2%"
+          "value": "20.1%"
         },
         {
           "label": "Best",
@@ -872,7 +872,7 @@
         },
         {
           "label": "Readings",
-          "value": "29"
+          "value": "30"
         }
       ],
       "table": {
@@ -1003,7 +1003,11 @@
           },
           {
             "week": "Week 29",
-            "rate": 0.391
+            "rate": 0.323
+          },
+          {
+            "week": "Week 30",
+            "rate": 0.25
           }
         ]
       },
@@ -1038,7 +1042,8 @@
           "Week 26",
           "Week 27",
           "Week 28",
-          "Week 29"
+          "Week 29",
+          "Week 30"
         ],
         "series": [
           {
@@ -1075,7 +1080,8 @@
               0.359,
               0.268,
               0.385,
-              0.391
+              0.323,
+              0.25
             ],
             "style": "solid",
             "showDots": true,
@@ -1086,6 +1092,7 @@
             "format": "percent",
             "color": "#39ff88",
             "values": [
+              0.05,
               0.05,
               0.05,
               0.05,
@@ -1125,35 +1132,36 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              -0.03288275862068962,
-              -0.016107881773398985,
-              0.0006669950738916533,
-              0.017441871921182295,
-              0.03421674876847293,
-              0.050991625615763564,
-              0.06776650246305421,
-              0.08454137931034485,
-              0.10131625615763548,
-              0.11809113300492613,
-              0.13486600985221675,
-              0.1516408866995074,
-              0.16841576354679805,
-              0.18519064039408867,
-              0.20196551724137932,
-              0.21874039408866996,
-              0.23551527093596059,
-              0.2522901477832512,
-              0.2690650246305419,
-              0.2858399014778325,
-              0.3026147783251231,
-              0.3193896551724138,
-              0.3361645320197044,
-              0.35293940886699504,
-              0.3697142857142857,
-              0.38648916256157634,
-              0.40326403940886696,
-              0.4200389162561576,
-              0.43681379310344826
+              -0.016967741935483893,
+              -0.0019147942157953513,
+              0.01313815350389319,
+              0.028191101223581733,
+              0.043244048943270275,
+              0.05829699666295882,
+              0.07334994438264736,
+              0.0884028921023359,
+              0.10345583982202444,
+              0.11850878754171298,
+              0.13356173526140153,
+              0.14861468298109007,
+              0.1636676307007786,
+              0.17872057842046715,
+              0.1937735261401557,
+              0.20882647385984424,
+              0.22387942157953278,
+              0.23893236929922135,
+              0.25398531701890986,
+              0.2690382647385984,
+              0.28409121245828695,
+              0.2991441601779755,
+              0.31419710789766403,
+              0.32925005561735254,
+              0.3443030033370411,
+              0.3593559510567297,
+              0.3744088987764182,
+              0.3894618464961067,
+              0.4045147942157953,
+              0.41956774193548385
             ],
             "style": "dotted",
             "showDots": false,
@@ -1922,14 +1930,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "87.5%",
+      "headlineValue": "75.0%",
       "headlineDetail": "Jul fill rate",
-      "tone": "good",
+      "tone": "warn",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "87.5%"
+          "value": "75.0%"
         },
         {
           "label": "Target",
@@ -1937,7 +1945,7 @@
         },
         {
           "label": "Average",
-          "value": "70.2%"
+          "value": "68.4%"
         },
         {
           "label": "Best",
@@ -2007,8 +2015,8 @@
           {
             "month": "Jul",
             "assembled": 24.0,
-            "backorders": 3.0,
-            "fillRate": 0.875
+            "backorders": 6.0,
+            "fillRate": 0.75
           },
           {
             "month": "Aug",
@@ -2066,7 +2074,7 @@
               0.5454545454545454,
               0.47916666666666663,
               0.6666666666666667,
-              0.875
+              0.75
             ],
             "style": "solid",
             "showDots": true,
@@ -2094,13 +2102,13 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.738955241187384,
-              0.7265190166975881,
-              0.7140827922077921,
-              0.7016465677179963,
-              0.6892103432282003,
-              0.6767741187384044,
-              0.6643378942486085
+              0.7612766697588125,
+              0.7354475881261594,
+              0.7096185064935063,
+              0.6837894248608534,
+              0.6579603432282003,
+              0.6321312615955472,
+              0.6063021799628941
             ],
             "style": "dotted",
             "showDots": false,
