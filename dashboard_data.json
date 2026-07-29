@@ -2,8 +2,8 @@
   "title": "Operations Live Dashboard",
   "subtitle": "PPT Presentation Source",
   "sourceName": "Operations Data.xlsx",
-  "generatedAt": "2026-07-29T05:56:25.473455+00:00",
-  "sourceModifiedAt": "2026-07-29T05:55:49+00:00",
+  "generatedAt": "2026-07-29T05:58:25.172500+00:00",
+  "sourceModifiedAt": "2026-07-29T05:57:47+00:00",
   "refreshSeconds": 60,
   "summaryCards": [
     {
@@ -50,7 +50,7 @@
     },
     {
       "label": "Assembly vs BO",
-      "value": "75.0%",
+      "value": "80.6%",
       "detail": "Jul fill rate",
       "tone": "warn"
     }
@@ -1956,14 +1956,14 @@
       "label": "Assembly vs Backorders",
       "category": "Production",
       "description": "Monthly Liseo assembly output against backorders, with fill rate calculated from the live workbook.",
-      "headlineValue": "75.0%",
+      "headlineValue": "80.6%",
       "headlineDetail": "Jul fill rate",
       "tone": "warn",
       "note": "Table view keeps the assembled and backorder counts, while chart view focuses on the monthly fill-rate line against the green 85% target.",
       "facts": [
         {
           "label": "Latest",
-          "value": "75.0%"
+          "value": "80.6%"
         },
         {
           "label": "Target",
@@ -1971,7 +1971,7 @@
         },
         {
           "label": "Average",
-          "value": "68.4%"
+          "value": "69.2%"
         },
         {
           "label": "Best",
@@ -2040,9 +2040,9 @@
           },
           {
             "month": "Jul",
-            "assembled": 24.0,
+            "assembled": 31.0,
             "backorders": 6.0,
-            "fillRate": 0.75
+            "fillRate": 0.8064516129032258
           },
           {
             "month": "Aug",
@@ -2100,7 +2100,7 @@
               0.5454545454545454,
               0.47916666666666663,
               0.6666666666666667,
-              0.75
+              0.8064516129032258
             ],
             "style": "solid",
             "showDots": true,
@@ -2128,13 +2128,13 @@
             "format": "percent",
             "color": "#f8fafc",
             "values": [
-              0.7612766697588125,
-              0.7354475881261594,
-              0.7096185064935063,
-              0.6837894248608534,
-              0.6579603432282003,
-              0.6321312615955472,
-              0.6063021799628941
+              0.7511960245975223,
+              0.7314153300616435,
+              0.7116346355257646,
+              0.6918539409898857,
+              0.6720732464540069,
+              0.652292551918128,
+              0.6325118573822491
             ],
             "style": "dotted",
             "showDots": false,
