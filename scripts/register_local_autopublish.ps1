@@ -118,6 +118,7 @@ if ($WorkbookPath) {
 $configPayload = [ordered]@{
     workbookPath = $candidateWorkbook
     workbookUrl = $WorkbookUrl
+    allowLocalFallback = -not [string]::IsNullOrWhiteSpace($WorkbookUrl) ? $false : $true
 }
 $configPayload | ConvertTo-Json | Set-Content -LiteralPath $configPath -Encoding UTF8
 

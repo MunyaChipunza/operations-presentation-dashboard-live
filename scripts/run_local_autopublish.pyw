@@ -6,6 +6,7 @@ import json
 import os
 import sys
 import traceback
+from typing import Any
 from pathlib import Path
 
 os.environ.setdefault("PYTHONDONTWRITEBYTECODE", "1")
@@ -36,7 +37,7 @@ def log(message: str) -> None:
         handle.write(f"[{stamp}] {message.rstrip()}\n")
 
 
-def load_source_config() -> dict[str, str]:
+def load_source_config() -> dict[str, object]:
     if not CONFIG_PATH.exists():
         return {}
 
@@ -50,26 +51,56 @@ def load_source_config() -> dict[str, str]:
         log(f"Ignoring non-object source config at {CONFIG_PATH}")
         return {}
 
-    return {str(key): str(value) for key, value in payload.items() if value not in (None, "")}
+    cleaned: dict[str, object] = {}
+    for key, value in payload.items():
+        if value in (None, ""):
+            continue
+        cleaned[str(key)] = value
+    return cleaned
 
 
-def resolve_workbook_url(candidate: str | None, config: dict[str, str]) -> str | None:
+def clean_config_text(value: Any) -> str | None:
+    if not isinstance(value, str):
+        return None
+    text = value.strip()
+    return text or None
+
+
+def resolve_workbook_url(candidate: str | None, config: dict[str, object]) -> str | None:
     for value in (
         candidate,
         os.environ.get("WORKBOOK_URL"),
         config.get("workbookUrl"),
         config.get("workbook_url"),
     ):
-        if value and value.strip():
-            return value.strip()
+        resolved = clean_config_text(value)
+        if resolved:
+            return resolved
     return None
 
 
-def resolve_configured_workbook_path(config: dict[str, str]) -> str | None:
+def resolve_configured_workbook_path(config: dict[str, object]) -> str | None:
     for value in (config.get("workbookPath"), config.get("workbook_path")):
-        if value and value.strip():
-            return value.strip()
+        resolved = clean_config_text(value)
+        if resolved:
+            return resolved
     return None
+
+
+def config_flag(config: dict[str, object], *keys: str, default: bool = False) -> bool:
+    truthy = {"1", "true", "yes", "on"}
+    falsy = {"0", "false", "no", "off"}
+    for key in keys:
+        value = config.get(key)
+        if isinstance(value, bool):
+            return value
+        if isinstance(value, str):
+            normalized = value.strip().lower()
+            if normalized in truthy:
+                return True
+            if normalized in falsy:
+                return False
+    return default
 
 
 def resolve_workbook_path(candidate: str | None) -> Path:
@@ -93,6 +124,7 @@ def main() -> int:
     config = load_source_config()
     workbook_url = resolve_workbook_url(args.workbook_url, config)
     workbook_hint = args.workbook or resolve_configured_workbook_path(config)
+    allow_local_fallback = config_flag(config, "allowLocalFallback", "allow_local_fallback", default=False)
     workbook_path = resolve_workbook_path(workbook_hint)
     source_path = workbook_path
     log(f"Auto-publish start. Workbook candidate: {workbook_path}")
@@ -107,6 +139,8 @@ def main() -> int:
 
     if workbook_url:
         log("Workbook URL configured. Cloud workbook will be preferred when reachable.")
+        if allow_local_fallback:
+            log("Local fallback is enabled for cloud refresh failures.")
 
     try:
         published = push_dashboard(
@@ -118,6 +152,9 @@ def main() -> int:
         source_mode = "cloud" if workbook_url else "local"
     except Exception as exc:
         if not workbook_url:
+            raise
+        if not allow_local_fallback:
+            log(f"Cloud refresh failed and local fallback is disabled. Error: {exc}")
             raise
 
         log(f"Cloud refresh failed, falling back to local workbook. Error: {exc}")

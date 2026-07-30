@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import argparse
+import datetime as dt
 import json
 import os
 import shutil
@@ -277,6 +278,28 @@ def load_dashboard_payload(path: Path) -> dict | None:
     return payload if isinstance(payload, dict) else None
 
 
+def parse_iso_datetime(value: object) -> dt.datetime | None:
+    if not isinstance(value, str) or not value.strip():
+        return None
+    text = value.strip()
+    if text.endswith("Z"):
+        text = f"{text[:-1]}+00:00"
+    try:
+        parsed = dt.datetime.fromisoformat(text)
+    except ValueError:
+        return None
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=dt.timezone.utc)
+    return parsed.astimezone(dt.timezone.utc)
+
+
+def dashboard_source_modified_at(path: Path) -> dt.datetime | None:
+    payload = load_dashboard_payload(path)
+    if payload is None:
+        return None
+    return parse_iso_datetime(payload.get("sourceModifiedAt"))
+
+
 def comparable_dashboard_payload(path: Path) -> dict | None:
     payload = load_dashboard_payload(path)
     if payload is None:
@@ -300,6 +323,18 @@ def push_dashboard(workbook_path: Path | None, workbook_url: str | None, output_
     temp_output = Path(temp_output_raw)
     try:
         refresh_dashboard_data(workbook=str(workbook_path) if workbook_path else None, workbook_url=workbook_url, output=temp_output)
+        current_source_modified = dashboard_source_modified_at(output_path)
+        incoming_source_modified = dashboard_source_modified_at(temp_output)
+        if (
+            current_source_modified is not None
+            and incoming_source_modified is not None
+            and incoming_source_modified < current_source_modified
+        ):
+            print(
+                "Dashboard refresh skipped because the incoming workbook is older than the current published source. "
+                f"Incoming={incoming_source_modified.isoformat()} Current={current_source_modified.isoformat()}"
+            )
+            return False
         dashboard_changed = dashboard_content_changed(temp_output, output_path)
         if dashboard_changed:
             write_local_output(temp_output, output_path)
