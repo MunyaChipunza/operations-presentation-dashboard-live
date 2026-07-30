@@ -3,6 +3,10 @@ name: Update Operations Dashboard Data
 on:
   workflow_dispatch:
 
+concurrency:
+  group: operations-dashboard-data-refresh
+  cancel-in-progress: true
+
 jobs:
   refresh-dashboard:
     runs-on: ubuntu-latest
