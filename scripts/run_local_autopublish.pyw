@@ -153,11 +153,13 @@ def main() -> int:
     except Exception as exc:
         if not workbook_url:
             raise
-        if not allow_local_fallback:
-            log(f"Cloud refresh failed and local fallback is disabled. Error: {exc}")
-            raise
-
-        log(f"Cloud refresh failed, falling back to local workbook. Error: {exc}")
+        if allow_local_fallback:
+            log(f"Cloud refresh failed, falling back to local workbook. Error: {exc}")
+        else:
+            log(
+                "Cloud refresh failed. Trying a safe local fallback instead. "
+                f"Older local workbook data will be skipped automatically. Error: {exc}"
+            )
         published = push_dashboard(
             workbook_path=source_path,
             workbook_url=None,

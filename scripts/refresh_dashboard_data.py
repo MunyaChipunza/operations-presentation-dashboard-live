@@ -9,12 +9,14 @@ import html
 import json
 import os
 import re
+import socket
 import shutil
 import statistics
 import subprocess
 import tempfile
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 import zipfile
 from pathlib import Path
@@ -31,6 +33,17 @@ LIVE_DATA_MAX_ROW = 100
 CREATE_NO_WINDOW = getattr(subprocess, "CREATE_NO_WINDOW", 0)
 EXCEL_SUFFIXES = {".xlsx", ".xlsm"}
 CSV_SUFFIX = ".csv"
+TRANSIENT_NETWORK_FRAGMENTS = (
+    "getaddrinfo failed",
+    "temporary failure in name resolution",
+    "name or service not known",
+    "connection reset",
+    "connection aborted",
+    "remote end closed connection without response",
+    "timed out",
+    "tls",
+    "ssl",
+)
 
 
 def parse_args() -> argparse.Namespace:
@@ -330,14 +343,50 @@ def share_token(url: str) -> str:
 
 def request_json(url: str, headers: dict[str, str] | None = None, data: bytes | None = None) -> dict[str, Any]:
     request = urllib.request.Request(url, headers=headers or {}, data=data)
-    with urllib.request.urlopen(request, timeout=60) as response:
+    with urlopen_with_retry(request, timeout=60) as response:
         return json.loads(response.read().decode("utf-8"))
 
 
 def request_bytes(url: str, headers: dict[str, str] | None = None) -> bytes:
     request = urllib.request.Request(url, headers=headers or {})
-    with urllib.request.urlopen(request, timeout=60) as response:
+    with urlopen_with_retry(request, timeout=60) as response:
         return response.read()
+
+
+def is_transient_network_error(exc: Exception) -> bool:
+    if isinstance(exc, urllib.error.HTTPError):
+        return exc.code in {408, 429, 500, 502, 503, 504}
+
+    if isinstance(exc, urllib.error.URLError):
+        reason = exc.reason
+        if isinstance(reason, (socket.gaierror, TimeoutError)):
+            return True
+        text = str(reason).lower()
+    else:
+        text = str(exc).lower()
+
+    return any(fragment in text for fragment in TRANSIENT_NETWORK_FRAGMENTS)
+
+
+def urlopen_with_retry(
+    request: urllib.request.Request,
+    *,
+    timeout: int = 60,
+    attempts: int = 4,
+    delay_seconds: float = 2.0,
+):
+    last_error: Exception | None = None
+    for attempt in range(1, attempts + 1):
+        try:
+            return urllib.request.urlopen(request, timeout=timeout)
+        except Exception as exc:  # noqa: BLE001
+            last_error = exc
+            if attempt == attempts or not is_transient_network_error(exc):
+                raise
+            time.sleep(delay_seconds * attempt)
+
+    assert last_error is not None
+    raise last_error
 
 
 def write_temp_workbook(payload: bytes, suffix: str) -> Path:
@@ -754,7 +803,7 @@ def download_workbook(url: str) -> tuple[Path, str, dt.datetime | None]:
     for candidate in candidate_urls(url):
         try:
             request = urllib.request.Request(candidate, headers=headers)
-            with urllib.request.urlopen(request, timeout=60) as response:
+            with urlopen_with_retry(request, timeout=60) as response:
                 payload = response.read()
                 final_url = response.geturl()
                 content_type = response.headers.get("Content-Type", "")
@@ -768,7 +817,7 @@ def download_workbook(url: str) -> tuple[Path, str, dt.datetime | None]:
                 nested_url = extract_download_url_from_html(page_html)
                 if nested_url:
                     nested_request = urllib.request.Request(nested_url, headers=headers)
-                    with urllib.request.urlopen(nested_request, timeout=60) as nested_response:
+                    with urlopen_with_retry(nested_request, timeout=60) as nested_response:
                         nested_payload = nested_response.read()
                         suffix = Path(urllib.parse.urlsplit(nested_url).path).suffix or ".xlsx"
                         target = write_temp_workbook(nested_payload, suffix)
